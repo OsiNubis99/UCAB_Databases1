@@ -7,7 +7,7 @@ class Pais (models.Model):
     nombre=models.CharField(max_length=50)
     nacionalidad=models.CharField(max_length=50)
 
-class Divisa(models.Model):
+class Divisa (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
     pais=models.ForeignKey(Pais,on_delete=models.CASCADE)
