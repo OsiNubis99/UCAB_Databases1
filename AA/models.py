@@ -19,12 +19,10 @@ class Artista (models.Model):
     nombre_art=models.CharField(max_length=50,default=None, blank=True, null=True)
 
 class Moneda(models.Model):
-    artistas=models.ManyToManyField(Artista)
+    id=models.AutoField(primary_key=True)
+    artistas=models.ManyToManyField(Artista,default=None, blank=True, null=True)
     divisa=models.ForeignKey(Divisa,on_delete=models.CASCADE)
     creada_en=models.ForeignKey(Pais,on_delete=models.CASCADE)
-
-class Pintura(models.Model):
-    artistas=models.ManyToManyField(Artista)
 
 class Tienda (models.Model):
     id=models.AutoField(primary_key=True)
@@ -61,20 +59,23 @@ class Catalogo_Moneda(models.Model):
 
 class Catalogo_Pintura(models.Model):
     num=models.AutoField(primary_key=True)
+    titulo=models.CharField(max_length=50)
+    year=models.CharField(max_length=50)
+    estilo=models.CharField(max_length=50)
+    size=models.CharField(max_length=50)
+    artistas=models.ManyToManyField(Artista,default=None, blank=True, null=True)
 
 class Cliente(models.Model):
     date_client=models.DateField(null=True, blank=True)
 
-class Subasta_Tienda(models.Model):
-    pass
-
 class Subasta_Evento(models.Model):
+    tiendas=models.ManyToManyField(Tienda)
     pass
 
 class Costo_envio (models.Model):
     id=models.AutoField(primary_key=True)
-    evento=models.ForeignKey(Subasta_Evento, on_delete=models.CASCADE)
     pais=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    evento=models.ForeignKey(Subasta_Evento, on_delete=models.CASCADE)
     costo=models.IntegerField()
     extra=models.IntegerField(default=None, blank=True, null=True)
     recargo=models.IntegerField(default=None, blank=True, null=True)
@@ -94,10 +95,11 @@ class Participante(models.Model):
 class Articulo_Subasta(models.Model):
     id=models.AutoField(primary_key=True)
     ask=models.IntegerField()
-    bid=models.IntegerField()
-    por_ganancia=models.IntegerField()
-    precio_alcanzado=models.IntegerField()
+    bid=models.IntegerField(default=None, blank=True, null=True)
+    minganancia=models.IntegerField(default=None, blank=True, null=True)
     duracion_min=models.IntegerField()
+    precio_alcanzado=models.IntegerField()
+    ganador=models.ForeignKey(Participante,on_delete=models.CASCADE)
 
 class Reglonfactura(models.Model):
     id=models.AutoField(primary_key=True)
