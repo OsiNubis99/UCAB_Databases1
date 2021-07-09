@@ -2,27 +2,35 @@ from django.db import models
 
 # Create your models here.
 
-class Artista(models.Model):
-    id=models.AutoField(primary_key=True)
-    nombre=models.CharField(max_length=50)
-    apellido=models.CharField(max_length=50)
-    nombreart=models.CharField(max_length=50)
-
-class Pintura(models.Model):
-    artistas=models.ManyToManyField(Artista)
-
-class Moneda(models.Model):
-    artistas=models.ManyToManyField(Artista)
-
 class Pais(models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
     nacionalidad=models.CharField(max_length=50)
 
-class Tienda(models.Model):
+class Divisa(models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
-    pagina=models.CharField(max_length=50)
+    pais=models.ForeignKey(Pais,on_delete=models.CASCADE)
+
+class Artista(models.Model):
+    id=models.AutoField(primary_key=True)
+    nombre=models.CharField(max_length=50)
+    apellido=models.CharField(max_length=50,default=None, blank=True, null=True)
+    nombre_art=models.CharField(max_length=50,default=None, blank=True, null=True)
+
+class Moneda(models.Model):
+    artistas=models.ManyToManyField(Artista)
+    divisa=models.ForeignKey(Divisa,on_delete=models.CASCADE)
+    creada_en=models.ForeignKey(Pais,on_delete=models.CASCADE)
+
+class Pintura(models.Model):
+    artistas=models.ManyToManyField(Artista)
+
+class Tienda (models.Model):
+    id=models.AutoField(primary_key=True)
+    nombre=models.CharField(max_length=50)
+    fecha_fundacion=models.DateField()
+    pagina=models.CharField(max_length=50,default=None, blank=True, null=True)
     proposito=models.CharField(max_length=100)
     alcance=models.CharField(max_length=50)
     tipos=[
@@ -32,23 +40,27 @@ class Tienda(models.Model):
 
     ]
     tipo=models.CharField(max_length=70,choices=tipos)
-    lugar=models.ForeignKey(Pais, on_delete=models.CASCADE)
-
-class Contacto_Organizacion(models.Model):
-    id=models.AutoField(primary_key=True)
-    lugar=models.ForeignKey(Tienda, on_delete=models.CASCADE)
-    cargo=models.CharField(max_length=50)
-    nombre=models.CharField(max_length=20)
-    apellido=models.CharField(max_length=20)
+    alcance=models.CharField(max_length=20)
     email=models.CharField(max_length=50)
-    telefonoid=models.CharField(max_length=50)
+    telefono=models.CharField(max_length=50)
 
-class Coleccionista(models.Model):
+class Coleccionista (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
-    telefonoid=models.CharField(max_length=50)
+    nombre2=models.CharField(max_length=50,default=None, blank=True, null=True)
+    apellido=models.CharField(max_length=50)
+    apellido2=models.CharField(max_length=50)
+    telefono=models.CharField(max_length=50)
     email=models.CharField(max_length=13)
-    lugar=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    fecha_nacimiento=models.DateField()
+    nacio=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    vive=models.ForeignKey(Pais, on_delete=models.CASCADE)
+
+class Catalogo_Moneda(models.Model):
+    num=models.AutoField(primary_key=True)
+
+class Catalogo_Pintura(models.Model):
+    num=models.AutoField(primary_key=True)
 
 class Cliente(models.Model):
     date_client=models.DateField(null=True, blank=True)
