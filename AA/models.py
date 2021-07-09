@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Pais(models.Model):
+class Pais (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
     nacionalidad=models.CharField(max_length=50)
@@ -12,7 +12,7 @@ class Divisa(models.Model):
     nombre=models.CharField(max_length=50)
     pais=models.ForeignKey(Pais,on_delete=models.CASCADE)
 
-class Artista(models.Model):
+class Artista (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
     apellido=models.CharField(max_length=50,default=None, blank=True, null=True)
@@ -70,6 +70,16 @@ class Subasta_Tienda(models.Model):
 
 class Subasta_Evento(models.Model):
     pass
+
+class Costo_envio (models.Model):
+    id=models.AutoField(primary_key=True)
+    evento=models.ForeignKey(Subasta_Evento, on_delete=models.CASCADE)
+    pais=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    costo=models.IntegerField()
+    extra=models.IntegerField(default=None, blank=True, null=True)
+    recargo=models.IntegerField(default=None, blank=True, null=True)
+    embalaje=models.IntegerField(default=None, blank=True, null=True)
+    seguro=models.IntegerField(default=None, blank=True, null=True)
 
 class Factura(models.Model):
     id=models.AutoField(primary_key=True)
