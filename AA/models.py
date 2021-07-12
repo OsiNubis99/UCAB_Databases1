@@ -71,8 +71,8 @@ class Coleccionista (models.Model):
 class Catalogo_Moneda (models.Model):
     num=models.AutoField(primary_key=True)
     moneda=models.ManyToManyField(Moneda,default=None, blank=True, null=False)
-    coleccionista=models.ManyToManyField(Coleccionista,default=None, blank=True, null=True)
-    tienda=models.ManyToManyField(Tienda,default=None, blank=True, null=True)
+    coleccionista=models.ForeignKey(Coleccionista,on_delete=models.CASCADE,default=None, blank=True, null=True)
+    tienda=models.ForeignKey(Tienda,on_delete=models.CASCADE,default=None, blank=True, null=True)
 
 class Catalogo_Pintura (models.Model):
     num=models.AutoField(primary_key=True)
@@ -81,8 +81,8 @@ class Catalogo_Pintura (models.Model):
     estilo=models.CharField(max_length=50)
     size=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
     artistas=models.ManyToManyField(Artista,default=None, blank=True, null=True)
-    coleccionista=models.ManyToManyField(Coleccionista,default=None, blank=True, null=True)
-    tienda=models.ManyToManyField(Tienda,default=None, blank=True, null=True)
+    coleccionista=models.ForeignKey(Coleccionista,on_delete=models.CASCADE,default=None, blank=True, null=True)
+    tienda=models.ForeignKey(Tienda,on_delete=models.CASCADE,default=None, blank=True, null=True)
 
 class Cliente (models.Model):
     num=models.AutoField(primary_key=True)
@@ -130,6 +130,8 @@ class Articulo_Subasta (models.Model):
     precio_alcanzado=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
     ganador=models.ForeignKey(Participante,on_delete=models.CASCADE)
     evento=models.ForeignKey(Subasta_Evento,on_delete=models.CASCADE)
+    moneda=models.ManyToManyField(Moneda,default=None, blank=True, null=True)
+    pintura=models.ManyToManyField(Catalogo_Pintura,default=None, blank=True, null=True)
 
 class Reglonfactura (models.Model):
     id=models.AutoField(primary_key=True)
