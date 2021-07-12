@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subastas</title>
+
+</head>
+<style>
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(90,153,211,100);
+    }
+
+li {
+    float: Right;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    }
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+</style>
+<body>
+    <ul>
+        <li><a href="">Eventos</a></li>
+        <li><a href="">Tiendas</a></li>
+        <li><a href="">Catalogos</a></li>
+        <li><a href="">About</a></li>
+    </ul>
+
+
+    {% block content %}
+    
+    {% endblock %}
+</body>
+</html>
