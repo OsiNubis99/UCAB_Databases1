@@ -33,8 +33,6 @@ class Moneda (models.Model):
     reverso=models.Charfield(max_length=50)
     denominacion=models.DecimalField()
 
-
-
 class Tienda (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
@@ -60,10 +58,6 @@ class Contacto_tienda (models.Model):
     cargo=models.CharField(max_length=50)
     nombre=models.CharField(max_length=50)
     apellido=models.CharField(max_length=50)
-
-
-
-
 
 
 class Coleccionista (models.Model):
@@ -146,3 +140,4 @@ class Reglonfactura (models.Model):
     articulo=models.ForeignKey(Articulo_Subasta,on_delete=models.CASCADE,null=True)
     precio=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
     descripcion=models.CharField(max_length=50,null=True)
+
