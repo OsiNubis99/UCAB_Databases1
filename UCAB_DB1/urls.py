@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from AA import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('subastas/',subastas)
+    path('subastas/',views.subastas,name='subastas'),
+    path('bienvenidos/',views.welcome,name='home'),
+    path('crearSubasta/',views.crear_subasta,name='crearSubasta'),
 ]
