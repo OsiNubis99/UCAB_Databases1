@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
 class Pais (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
@@ -44,11 +43,9 @@ class Tienda (models.Model):
         ('Antiguedades','antiguedades'),
         ('Galeria','galeria'),
         ('Numismatica','numismatica')
-
-    ]
+        ]
     tipo=models.CharField(max_length=70,choices=tipos)
     alcance=models.CharField(max_length=20,null=False)
-    
 
 class Contacto_tienda (models.Model):
     num=models.AutoField(primary_key=True)
@@ -58,7 +55,6 @@ class Contacto_tienda (models.Model):
     cargo=models.CharField(max_length=50)
     nombre=models.CharField(max_length=50)
     apellido=models.CharField(max_length=50)
-
 
 class Coleccionista (models.Model):
     id=models.AutoField(primary_key=True)
@@ -98,12 +94,23 @@ class Cliente (models.Model):
 
 class Costo_envio (models.Model):
     id=models.AutoField(primary_key=True)
-    pais=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    pais=models.ForeignKey(Pais, on_delete=models.RESTRICT)
     costo=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     extra=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     recargo=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     embalaje=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     seguro=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+
+class Subasta_Evento (models.Model):
+    id=models.AutoField(primary_key=True)
+    tiendas=models.ManyToManyField(Tienda)
+    lugar=models.ForeignKey(Pais,on_delete=models.RESTRICT,blank=True,null=False)
+    duracion=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    tipo_puja=models.CharField(max_length=50)
+    costo_cliente=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    costo_general=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    direccion=models.CharField(max_length=50)
+    costo_envio=models.ForeignKey(Costo_envio,on_delete=models.CASCADE,null=True)
 
 class Factura (models.Model):
     id=models.AutoField(primary_key=True)
@@ -134,7 +141,10 @@ class Articulo_Subasta (models.Model):
     minganancia=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     duracion_min=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     precio_alcanzado=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
-    ganador=models.ForeignKey(Participante,on_delete=models.CASCADE)
+    ganador=models.ForeignKey(Participante,on_delete=models.RESTRICT)
+    evento=models.ForeignKey(Subasta_Evento,on_delete=models.RESTRICT)
+    moneda=models.ManyToManyField(Moneda,default=None, blank=True, null=True)
+    pintura=models.ManyToManyField(Catalogo_Pintura,default=None, blank=True, null=True)
 
 class Reglonfactura (models.Model):
     id=models.AutoField(primary_key=True)
