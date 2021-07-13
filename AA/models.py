@@ -106,7 +106,11 @@ class Subasta_Evento (models.Model):
     tiendas=models.ManyToManyField(Tienda)
     lugar=models.ForeignKey(Pais,on_delete=models.RESTRICT,blank=True,null=False)
     duracion=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    tipo_puja=models.CharField(max_length=50)
+    tipos=[
+        ('Cerrada','cerrada'),
+        ('Dinamica','dinamica'),
+        ]
+    tipo_puja=models.CharField(max_length=50,choices=tipos)
     costo_cliente=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
     costo_general=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
     direccion=models.CharField(max_length=50)
