@@ -10,7 +10,7 @@ class Pais (models.Model):
 class Divisa (models.Model):
     id=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50)
-    pais=models.ForeignKey(Pais,on_delete=models.CASCADE)
+    pais=models.ForeignKey(Pais,on_delete=models.RESTRICT)
 
 class Artista (models.Model):
     id=models.AutoField(primary_key=True)
@@ -21,17 +21,17 @@ class Artista (models.Model):
 class Moneda (models.Model):
     id=models.AutoField(primary_key=True)
     artistas=models.ManyToManyField(Artista,default=None, blank=True, null=True)
-    divisa=models.ForeignKey(Divisa,on_delete=models.CASCADE)
-    creada_en=models.ForeignKey(Pais,on_delete=models.CASCADE)
+    divisa=models.ForeignKey(Divisa,on_delete=models.RESTRICT)
+    creada_en=models.ForeignKey(Pais,on_delete=models.RESTRICT)
     nombre=models.CharField(max_length=50)
     metal=models.CharField(max_length=50)
     forma=models.CharField(max_length=50)
-    tamano=models.DecimalField()
+    tamano=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     motivo=models.CharField(max_length=50)
-    peso=models.DecimalField()
+    peso=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     anverso=models.CharField(max_length=50)
-    reverso=models.Charfield(max_length=50)
-    denominacion=models.DecimalField()
+    reverso=models.CharField(max_length=50,default=None, blank=True, null=True)
+    denominacion=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
 
 class Tienda (models.Model):
     id=models.AutoField(primary_key=True)
@@ -52,7 +52,7 @@ class Tienda (models.Model):
 
 class Contacto_tienda (models.Model):
     num=models.AutoField(primary_key=True)
-    tienda=models.ForeignKey(Tienda, on_delete=models.CASCADE)
+    tienda=models.ForeignKey(Tienda, on_delete=models.RESTRICT)
     email=models.CharField(max_length=50,null=False)
     telefono=models.CharField(max_length=50,null=False)
     cargo=models.CharField(max_length=50)
@@ -69,75 +69,77 @@ class Coleccionista (models.Model):
     telefono=models.CharField(max_length=50,null=False)
     email=models.CharField(max_length=13,null=False)
     fecha_nacimiento=models.DateField()
-    nacio=models.ForeignKey(Pais, on_delete=models.CASCADE)
-    vive=models.ForeignKey(Pais, on_delete=models.CASCADE)
+    nacio=models.ForeignKey(Pais, on_delete=models.RESTRICT,related_name='nacio')
+    vive=models.ForeignKey(Pais, on_delete=models.RESTRICT,related_name='vive')
 
 class Catalogo_Moneda (models.Model):
     num=models.AutoField(primary_key=True)
     moneda=models.ManyToManyField(Moneda,default=None, blank=True, null=False)
-    coleccionista=models.ManyToManyField(Coleccionista,default=None, blank=True, null=True)
-    tienda=models.ManyToManyField(Tienda,default=None, blank=True, null=True)
+    coleccionista=models.ForeignKey(Coleccionista,default=None, blank=True, null=True,on_delete=models.RESTRICT)
+    tienda=models.ForeignKey(Tienda,default=None, blank=True, null=True,on_delete=models.RESTRICT)
 
 class Catalogo_Pintura (models.Model):
     num=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50,null=False)
     year=models.CharField(max_length=50,null=False)
     estilo=models.CharField(max_length=50)
-    size=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    artistas=models.ManyToManyField(Artista,default=None, blank=True, null=True)
-    coleccionista=models.ManyToManyField(Coleccionista,default=None, blank=True, null=True)
-    tienda=models.ManyToManyField(Tienda,default=None, blank=True, null=True)
+    size=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    coleccionista=models.ForeignKey(Coleccionista,default=None, blank=True, null=True,on_delete=models.RESTRICT)
+    tienda=models.ForeignKey(Tienda,default=None, blank=True, null=True,on_delete=models.RESTRICT)
+
 
 class Cliente (models.Model):
     num=models.AutoField(primary_key=True)
     date_client=models.DateField(null=True, blank=True)
-    num_coleccionista=models.ForeignKey(Coleccionista,null=False)
-    num_tienda=models.ForeignKey(Tienda,blank=False,null=False)
+    num_coleccionista=models.ForeignKey(Coleccionista,null=False,on_delete=models.RESTRICT)
+    num_tienda=models.ForeignKey(Tienda,blank=False,null=False,on_delete=models.RESTRICT)
 
-class Subasta_Evento (models.Model):
-    tiendas=models.ManyToManyField(Tienda)
-    lugar=models.ForeignKey(Pais,blank=True,null=False)
-    duracion=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    tipo_puja=models.CharField(max_length=50)
-    costo_cliente=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    costo_general=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    direccion=models.CharField(max_length=50)
-    costo_envio=models.ForeignKey(Costo_envio,on_delete=models.CASCADE,null=True)
 
 
 class Costo_envio (models.Model):
     id=models.AutoField(primary_key=True)
     pais=models.ForeignKey(Pais, on_delete=models.CASCADE)
-    costo=models.DecimalField(max_digits=None,decimal_places=None)
-    extra=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    recargo=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    embalaje=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    seguro=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    costo=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    extra=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    recargo=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    embalaje=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    seguro=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
 
 class Factura (models.Model):
     id=models.AutoField(primary_key=True)
     iva=models.IntegerField()
 
+
+class Subasta_Evento (models.Model):
+    tiendas=models.ManyToManyField(Tienda)
+    lugar=models.ForeignKey(Pais,blank=True,null=False,on_delete=models.RESTRICT)
+    duracion=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    tipo_puja=models.CharField(max_length=50)
+    costo_cliente=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    costo_general=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    direccion=models.CharField(max_length=50)
+    costo_envio=models.ForeignKey(Costo_envio,on_delete=models.CASCADE,null=True)
+
 class Participante (models.Model):
     id=models.AutoField(primary_key=True)
     coleccionista=models.ForeignKey(Coleccionista, on_delete=models.CASCADE)
     subasta=models.ForeignKey(Subasta_Evento, on_delete=models.CASCADE)
-    factura_inscripcion=models.ForeignKey(Factura, on_delete=models.CASCADE)
-    factura_compra=models.ForeignKey(Factura, on_delete=models.CASCADE)
+    factura_inscripcion=models.ForeignKey(Factura, on_delete=models.CASCADE,related_name='inscripcion')
+    factura_compra=models.ForeignKey(Factura, on_delete=models.CASCADE,related_name='compras')
 
 class Articulo_Subasta (models.Model):
     id=models.AutoField(primary_key=True)
-    ask=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    bid=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    minganancia=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    duracion_min=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
-    precio_alcanzado=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    ask=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    bid=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    minganancia=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    duracion_min=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
+    precio_alcanzado=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     ganador=models.ForeignKey(Participante,on_delete=models.CASCADE)
 
 class Reglonfactura (models.Model):
     id=models.AutoField(primary_key=True)
     factura=models.ForeignKey(Factura,on_delete=models.CASCADE,null=False,blank=False)
     articulo=models.ForeignKey(Articulo_Subasta,on_delete=models.CASCADE,null=True)
-    precio=models.DecimalField(max_digits=None,decimal_places=None,default=None, blank=True, null=True)
+    precio=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     descripcion=models.CharField(max_length=50,null=True)
 
