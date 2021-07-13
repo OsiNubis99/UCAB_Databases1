@@ -158,3 +158,7 @@ class Reglonfactura (models.Model):
     precio=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     descripcion=models.CharField(max_length=50,null=True)
 
+class Email (models.Model):
+    id=models.AutoField(primary_key=True)
+    mensaje=models.CharField(max_length=200)
+    coleccionista_id=models.ForeignKey(Coleccionista,on_delete=models.RESTRICT)
