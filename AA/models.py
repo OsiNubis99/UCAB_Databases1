@@ -128,7 +128,6 @@ class Participante (models.Model):
     subasta=models.ForeignKey(Subasta_Evento, on_delete=models.CASCADE)
     factura_inscripcion=models.ForeignKey(Factura, on_delete=models.CASCADE,related_name='inscripcion')
     factura_compra=models.ForeignKey(Factura, on_delete=models.CASCADE,related_name='compras')
-    
 
 class Articulo_Subasta (models.Model):
     id=models.AutoField(primary_key=True)
