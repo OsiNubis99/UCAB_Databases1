@@ -109,7 +109,8 @@ class Factura (models.Model):
 
 
 class Subasta_Evento (models.Model):
-    tiendas=models.ManyToManyField(Tienda)
+    id=models.AutoField(primary_key=True)
+    tienda=models.ForeignKey(Tienda,on_delete=models.RESTRICT,null=True)
     lugar=models.ForeignKey(Pais,blank=True,null=False,on_delete=models.RESTRICT)
     duracion=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     tipos=[
