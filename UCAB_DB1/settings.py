@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'UCAB_DB1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Bases_Proyecto',
-        'USER': 'postgres',
-        'PASSWORD': 'Astro10-',
-        'HOST': '127.0.0.1',
+        'NAME': 'd2bu8pv1laim5f',
+        'USER': 'tjtqpztmkgdsdv',
+        'PASSWORD': 'f2949bbe7bb47b7ea2f6b654b721645e23d27955d8d8b1fe24cc7cbe4d95de49',
+        'HOST': 'ec2-3-214-136-47.compute-1.amazonaws.com',
         'PORT':'5432',
     }
 }

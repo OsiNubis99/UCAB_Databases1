@@ -1,6 +1,5 @@
 from django.contrib import admin
 from . import models
-# Register your models here.
 
 def crear_subasta(modeladmin,request,queryset):
     Subasta =models.Subasta_Evento()
@@ -16,7 +15,6 @@ class Subasta_Admin(admin.StackedInline):
 class Subasta_EventoAdmin(admin.ModelAdmin):
         list_display = ('id','costo_envio')
 
-
 class TiendaAmin(admin.ModelAdmin):
     list_display = ('id', 'nombre','fecha_fundacion', 'alcance')
     list_filter=['nombre','fecha_fundacion']
@@ -26,8 +24,6 @@ class TiendaAmin(admin.ModelAdmin):
 
 class ArtiuloSubastaAdmin(admin.ModelAdmin):
     list_filter=['evento']
-
-
 
 admin.site.register(models.Articulo_Subasta,ArtiuloSubastaAdmin)
 admin.site.register(models.Artista)
