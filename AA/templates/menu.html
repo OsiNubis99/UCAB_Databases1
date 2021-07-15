@@ -9,7 +9,7 @@
 </head>
 <style>
 
-ul {
+.menu ul  {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -17,11 +17,11 @@ ul {
     background-color: rgb(90,153,211,100);
     }
 
-li {
+.menu li {
     float: Right;
 }
 
-li a {
+.menu li a {
     display: block;
     color: black;
     text-align: center;
@@ -30,21 +30,21 @@ li a {
     }
 
 /* Change the link color to #111 (black) on hover */
-li a:hover {
-    background-color: #111;
+.menu li a:hover {
+    background-color: rgb(63, 120, 243);
 }
 </style>
 <body>
-    <ul>
-        <li><a href="">Eventos</a></li>
-        <li><a href="">Tiendas</a></li>
-        <li><a href="">Catalogos</a></li>
-        <li><a href="">About</a></li>
-    </ul>
-
-
+    <div class ="menu">
+        <ul >
+            <li ><a href="{% url 'subastas' %}">Eventos</a></li>
+            <li ><a href="">Tiendas</a></li>
+            <li ><a href="">Catalogos</a></li>
+            <li><a href="{% url 'crearSubasta' %}">crear_subasta</a></li>
+        </ul>
+    </div>
     {% block content %}
-    
+    <p> bienvendidos </p>
     {% endblock %}
 </body>
 </html>
