@@ -77,11 +77,12 @@ class Catalogo_Moneda (models.Model):
 class Catalogo_Pintura (models.Model):
     num=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=50,null=False)
-    year=models.CharField(max_length=50,null=False)
+    year=models.DateField()
     estilo=models.CharField(max_length=50)
     size=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     coleccionista=models.ForeignKey(Coleccionista,default=None, blank=True, null=True,on_delete=models.RESTRICT)
     tienda=models.ForeignKey(Tienda,default=None, blank=True, null=True,on_delete=models.RESTRICT)
+    artistas=models.ForeignKey(Artista,default=None, blank=True, null=True,on_delete=models.RESTRICT)
 
 
 class Cliente (models.Model):
@@ -122,6 +123,7 @@ class Subasta_Evento (models.Model):
     costo_general=models.DecimalField(max_digits=10,decimal_places=2,default=None, blank=True, null=True)
     direccion=models.CharField(max_length=50)
     costo_envio=models.ForeignKey(Costo_envio,on_delete=models.CASCADE,null=True)
+    
 
 class Participante (models.Model):
     id=models.AutoField(primary_key=True)
