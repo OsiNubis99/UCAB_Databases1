@@ -1,87 +1,189 @@
---
--- Create model Articulo_Subasta
---
-CREATE TABLE "AA_articulo_subasta" ("id" bigserial NOT NULL PRIMARY KEY, "ask" integer NOT NULL, "bid" integer NOT NULL, "por_ganancia" integer NOT NULL, "precio_alcanzado" integer NOT NULL, "duracion_min" integer NOT NULL);
---
--- Create model Artista
---
-CREATE TABLE "AA_artista" ("id" serial NOT NULL PRIMARY KEY, "nombre" varchar(50) NOT NULL, "apellido" varchar(50) NOT NULL, "nombreart" varchar(50) NOT NULL);
---
--- Create model Cliente
---
-CREATE TABLE "AA_cliente" ("id" bigserial NOT NULL PRIMARY KEY, "date_client" date NULL);
---
--- Create model Coleccionista
---
-CREATE TABLE "AA_coleccionista" ("id" serial NOT NULL PRIMARY KEY, "nombre" varchar(50) NOT NULL, "telefonoid" varchar(50) NOT NULL, "email" varchar(13) NOT NULL);
---
--- Create model Factura
---
-CREATE TABLE "AA_factura" ("id" serial NOT NULL PRIMARY KEY, "iva" integer NOT NULL);
---
--- Create model Pais
---
-CREATE TABLE "AA_pais" ("id" serial NOT NULL PRIMARY KEY, "nombre" varchar(50) NOT NULL, "nacionalidad" varchar(50) NOT NULL);
---
--- Create model Subasta_Evento
---
-CREATE TABLE "AA_subasta_evento" ("id" bigserial NOT NULL PRIMARY KEY);
---
--- Create model Subasta_Tienda
---
-CREATE TABLE "AA_subasta_tienda" ("id" bigserial NOT NULL PRIMARY KEY);
---
--- Create model Tienda
---
-CREATE TABLE "AA_tienda" ("id" serial NOT NULL PRIMARY KEY, "nombre" varchar(50) NOT NULL, "pagina" varchar(50) NOT NULL, "proposito" varchar(100) NOT NULL, "alcance" varchar(50) NOT NULL, "tipo" varchar(70) NOT NULL, "lugar_id" integer NOT NULL);
---
--- Create model Reglonfactura
---
-CREATE TABLE "AA_reglonfactura" ("id" bigserial NOT NULL PRIMARY KEY, "precio" integer NOT NULL, "descripcion" varchar(50) NOT NULL, "articulo_id" bigint NOT NULL, "factura_id" integer NOT NULL);
---
--- Create model Pintura
---
-CREATE TABLE "AA_pintura" ("id" bigserial NOT NULL PRIMARY KEY);
-CREATE TABLE "AA_pintura_Artistas" ("id" bigserial NOT NULL PRIMARY KEY, "pintura_id" bigint NOT NULL, "artista_id" integer NOT NULL);
---
--- Create model Participante
---
-CREATE TABLE "AA_participante" ("id" serial NOT NULL PRIMARY KEY, "coleccionista_id" integer NOT NULL, "factura_id" integer NOT NULL, "subasta_id" bigint NOT NULL);
---
--- Create model Moneda
---
-CREATE TABLE "AA_moneda" ("id" bigserial NOT NULL PRIMARY KEY);
-CREATE TABLE "AA_moneda_Artistas" ("id" bigserial NOT NULL PRIMARY KEY, "moneda_id" bigint NOT NULL, "artista_id" integer NOT NULL);
---
--- Create model Contacto_Organizacion
---
-CREATE TABLE "AA_contacto_organizacion" ("id" serial NOT NULL PRIMARY KEY, "cargo" varchar(50) NOT NULL, "nombre" varchar(20) NOT NULL, "apellido" varchar(20) NOT NULL, "email" varchar(50) NOT NULL, "telefonoid" varchar(50) NOT NULL, "lugar_id" integer NOT NULL);
---
--- Add field lugar to coleccionista
---
-ALTER TABLE "AA_coleccionista" ADD COLUMN "lugar_id" integer NOT NULL CONSTRAINT "AA_coleccionista_lugar_id_90b851b3_fk_AA_pais_id" REFERENCES "AA_pais"("id") DEFERRABLE INITIALLY DEFERRED; SET CONSTRAINTS "AA_coleccionista_lugar_id_90b851b3_fk_AA_pais_id" IMMEDIATE;
-ALTER TABLE "AA_tienda" ADD CONSTRAINT "AA_tienda_lugar_id_e0661db7_fk_AA_pais_id" FOREIGN KEY ("lugar_id") REFERENCES "AA_pais" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_tienda_lugar_id_e0661db7" ON "AA_tienda" ("lugar_id");
-ALTER TABLE "AA_reglonfactura" ADD CONSTRAINT "AA_reglonfactura_articulo_id_a2068e26_fk_AA_articulo_subasta_id" FOREIGN KEY ("articulo_id") REFERENCES "AA_articulo_subasta" ("id") DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE "AA_reglonfactura" ADD CONSTRAINT "AA_reglonfactura_factura_id_f7a150b9_fk_AA_factura_id" FOREIGN KEY ("factura_id") REFERENCES "AA_factura" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_reglonfactura_articulo_id_a2068e26" ON "AA_reglonfactura" ("articulo_id");
-CREATE INDEX "AA_reglonfactura_factura_id_f7a150b9" ON "AA_reglonfactura" ("factura_id");
-ALTER TABLE "AA_pintura_Artistas" ADD CONSTRAINT "AA_pintura_Artistas_pintura_id_artista_id_f26af1ef_uniq" UNIQUE ("pintura_id", "artista_id");
-ALTER TABLE "AA_pintura_Artistas" ADD CONSTRAINT "AA_pintura_Artistas_pintura_id_cf7d7f9d_fk_AA_pintura_id" FOREIGN KEY ("pintura_id") REFERENCES "AA_pintura" ("id") DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE "AA_pintura_Artistas" ADD CONSTRAINT "AA_pintura_Artistas_artista_id_6a1b2be7_fk_AA_artista_id" FOREIGN KEY ("artista_id") REFERENCES "AA_artista" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_pintura_Artistas_pintura_id_cf7d7f9d" ON "AA_pintura_Artistas" ("pintura_id");
-CREATE INDEX "AA_pintura_Artistas_artista_id_6a1b2be7" ON "AA_pintura_Artistas" ("artista_id");
-ALTER TABLE "AA_participante" ADD CONSTRAINT "AA_participante_coleccionista_id_e6e1d131_fk_AA_colecc" FOREIGN KEY ("coleccionista_id") REFERENCES "AA_coleccionista" ("id") DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE "AA_participante" ADD CONSTRAINT "AA_participante_factura_id_3a3ba2a9_fk_AA_factura_id" FOREIGN KEY ("factura_id") REFERENCES "AA_factura" ("id") DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE "AA_participante" ADD CONSTRAINT "AA_participante_subasta_id_267f158e_fk_AA_subasta_evento_id" FOREIGN KEY ("subasta_id") REFERENCES "AA_subasta_evento" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_participante_coleccionista_id_e6e1d131" ON "AA_participante" ("coleccionista_id");
-CREATE INDEX "AA_participante_factura_id_3a3ba2a9" ON "AA_participante" ("factura_id");
-CREATE INDEX "AA_participante_subasta_id_267f158e" ON "AA_participante" ("subasta_id");
-ALTER TABLE "AA_moneda_Artistas" ADD CONSTRAINT "AA_moneda_Artistas_moneda_id_artista_id_f970d775_uniq" UNIQUE ("moneda_id", "artista_id");
-ALTER TABLE "AA_moneda_Artistas" ADD CONSTRAINT "AA_moneda_Artistas_moneda_id_72667248_fk_AA_moneda_id" FOREIGN KEY ("moneda_id") REFERENCES "AA_moneda" ("id") DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE "AA_moneda_Artistas" ADD CONSTRAINT "AA_moneda_Artistas_artista_id_07de1e24_fk_AA_artista_id" FOREIGN KEY ("artista_id") REFERENCES "AA_artista" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_moneda_Artistas_moneda_id_72667248" ON "AA_moneda_Artistas" ("moneda_id");
-CREATE INDEX "AA_moneda_Artistas_artista_id_07de1e24" ON "AA_moneda_Artistas" ("artista_id");
-ALTER TABLE "AA_contacto_organizacion" ADD CONSTRAINT "AA_contacto_organizacion_lugar_id_2a68f4ce_fk_AA_tienda_id" FOREIGN KEY ("lugar_id") REFERENCES "AA_tienda" ("id") DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX "AA_contacto_organizacion_lugar_id_2a68f4ce" ON "AA_contacto_organizacion" ("lugar_id");
-CREATE INDEX "AA_coleccionista_lugar_id_90b851b3" ON "AA_coleccionista" ("lugar_id");
+CREATE Table "AA_Pais"(
+	id serial Primary KEY,
+	nombre VARCHAR(50) Not null,
+	nacionalidad VARCHAR(50) Not null
+);
+CREATE Table "AA_Divisa" (
+	id serial Primary KEY,
+	nombre VARCHAR(50) Not null,
+	pais integer not null,
+	FOREIGN KEY (pais) REFERENCES "AA_Pais"(id) ON DELETE CASCADE
+);
+Create Table "AA_Artista"(
+	id serial Primary KEY,
+	nombre VARCHAR(100) Not null,
+	apellido VARCHAR(100) NOT NULL
+);
+CREATE Table "AA_Moneda"(
+	id serial Primary KEY,
+	artista integer not null,
+	FOREIGN KEY (artista) REFERENCES "AA_Artista"(id) ON DELETE CASCADE,
+	divisa integer not null,
+	FOREIGN KEY (divisa) REFERENCES "AA_Divisa"(id) ON DELETE CASCADE,
+	creada_en integer not null,
+	FOREIGN KEY (creada_en) REFERENCES "AA_Pais"(id) ON DELETE CASCADE,
+	nombre VARCHAR(100) Not null,
+	tamano DECIMAL NOT NULL,
+	metal VARCHAR (100) not null,
+	forma VARCHAR (100) not null,
+	motivo VARCHAR (100) not null,
+	peso DECIMAL not null,
+	anverso VARCHAR (100) not null,
+	reverso VARCHAR (100) not null,
+	denominacion VARCHAR (100) not null
+);
+CREATE Table "AA_Tienda" (
+	id serial Primary KEY,
+	nombre VARCHAR(50) Not null,
+	fecha_fundacion DATE not null,
+	pagina VARCHAR(50),
+	proposito VARCHAR(100) Not null,
+	alcance VARCHAR(50) Not null,
+	tipo VARCHAR(15) not NULL CONSTRAINT store_type CHECK (
+		tipo = 'Antiguedades'
+		OR tipo = 'antiguedades'
+		OR tipo = 'Galeria'
+		OR tipo = 'galeria'
+		OR tipo = 'Numismatica'
+		OR tipo = 'numismatica'
+	)
+);
+CREATE Table "AA_Contacto_Tienda" (
+	id serial PRIMARY KEY,
+	tienda integer not null,
+	FOREIGN KEY (tienda) REFERENCES "AA_Tienda"(id) ON DELETE CASCADE,
+	email VARCHAR (50) not null,
+	telefono VARCHAR (50) not null,
+	cargo VARCHAR (50) not null,
+	nombre VARCHAR (50) not null,
+	apellido VARCHAR (50) not null
+);
+CREATE Table "AA_Coleccionista"(
+	id serial Primary KEY,
+	nombre VARCHAR(100) Not null,
+	telefono VARCHAR(20) not null,
+	email VARCHAR(100) not null,
+	nacio integer not null,
+	FOREIGN KEY (nacio) REFERENCES "AA_Pais"(id) ON DELETE CASCADE,
+	vive integer not null,
+	FOREIGN KEY (vive) REFERENCES "AA_Pais"(id) ON DELETE CASCADE,
+	fecha_nacimiento DATE not null
+);
+CREATE TABLE "AA_Cliente"(
+	id serial PRIMARY KEY,
+	coleccionista integer not null,
+	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista" (id),
+	tienda integer not null,
+	FOREIGN KEY (tienda) REFERENCES "AA_Tienda"(id),
+	fecha DATE NOT NULL
+);
+CREATE TABLE "AA_Catalogo_Pintura"(
+	id serial Primary KEY,
+	nombre VARCHAR (50) Not null,
+	fecha VARCHAR (10) NOT NULL,
+	estilo VARCHAR(50) Not null,
+	size VARCHAR(50) Not null,
+	artista integer not null,
+	FOREIGN KEY (artista) REFERENCES "AA_Artista"(id) ON DELETE CASCADE,
+	tienda integer default null,
+	FOREIGN KEY (tienda) REFERENCES "AA_Tienda"(id) ON DELETE CASCADE,
+	coleccionista integer default null,
+	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE,
+	CONSTRAINT paint_owner CHECK (
+		tienda IS NULL
+		OR coleccionista IS NULL
+	)
+);
+CREATE TABLE "AA_Catalogo_Moneda" (
+	id serial PRIMARY KEY,
+	moneda integer,
+	FOREIGN KEY (moneda) REFERENCES "AA_Moneda"(id),
+	tienda integer default null,
+	FOREIGN KEY(tienda) REFERENCES "AA_Tienda"(id) ON DELETE CASCADE,
+	coleccionista integer default null,
+	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE,
+	CONSTRAINT coin_owner CHECK (
+		tienda IS NULL
+		OR coleccionista IS NULL
+	)
+);
+CREATE TABLE "AA_Subasta_Evento"(
+	id serial PRIMARY KEY,
+	fecha DATE NOT null,
+	duracion DECIMAL NOT NULL,
+	costo_inscrip DECIMAL,
+	Costo_inscrip_cliente DECIMAL NOT NULL,
+	pais_lugar integer,
+	FOREIGN KEY (pais_lugar) REFERENCES "AA_Pais"(id),
+	tipo VARCHAR(15) not NULL CONSTRAINT subasta_type CHECK (
+		tipo = 'cerrada'
+		OR tipo = 'dinamica'
+	)
+);
+
+
+
+CREATE TABLE "AA_Tienda_Subasta"(
+	tienda integer not null,
+	FOREIGN KEY (tienda) REFERENCES "AA_Tienda"(id) ON DELETE CASCADE,
+	subasta integer not null,
+	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id) ON DELETE CASCADE
+
+
+
+)
+
+CREATE TABLE "AA_Costo_Envio"(
+	id serial PRiMARY KEY,
+	costo DECIMAl NOT NULL,
+	embalaje DECIMAL,
+	seguro DECIMAL,
+	extra DECIMAL,
+	pais integer not null,
+	FOREIGN KEY (pais) REFERENCES "AA_Pais"(id) ON DELETE CASCADE,
+	evento integer not null,
+	FOREIGN KEY (evento) REFERENCES "AA_Subasta_Evento"(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE "AA_Participante" (
+	id serial PRIMARY KEY,
+	Subasta integer not null,
+	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id) ON DELETE CASCADE,
+	coleccionista integer not null,
+	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE,
+	factura integer
+);
+CREATE TABLE "AA_Factura"(
+	id serial PRIMARY KEY,
+	total Decimal not null,
+	fecha DATE not null,
+	participante integer not null,
+	FOREIGN KEY (participante) REFERENCES "AA_Participante"(id) ON DELETE CASCADE
+);
+CREATE TABLE "AA_Reglon_Factura"(
+	id serial PRIMARY KEY,
+	precio DECIMAL,
+	factura integer not null,
+	FOREIGN KEY (factura) REFERENCES "AA_Factura"(id)
+);
+CREATE TABLE "AA_Articulo_Subasta"(
+	id SERIAL PRIMARY KEY,
+	por_min_ganancia DECIMAL not null,
+	precio_alcanzado DECIMAL,
+	duracion DECIMAL NOT NULL,
+	subasta integer NOT NULL,
+	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id),
+	comprador integer,
+	FOREIGN KEY (comprador) REFERENCES "AA_Participante"(id),
+	reglon_factura integer,
+	FOREIGN KEY (reglon_factura) REFERENCES "AA_Reglon_Factura"(id),
+	moneda integer default null,
+	FOREIGN KEY(moneda) REFERENCES "AA_Catalogo_Moneda"(id) ON DELETE CASCADE,
+	pintura integer default null,
+	FOREIGN KEY (pintura) REFERENCES "AA_Catalogo_Pintura"(id) ON DELETE CASCADE,
+	CONSTRAINT coin_owner CHECK (
+		moneda IS NULL
+		OR pintura IS NULL
+	)
+);

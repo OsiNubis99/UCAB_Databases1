@@ -1,0 +1,40 @@
+{% extends "menu.html" %}
+
+{% block content %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+        <p>duracion <input type="decimal" name="duracion" size="40"></p>
+        <p> costo inscripcion<input type="decimal" name="costo_inscripcion" size="40"></p>
+        <p>costo cliente<input type="decimal" name="costo_cliente" size="40"></p>
+        <p> fecha<input type="date" name="fecha" size="40" value="2018-07-22"
+            min="2021-09-09" max="2040-12-31">></p>
+        <p>tipo
+            <input type="radio" name="tipo" value="dinamica"> dinamica
+            <input type="radio" name="tipo" value="cerrada"> cerrada
+        </p>
+        <select id="tiendas" multiple  name="nombre_tienda">
+            {% for tienda in tiendas %}
+            <option value={{tienda.id}} type="checkbox">{{tienda.nombre}}</option>
+            {% endfor %}
+        </select>
+
+        <select id="tiendas" multiple="multiple" name="nombre_coleccionista">
+            {% for coleccionista in coleccionistas %}
+            <option value={{coleccionista.id}} >{{coleccionista.nombre}}</option>
+            {% endfor %}
+        </select>
+
+        <select id="tiendas" multiple="multiple" name="nombre_pais">
+            {% for pais in paises %}
+            <option value={{pais.id}} >{{pais.nacionalidad}}</option>
+            {% endfor %}
+        </select>
+
+        <p>
+            <input type="submit" value="Enviar">
+            <input type="reset" value="Borrar">
+        </p>
+</form>
+{% endblock %}

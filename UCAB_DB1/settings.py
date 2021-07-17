@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_interface',
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'AA',
-    'colorfield', 
-    
     # 'geeks'
 ]
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
@@ -86,7 +82,7 @@ WSGI_APPLICATION = 'UCAB_DB1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Bases_Proyecto',
+        'NAME': 'Bases',
         'USER': 'postgres',
         'PASSWORD': 'Astro10-',
         'HOST': '127.0.0.1',

@@ -34,17 +34,17 @@
 }
 </style>
 
+
+
 <div class="centrar-listas">
-    <ul>
-        
-        <li >
-            
-                <button>
-                    <p>aapasppspa</p> 
-                </button>
-            
-        </li>
-    </ul>
+    <form action="" method="GET">
+            {% csrf_token %}
+        <select id="subastas" multiple="multiple">
+            {% for subasta in subastas %}
+            <option value="1">{{subasta.nombre}} </option>
+            {% endfor %}
+        </select>
+    </form>
 </div>
 
 
