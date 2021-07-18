@@ -46,6 +46,12 @@ export default {
 		valid: true,
 		nombre: "",
 		correo: "",
+		emailRules: [
+			(v) => !!v || "La dirección de Correo Electrónico es requerida",
+			(v) =>
+				/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(v) ||
+				"Correo Electrónico Inválido",
+		],
 	}),
 
 	created() {
@@ -62,7 +68,7 @@ export default {
 					estado: true,
 					tipo: "error",
 					titulo: "Error de Conexion",
-					info: "Verifique su Conexion a Internet" + error,
+					info: "Verifique su Conexion a Internet",
 				};
 			});
 	},
@@ -105,8 +111,7 @@ export default {
 							estado: true,
 							tipo: "bien",
 							titulo: "Correo enviado!",
-							info:
-								"Verifique su carpeta de Span si no encuentra nuestro correo.",
+							info: "Verifique su carpeta de Span si no encuentra nuestro correo.",
 						};
 					}
 				})
@@ -123,7 +128,7 @@ export default {
 	},
 
 	props: {
-		id: {
+		hash: {
 			type: String,
 			default: "",
 		},

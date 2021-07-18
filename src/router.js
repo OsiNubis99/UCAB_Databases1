@@ -14,5 +14,11 @@ export default new Router({
 			path: "/Crear-subasta",
 			component: () => import("./views/crear-subasta.vue"),
 		},
+		{
+			name: "Descarga",
+			path: "/Descarga/:hash",
+			props: true,
+			component: (hash) => import("./views/Descargas.vue"),
+		},
 	],
 });

@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-const controller = require("../controller/subasta");
+const subastaController = require("../controller/subasta");
 
-router.get("/api/subasta/get-deps", controller.get_deps);
+router.get("/api/subasta/get-deps", subastaController.get_deps);
+router.post("/api/subasta/put", subastaController.put);
 module.exports = router;

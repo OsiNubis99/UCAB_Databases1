@@ -107,8 +107,8 @@ const getSubastasTiendasbyID = async (request, response) => {
 const createSubasta = async (req, res) => {
 	const {
 		duracion,
-		costo_inscripcion,
-		costo_cliente,
+		costo_inscrip,
+		costo_inscrip_cliente,
 		tipo,
 		fecha,
 		pais,
@@ -142,7 +142,11 @@ const createSubasta = async (req, res) => {
 			[coleccionista]
 		);
 	}
-
+	for (const pintura of pinturas) {
+		const response3 = await pool.query(
+			'INSERT INTO "AA_Articulo_Subasta(subasta,)'
+		);
+	}
 	if (response.rows) {
 		return res.json(response.rows);
 	} else {
