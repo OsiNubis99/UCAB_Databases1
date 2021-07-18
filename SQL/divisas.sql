@@ -1,0 +1,18 @@
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Dolar', 1);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Libra', 2);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'franco', 3);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Bolivar', 4);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Euro', 5);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Pesos', 6);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Euro', 7);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Euro', 8);
+INSERT INTO public."AA_Divisa"(nombre, pais)
+	VALUES ( 'Euro', 9);
