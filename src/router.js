@@ -10,6 +10,11 @@ export default new Router({
 	base: process.env.BASE_URL,
 	routes: [
 		{
+			name: "Home",
+			path: "/",
+			component: () => import("./views/home.vue"),
+		},
+		{
 			name: "Crear-subasta",
 			path: "/Crear-subasta",
 			component: () => import("./views/crear-subasta.vue"),
