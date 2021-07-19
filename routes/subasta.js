@@ -6,5 +6,6 @@ router.get("/api/subasta/get-deps", subastaController.get_deps);
 router.post("/api/subasta/put", subastaController.put);
 router.get("/api/subasta/get/:subastaId", subastaController.get);
 router.get("/api/subasta/getAll", subastaController.getAll);
+router.post("/api/subasta/run", subastaController.run);
 
 module.exports = router;

@@ -5,6 +5,8 @@
 			<v-card justify-center>
 				<v-card-title class="text-h5">
 					{{ rest_timer }}
+					<v-spacer></v-spacer>
+					{{ cerrada ? "Cerrada" : "Dinamica" }}
 				</v-card-title>
 				<v-select
 					:items="participantes"
@@ -37,8 +39,8 @@
 						<v-spacer></v-spacer>
 						<v-flex v-if="cerrada">
 							{{
-								participante["pinturas" + pintura.id]
-									? "Tu puja es de: " + participante["pinturas" + pintura.id]
+								participante["pinturas" + index]
+									? "Tu puja es de: " + participante["pinturas" + index]
 									: "No has enviado nada"
 							}}
 						</v-flex>
@@ -79,8 +81,8 @@
 						<v-spacer></v-spacer>
 						<v-flex v-if="cerrada">
 							{{
-								participante["monedas" + moneda.id]
-									? "Tu puja es de: " + participante["monedas" + moneda.id]
+								participante["monedas" + index]
+									? "Tu puja es de: " + participante["monedas" + index]
 									: "No has enviado nada"
 							}}
 						</v-flex>
@@ -158,13 +160,15 @@ export default {
 				this.puja[articulo + this.participante.id + id] = null;
 				this.msg = "";
 				if (this.cerrada) {
-					this.participante[articulo + id] = monto;
-				} else {
-					if (monto > (this[articulo][index].bid || 0)) {
-						this[articulo][index].bid = monto;
-						this[articulo][index].bid_by = this.participante;
-					} else this.msg = "El monto debe ser mayor que el Bid actual";
+					this.participante[articulo + index] = monto;
 				}
+				if (monto > (this[articulo][index].bid || 0)) {
+					this[articulo][index].bid = monto;
+					this[articulo][index].bid_by = this.participante;
+				} else
+					this.msg = this.cerrada
+						? ""
+						: "El monto debe ser mayor que el Bid actual";
 			} else {
 				this.msg =
 					"Este monto no esta permitido: " +
@@ -175,6 +179,61 @@ export default {
 			if (this.running) {
 				clearInterval(this.interval);
 				this.rest_timer = "Terminada";
+				this.running = false;
+				var vendidos = [];
+				var no_vendidos = [];
+				this.monedas.forEach((articulo) => {
+					if (articulo.bid > articulo.por_min_ganancia) {
+						vendidos.push({
+							id: articulo.id,
+							bid: articulo.bid,
+							coleccionista: articulo.bid_by.id,
+						});
+					} else {
+						no_vendidos.push(articulo.id);
+					}
+				});
+				this.pinturas.forEach((articulo) => {
+					if (articulo.bid > articulo.por_min_ganancia) {
+						vendidos.push({
+							id: articulo.id,
+							bid: articulo.bid,
+							coleccionista: articulo.bid_by.id,
+						});
+					} else {
+						no_vendidos.push(articulo.id);
+					}
+				});
+				this.info = { vendidos, no_vendidos };
+				this.axios
+					.post("http://localhost:4000/api/subasta/run", this.info, {
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+					.then((response) => {
+						console.log(response);
+						// if (response.status == 200) {
+						// 	this.msg = "Agregado. Fue enviado un Email a: ";
+						// 	this.cliente.forEach((value) => {
+						// 		this.msg += "<br> " + value[1] + " -> " + value[2];
+						// 	});
+						// 	this.duracion = 0.0;
+						// 	this.inscrip = 0.0;
+						// 	this.inscrip_cliente = 0.0;
+						// 	this.tipo = "";
+						// 	this.moneda = [];
+						// 	this.pintura = [];
+						// 	this.coleccionista = [];
+						// 	this.tienda = [];
+						// 	this.pais = [];
+						// } else {
+						// 	this.msg = response.data;
+						// }
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			} else {
 				this.dialog = false;
 			}

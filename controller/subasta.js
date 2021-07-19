@@ -167,6 +167,10 @@ module.exports = {
 			response.status(500);
 		}
 	},
+	async run(request, response) {
+		console.log(request.body);
+		response.status(200).json("Good");
+	},
 
 	async putSimulacion(request, response) {
 		const {} = request.body;
