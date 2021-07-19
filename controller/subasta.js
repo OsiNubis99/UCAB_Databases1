@@ -36,37 +36,41 @@ module.exports = {
 			pinturas,
 		} = request.body;
 
-		// await pool.query(
-		// 	'INSERT INTO "AA_Subasta_Evento"(fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo) VALUES ($1, $2, $3, $4, $5, $6)',
-		// 	[fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo]
-		// );
+		await pool.query(
+			'INSERT INTO "AA_Subasta_Evento" (fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo) VALUES ($1, $2, $3, $4, $5, $6)',
+			[fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo]
+		);
 
-		// for (const id of tiendas) {
-		// 	console.log(id);
-		// 	parseInt(id);
-		// 	const response1 = await pool.query(
-		// 		'INSERT INTO "AA_Tienda_Subasta" (tienda,subasta) values ($1,(SELECT  id as subasta FROM "AA_Subasta_Evento"ORDER BY id DESC limit 1))',
-		// 		[id]
-		// 	);
-		// }
-		// for (const coleccionista of coleccionistas) {
-		// 	const response2 = await pool.query(
-		// 		'INSERT INTO "AA_Participante"(subasta,coleccionista,fatura) values ((SELECT  id as subasta FROM "AA_Subasta_Evento"ORDER BY id DESC limit 1),$1,null)',
-		// 		[coleccionista]
-		// 	);
-		// }
+		for (const id of tiendas) {
+			console.log(id);
+			parseInt(id);
+			const response1 = await pool.query(
+				'INSERT INTO "AA_Tienda_Subasta" (tienda,subasta) VALUES ($1,(SELECT  id  FROM "AA_Subasta_Evento" ORDER BY id DESC limit 1))',
+				[id]
+			);
+		}
+		for (const coleccionista of coleccionistas) {
+			console.log('colecionistas')
+			const response2 = await pool.query(
+				'INSERT INTO "AA_Participante" (subasta,coleccionista,factura) VALUES ((SELECT id  FROM "AA_Subasta_Evento" ORDER BY id DESC limit 1),$1,null)',
+				[coleccionista]
+			);
+		}
 
 		for (const pintura of pinturas) {
-			const { id, aks } = pintura;
+			const { id, ask } = pintura;
+			console.log('cpinturas')
 			await pool.query(
-				'INSERT INTO "AA_Articulo_Subasta(subasta,por_min_alcanzado,duracion,comprador,reglon_factura,catalogo_pintura) VALUES ((SELECT  id as subasta FROM "AA_Subasta_Evento"ORDER BY id DESC limit 1),$1,0,null,null,$2)',
+				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,reglon_factura,pintura,precio_alcanzado) VALUES ((SELECT  id  FROM "AA_Subasta_Evento" ORDER BY id DESC limit 1),$1,0,null,null,$2,0)',
 				[ask, id]
 			);
 		}
-		for (const monedas of monedas) {
-			const { id, aks } = pintura;
+		
+		for (const moneda of monedas) {
+			const { id, ask } = moneda;
+			console.log('monedas')
 			await pool.query(
-				'INSERT INTO "AA_Articulo_Subasta(subasta,por_min_alcanzado,duracion,comprador,reglon_factura,catalogo_moneda) VALUES ((SELECT  id as subasta FROM "AA_Subasta_Evento"ORDER BY id DESC limit 1),$1,0,null,null,$2)',
+				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,reglon_factura,moneda,precio_alcanzado) VALUES ((SELECT  id FROM "AA_Subasta_Evento" ORDER BY id DESC limit 1),$1,0,null,null,$2,0)',
 				[ask, id]
 			);
 		}
