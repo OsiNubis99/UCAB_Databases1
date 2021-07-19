@@ -137,7 +137,9 @@ INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, ema
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Teresa','Carmen','a1','a2', '00000000000', 'correo@example.com', 7, 7, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Lucia','Isabell','Castro','a2', '00000000000', 'correo@example.com', 8, 8, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('francis','Valeria','Farrera','a2', '00000000000', 'correo@example.com', 9, 9, '2021-07-17');
-
+INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Gabriela','Carmen','fagundez','a2', '00000000000', 'correo@example.com', 7, 7, '2021-07-17');
+INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('stefany','Isabell','Castro','Mendez', '00000000000', 'correo@example.com', 8, 8, '2021-07-17');
+INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('alejandroa','Valeria','Farrera','a2', '00000000000', 'correo@example.com', 9, 9, '2021-07-17');
 CREATE TABLE "AA_Cliente"(
 	id serial PRIMARY KEY,
 	coleccionista integer not null,
@@ -175,15 +177,15 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 	)
 );
 
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('12345','nombre1','2021-07-17','oleo','12cmx35cm',1, 1, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('22345','nombre2','2021-07-17','oleo','12cmx35cm',2, 2, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('32345','nombre3','2021-07-17','oleo','12cmx35cm',3, 3, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('42345','nombre4','2021-07-17','oleo','12cmx35cm',4, 4, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('52345','nombre5','2021-07-17','oleo','12cmx35cm',5, 5, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('62345','nombre6','2021-07-17','oleo','12cmx35cm',6, 6, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('72345','nombre7','2021-07-17','oleo','12cmx35cm',7, 7, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('82345','nombre8','2021-07-17','oleo','12cmx35cm',8, 8, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('92345','nombre9','2021-07-17','oleo','12cmx35cm',9, 9, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('12345','Mona Lisa','2021-07-17','oleo','12cmx35cm',1, 1, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('22345','VirgenCanciller','2021-07-17','oleo','12cmx35cm',2, 2, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('32345','La Maja desnuda','2021-07-17','oleo','12cmx35cm',3, 3, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('42345','Las espigadoras','2021-07-17','oleo','12cmx35cm',4, 4, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('52345','las lecheras','2021-07-17','oleo','12cmx35cm',5, 5, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('62345','Miranda La Carraca','2021-07-17','oleo','12cmx35cm',6, 6, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('72345','La creacion de Adan','2021-07-17','oleo','12cmx35cm',7, 7, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('82345','Almendro en flor','2021-07-17','oleo','12cmx35cm',8, 8, null);
+INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('92345','Ritmo de oto','2021-07-17','oleo','12cmx35cm',9, 9, null);
 
 CREATE TABLE "AA_Catalogo_Moneda" (
 	id serial PRIMARY KEY,
