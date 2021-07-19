@@ -124,9 +124,8 @@
 		</v-layout>
 		<v-layout row wrap align-center>
 			<v-flex xs5>
-				<v-btn @click="generate" color="primary" ml-5>Save</v-btn>
+				<v-btn @click="generate" color="primary" mx-5>Save</v-btn>
 			</v-flex>
-			<span mr-5> La suma de los Ask es igual a: {{ asks }}</span>
 		</v-layout>
 		<v-layout row wrap ma-5>
 			<v-textarea
@@ -193,7 +192,7 @@ export default {
 				this.pintura != [] &&
 				this.tienda != [] &&
 				this.pais != [] &&
-				this.asks > 0
+				this.asks
 			) {
 				await this.axios
 					.post(
@@ -275,12 +274,12 @@ export default {
 			return this.cliente;
 		},
 		asks() {
-			var asks = 0;
+			var asks = true;
 			this.moneda.forEach((element) => {
-				asks += Number.parseFloat(element[3]);
+				asks = asks && Number.parseFloat(element[3]) > 0;
 			});
 			this.pintura.forEach((element) => {
-				asks += Number.parseFloat(element[3]);
+				asks = asks && Number.parseFloat(element[3]) > 0;
 			});
 			return asks;
 		},
