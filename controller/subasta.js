@@ -90,12 +90,13 @@ module.exports = {
 			[request.params.subastaId]
 		);
 		subasta = subasta.rows[0];
-		var tiendas = await pool.query(
-			'SELECT * FROM "AA_Tienda_Subasta" t where t.subasta = $1',
-			[subasta.id]
-		);
-		var pinturas = await pool.query(
-			`SELECT 
+		if (subasta) {
+			var tiendas = await pool.query(
+				'SELECT * FROM "AA_Tienda_Subasta" t where t.subasta = $1',
+				[subasta.id]
+			);
+			var pinturas = await pool.query(
+				`SELECT 
 				a.id,a.por_min_ganancia
 				,a.duracion
 				,p.id as id_pintura
@@ -112,10 +113,10 @@ module.exports = {
 				inner join "AA_Catalogo_Pintura" p on p.id = a.pintura
 				inner join "AA_Artista" t on t.id = p.artista
 			where a.subasta = $1`,
-			[subasta.id]
-		);
-		var monedas = await pool.query(
-			`SELECT 
+				[subasta.id]
+			);
+			var monedas = await pool.query(
+				`SELECT 
 				a.id,a.por_min_ganancia
 				,a.duracion
 				,c.tienda
@@ -140,14 +141,30 @@ module.exports = {
 				inner join "AA_Divisa" d on d.id = m.divisa
 				inner join "AA_Pais" p on p.id = m.creada_en
 			where a.subasta = $1`,
-			[subasta.id]
-		);
-
-		response.status(200).json({
-			subasta,
-			tiendas: tiendas.rows,
-			pinturas: pinturas.rows,
-			monedas: monedas.rows,
-		});
+				[subasta.id]
+			);
+			var participante = await pool.query(
+				`SELECT 
+				p.id as id_participante
+				,c.*
+				,n.nombre as pais_nacio
+				,v.nombre as pais_vive
+			FROM "AA_Participante" p  
+				inner join "AA_Coleccionista" c on c.id = p.coleccionista
+				inner join "AA_Pais" n on n.id = c.nacio
+				inner join "AA_Pais" v on v.id = c.vive
+			where p.subasta = $1`,
+				[subasta.id]
+			);
+			response.status(200).json({
+				subasta,
+				tiendas: tiendas.rows,
+				pinturas: pinturas.rows,
+				monedas: monedas.rows,
+				participante: participante.rows,
+			});
+		} else {
+			response.status(500);
+		}
 	},
 };
