@@ -15,10 +15,15 @@ export default new Router({
 			component: () => import("./views/crear-subasta.vue"),
 		},
 		{
-			name: "Descarga",
-			path: "/Descarga/:hash",
+			name: "Subasta",
+			path: "/Subastas",
+			component: () => import("./views/subastas.vue"),
+		},
+		{
+			name: "Subasta",
+			path: "/Subasta/:id",
 			props: true,
-			component: (hash) => import("./views/Descargas.vue"),
+			component: (id) => import("./views/subasta.vue"),
 		},
 	],
 });

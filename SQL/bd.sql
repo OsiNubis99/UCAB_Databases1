@@ -48,7 +48,7 @@ INSERT INTO "AA_Artista"(nombre, apellido) VALUES ( 'Vicent','Vangogh');
 INSERT INTO "AA_Artista"(nombre, apellido) VALUES ( 'Johannes','Vermeer.');
 
 CREATE Table "AA_Moneda"(
-	nur varchar Primary KEY,
+	id_moneda serial Primary KEY,
 	artista integer not null,
 	FOREIGN KEY (artista) REFERENCES "AA_Artista"(id) ON DELETE CASCADE,
 	divisa integer not null,
@@ -66,15 +66,15 @@ CREATE Table "AA_Moneda"(
 	denominacion VARCHAR (100) not null
 );
 -- TODO
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('12345', 1, 1, 1, 'franco', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('22345', 2, 2, 2, 'Denario', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('32345', 3, 3, 3, 'Quater', 2, 'hierro', 'circular', 'aniversario',10, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('42345', 4, 4, 4, 'puya', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('52345', 5, 5, 5, 'reales', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('62345', 6, 6, 6, 'puya2', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('72345', 7, 7, 7, 'RealesFelipe', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('82345', 8, 8, 8, 'Dolar', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
-INSERT INTO "AA_Moneda"(nur, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('92345', 9, 9, 9, 'Denario2', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10000', 1, 1, 1, 'franco', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10001', 2, 2, 2, 'Denario', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10002', 3, 3, 3, 'Quater', 2, 'hierro', 'circular', 'aniversario',10, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10003', 4, 4, 4, 'puya', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10004', 5, 5, 5, 'reales', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10005', 6, 6, 6, 'puya2', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10006', 7, 7, 7, 'RealesFelipe', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10007', 8, 8, 8, 'Dolar', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
+INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion) VALUES ('10008', 9, 9, 9, 'Denario2', 2, 'hierro', 'circular','aniversario', 9, 'anverso', 'reverso', '10');
 
 CREATE Table "AA_Tienda" (
 	id serial Primary KEY,
@@ -116,7 +116,7 @@ CREATE Table "AA_Contacto_Tienda" (
 CREATE Table "AA_Coleccionista"(
 	id serial Primary KEY,
 	nombre VARCHAR(50) Not null,
-	nombre2 VARCHAR(50) Not null,sql/
+	nombre2 VARCHAR(50) Not null,
 	apellido VARCHAR(50) Not null,
 	apellido2 VARCHAR(50) Not null,
 	telefono VARCHAR(20) not null,
@@ -130,8 +130,8 @@ CREATE Table "AA_Coleccionista"(
 
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Andres','David','Hurtado','fernandez', '4120242258', 'adhurtado.17@est.ucab.edu.ve', 1, 1, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Alexis','Quiros','Fernando','Artigas', '0000000000', 'correo@example.com', 2, 2, '2021-07-17');
-INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Davi','Fernandez','castill','a2', '00000000000', 'correo@example.com', 3, 3, '2021-07-17');
-INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Ana','MAria','a1','a2', '00000000000', 'correo@example.com', 4, 4, '2021-07-17');
+INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Davi','Fernandez','castillo','a2', '00000000000', 'correo@example.com', 3, 3, '2021-07-17');
+INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Ana','Maria','a1','a2', '00000000000', 'correo@example.com', 4, 4, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Maria','Ana','Velazque','a2', '00000000000', 'correo@example.com', 5, 5, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('luis','Fernando','a1','a2', '00000000000', 'correo@example.com', 6, 6, '2021-07-17');
 INSERT INTO "AA_Coleccionista"( nombre,nombre2,apellido,apellido2, telefono, email, nacio, vive, fecha_nacimiento) VALUES ('Teresa','Carmen','a1','a2', '00000000000', 'correo@example.com', 7, 7, '2021-07-17');
@@ -156,9 +156,17 @@ INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (6, 6, '2021-07-17')
 INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (7, 7, '2021-07-17');
 INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (8, 8, '2021-07-17');
 INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (9, 9, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 2, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 3, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 4, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 5, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 6, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 7, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 8, '2021-07-17');
+INSERT INTO "AA_Cliente"(coleccionista,tienda,fecha) VALUES (1, 9, '2021-07-17');
 
 CREATE TABLE "AA_Catalogo_Pintura"(
-	nur varchar Primary KEY,
+	id serial Primary KEY,
 	nombre VARCHAR (50) Not null,
 	fecha VARCHAR (10) NOT NULL,
 	estilo VARCHAR(50) Not null,
@@ -175,20 +183,20 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 	)
 );
 
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('12345','nombre1','2021-07-17','oleo','12cmx35cm',1, 1, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('22345','nombre2','2021-07-17','oleo','12cmx35cm',2, 2, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('32345','nombre3','2021-07-17','oleo','12cmx35cm',3, 3, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('42345','nombre4','2021-07-17','oleo','12cmx35cm',4, 4, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('52345','nombre5','2021-07-17','oleo','12cmx35cm',5, 5, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('62345','nombre6','2021-07-17','oleo','12cmx35cm',6, 6, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('72345','nombre7','2021-07-17','oleo','12cmx35cm',7, 7, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('82345','nombre8','2021-07-17','oleo','12cmx35cm',8, 8, null);
-INSERT INTO "AA_Catalogo_Pintura"(nur,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('92345','nombre9','2021-07-17','oleo','12cmx35cm',9, 9, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10000','nombre1','2021-07-17','oleo','12cmx35cm',1, 1, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10001','nombre2','2021-07-17','oleo','12cmx35cm',2, 2, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10002','nombre3','2021-07-17','oleo','12cmx35cm',3, 3, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10003','nombre4','2021-07-17','oleo','12cmx35cm',4, 4, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10004','nombre5','2021-07-17','oleo','12cmx35cm',5, 5, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10005','nombre6','2021-07-17','oleo','12cmx35cm',6, 6, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10006','nombre7','2021-07-17','oleo','12cmx35cm',7, 7, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10007','nombre8','2021-07-17','oleo','12cmx35cm',8, 8, null);
+INSERT INTO "AA_Catalogo_Pintura"(id,nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('10008','nombre9','2021-07-17','oleo','12cmx35cm',9, 9, null);
 
 CREATE TABLE "AA_Catalogo_Moneda" (
 	id serial PRIMARY KEY,
 	moneda integer,
-	FOREIGN KEY (moneda) REFERENCES "AA_Moneda"(nur),
+	FOREIGN KEY (moneda) REFERENCES "AA_Moneda"(id_moneda),
 	tienda integer default null,
 	FOREIGN KEY(tienda) REFERENCES "AA_Tienda"(id) ON DELETE CASCADE,
 	coleccionista integer default null,
@@ -199,15 +207,15 @@ CREATE TABLE "AA_Catalogo_Moneda" (
 	)
 );
 
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (1, 1, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (2, 2, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (3, 3, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (4, 4, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (5, 5, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (6, 6, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (7, 7, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (8, 8, null);
-INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (9, 9, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10000, 1, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10001, 2, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10002, 3, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10003, 4, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10004, 5, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10005, 6, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10006, 7, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10007, 8, null);
+INSERT INTO "AA_Catalogo_Moneda"(moneda, tienda, coleccionista) VALUES (10008, 9, null);
 
 CREATE TABLE "AA_Subasta_Evento"(
 	id serial PRIMARY KEY,
@@ -248,8 +256,7 @@ CREATE TABLE "AA_Participante" (
 	Subasta integer not null,
 	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id) ON DELETE CASCADE,
 	coleccionista integer not null,
-	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE,
-	factura integer
+	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE
 );
 
 
@@ -284,7 +291,7 @@ CREATE TABLE "AA_Articulo_Subasta"(
 	moneda integer default null,
 	FOREIGN KEY(moneda) REFERENCES "AA_Catalogo_Moneda"(id) ON DELETE CASCADE,
 	pintura integer default null,
-	FOREIGN KEY (pintura) REFERENCES "AA_Catalogo_Pintura"(nur) ON DELETE CASCADE,
+	FOREIGN KEY (pintura) REFERENCES "AA_Catalogo_Pintura"(id) ON DELETE CASCADE,
 	CONSTRAINT coin_owner CHECK (
 		moneda IS NULL
 		OR pintura IS NULL

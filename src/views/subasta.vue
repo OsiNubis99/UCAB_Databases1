@@ -1,127 +1,65 @@
 <template>
-	<v-layout
-		wrap
-		fill-height
-		align-center
-		justify-center
-		class="secondary lighten-1"
-	>
-		<v-flex xs8>
-			<v-card class="pa-5">
-				<h1 class="text-center">Bienvenido al Apartado de Descargas</h1>
-				<v-form v-model="valid" ref="form" lazy-validation>
-					<p>
-						El archivo "{{ nombreArchivo }}" sera enviado a la bandeja de su
-						Correo
-					</p>
-					<p>Por favor indique su Correo Electrónico</p>
-
-					<v-text-field
-						label="Nombre y Apellido"
-						v-model="nombre"
-						required
-					></v-text-field>
-
-					<v-text-field
-						label="Correo Electrónico"
-						v-model="correo"
-						:rules="emailRules"
-						required
-					></v-text-field>
-
-					<v-btn color="primary" class="mt-5" @click="enviarCorreo"
-						>Enviar</v-btn
-					>
-				</v-form>
-			</v-card>
-		</v-flex>
-	</v-layout>
+	<v-container fluid ma-3>
+		<v-layout row wrap align-center justify-center>
+			<v-flex xs9 justify-center align-center>
+				<h2>Pinturas</h2>
+				<!-- {{ pinturas }} -->
+				<v-expansion-panels accordion>
+					<v-expansion-panel v-for="(pintura, i) in pinturas" :key="i">
+						<v-expansion-panel-header v-text="pintura.nombre" />
+						<v-expansion-panel-content>
+							NUR {{ pintura.id_pintura }}
+							<br />
+							{{ pintura.artista_nombre }} {{ pintura.artista_apellido }},
+							{{ pintura.fecha }}
+							<br />
+							{{ pintura.estilo }}
+							<br />
+							{{ pintura.size }}
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+				</v-expansion-panels>
+				<h2>Monedas</h2>
+				<v-expansion-panels accordion>
+					<v-expansion-panel v-for="(moneda, i) in monedas" :key="i">
+						<v-expansion-panel-header v-text="moneda.nombre" />
+						<v-expansion-panel-content>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+							eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+							enim ad minim veniam, quis nostrud exercitation ullamco laboris
+							nisi ut aliquip ex ea commodo consequat.
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+				</v-expansion-panels>
+				<!-- {{ info }} -->
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>
 export default {
 	data: () => ({
-		nombreArchivo: "",
-		link: "",
-		valid: true,
-		nombre: "",
-		correo: "",
+		info: {},
+		subasta: {},
+		clientes: [],
+		pinturas: [],
+		monedas: [],
 	}),
-
 	created() {
-		this.cargando = true;
 		this.axios
-			.get("https://www.ofimania.com/API/Descarga/" + this.hash)
+			.get("http://localhost:4000/api/subasta/get/" + this.id)
 			.then((response) => {
-				this.nombreArchivo = response.data.nombre;
-				this.link = response.data.archivo;
+				this.info = response.data;
+				this.subasta = response.data.subasta;
+				this.clientes = response.data.clientes;
+				this.pinturas = response.data.pinturas;
+				this.monedas = response.data.monedas;
 			})
 			.catch((error) => {
-				this.cargando = false;
-				this.$store.state.alerta = {
-					estado: true,
-					tipo: "error",
-					titulo: "Error de Conexion",
-					info: "Verifique su Conexion a Internet" + error,
-				};
+				console.log("Error " + error);
 			});
 	},
-
-	methods: {
-		enviarCorreo() {
-			this.$store.state.alerta = {
-				estado: true,
-				tipo: "Bien",
-				titulo: "Enviando Archivo",
-			};
-			let datos = {
-				correo: this.correo,
-				nombre: this.nombre,
-				nombreArchivo: this.nombreArchivo,
-				link: this.link,
-			};
-			var qs = require("qs");
-			this.axios
-				.post(
-					"https://www.ofimania.com/API/Formulario/Descarga/",
-					qs.stringify(datos),
-					{
-						headers: {
-							"Content-Type": "application/x-www-form-urlencoded",
-						},
-					}
-				)
-				.then((response) => {
-					this.$store.state.alerta.estado = false;
-					if (response.data.error != null) {
-						this.$store.state.alerta = {
-							estado: true,
-							tipo: "error",
-							titulo: "Error",
-							info: "Verifique su Conexion a Internet",
-						};
-					} else {
-						this.$store.state.alerta = {
-							estado: true,
-							tipo: "bien",
-							titulo: "Correo enviado!",
-							info:
-								"Verifique su carpeta de Span si no encuentra nuestro correo.",
-						};
-					}
-				})
-				.catch((error) => {
-					this.$store.state.alerta.estado = false;
-					this.$store.state.alerta = {
-						estado: true,
-						tipo: "error",
-						titulo: "Error de Conexion",
-						info: error + "Verifique su Conexion a Internet",
-					};
-				});
-		},
-	},
-
 	props: {
 		id: {
 			type: String,

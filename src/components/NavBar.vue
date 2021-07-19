@@ -11,7 +11,7 @@
 			>
 				Crear Subasta
 			</v-btn>
-			<v-btn active-class="secondary--text" color="white" text to="/Subasta">
+			<v-btn active-class="secondary--text" color="white" text to="/Subastas">
 				Subasta
 			</v-btn>
 		</v-toolbar-items>
