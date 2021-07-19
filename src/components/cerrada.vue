@@ -187,7 +187,8 @@ export default {
 						vendidos.push({
 							id: articulo.id,
 							bid: articulo.bid,
-							coleccionista: articulo.bid_by.id,
+							id_coleccionista: articulo.bid_by.id,
+							id_participante: articulo.bid_by.id_participante,
 						});
 					} else {
 						no_vendidos.push(articulo.id);
@@ -198,7 +199,8 @@ export default {
 						vendidos.push({
 							id: articulo.id,
 							bid: articulo.bid,
-							coleccionista: articulo.bid_by.id,
+							id_coleccionista: articulo.bid_by.id,
+							id_participante: articulo.bid_by.id_participante,
 						});
 					} else {
 						no_vendidos.push(articulo.id);
