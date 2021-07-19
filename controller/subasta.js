@@ -169,8 +169,8 @@ module.exports = {
 	},
 
 	async putSimulacion(request, response) {
-		const {}= request.body;
-		
+		const {} = request.body;
+
 		await pool.query(
 			` UPDATE "AA_Articulo_Subasta" comprador = ${coleccionista}, precio_alcanzado = ${precio_alcanzado}, duracion= ${duracion} WHERE id = ${id_articulo}
 			AND UPDATE "AA_Catalogo_Pintura" coleccionista= ${coleccionista} ,tienda= null WHERE id = ${id_pintura},

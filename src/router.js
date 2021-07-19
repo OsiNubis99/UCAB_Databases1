@@ -15,7 +15,7 @@ export default new Router({
 			component: () => import("./views/crear-subasta.vue"),
 		},
 		{
-			name: "Subasta",
+			name: "Subastas",
 			path: "/Subastas",
 			component: () => import("./views/subastas.vue"),
 		},

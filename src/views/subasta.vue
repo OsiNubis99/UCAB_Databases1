@@ -1,5 +1,5 @@
 <template>
-	<v-container fluid ma-3>
+	<v-container fluid ma-3 v-if="subasta">
 		<v-layout row wrap align-center justify-center>
 			<v-flex xs3>
 				<v-card>
@@ -10,41 +10,26 @@
 					</v-card-title>
 					<hr />
 					<v-card-text>
-						Duración: {{ subasta.duracion }}
+						Duración: {{ subasta.duracion }}min
 						<br />
 						Inscripción: {{ subasta.costo_inscrip }}
 						<br />
 						participantes: {{ subasta.costo_inscrip_cliente }}
 						<br />
-						Tipo: {{ subasta.tipo }}
+						Tipo: '{{ subasta.tipo }}'
 						<br />
 						Lugar: {{ subasta.pais }}
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-dialog v-model="dialog" persistent max-width="290">
-							<template v-slot:activator="{ on, attrs }">
-								<v-btn color="primary" dark v-bind="attrs" v-on="on">
-									Run
-								</v-btn>
-							</template>
-							<v-card>
-								<v-card-title class="text-h5">
-									Prueba de ejecución
-								</v-card-title>
-								<v-card-text
-									>Let Google help apps determine location. This means sending
-									anonymous location data to Google, even when no apps are
-									running.</v-card-text
-								>
-								<v-card-actions>
-									<v-spacer></v-spacer>
-									<v-btn color="green darken-1" text @click="dialog = false">
-										Terminar
-									</v-btn>
-								</v-card-actions>
-							</v-card>
-						</v-dialog>
+						<Cerrada
+							:id="subasta.id"
+							:duracion="subasta.duracion"
+							:cerrada="subasta.tipo == 'Cerrada'"
+							:monedas="monedas"
+							:pinturas="pinturas"
+							:participantes="participantes"
+						/>
 						<v-spacer></v-spacer>
 					</v-card-actions>
 				</v-card>
@@ -110,18 +95,19 @@
 					:headers="headers"
 					:items="participantes"
 					:items-per-page="15"
-				></v-data-table>
+				>
+				</v-data-table>
 			</v-flex>
 		</v-layout>
 	</v-container>
 </template>
 
 <script>
+import Cerrada from "../components/cerrada";
 export default {
 	data: () => ({
-		dialog: false,
 		info: {},
-		subasta: {},
+		subasta: null,
 		participantes: [],
 		pinturas: [],
 		monedas: [],
@@ -151,6 +137,9 @@ export default {
 			.catch((error) => {
 				console.log("Error " + error);
 			});
+	},
+	components: {
+		Cerrada,
 	},
 	props: {
 		id: {
