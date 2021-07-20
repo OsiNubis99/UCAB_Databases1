@@ -187,7 +187,7 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 		tienda IS NULL
 		OR coleccionista IS NULL
 	),
-	foto VARCHAR(100) default null
+	foto VARCHAR default null
 );
 
 INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Leonardo_da_Vinci_-_Mona_Lisa_%28Louvre%2C_Paris%29.jpg/800px-Leonardo_da_Vinci_-_Mona_Lisa_%28Louvre%2C_Paris%29.jpg');
