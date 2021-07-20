@@ -67,7 +67,7 @@ CREATE Table "AA_Moneda"(
 	foto VARCHAR(100) default null,
 	canto VARCHAR(100) default null
 );
--- TODO
+
 INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion,canto) VALUES ('10000', 1, 1, 1, 'franco', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10','estriado');
 INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion,canto) VALUES ('10001', 2, 2, 2, 'Denario', 2, 'hierro', 'circular','aniversario', 10, 'anverso', 'reverso', '10','estriado');
 INSERT INTO "AA_Moneda"(id_moneda, artista, divisa, creada_en, nombre, tamano, metal, forma, motivo, peso, anverso, reverso, denominacion,canto) VALUES ('10002', 3, 3, 3, 'Quater', 2, 'hierro', 'circular', 'aniversario',10, 'anverso', 'reverso', '10','estriado');
@@ -113,7 +113,6 @@ CREATE Table "AA_Contacto_Tienda" (
 	apellido VARCHAR (50) not null
 );
 
--- TODO
 
 CREATE Table "AA_Coleccionista"(
 	id serial Primary KEY,
@@ -189,15 +188,15 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 	foto VARCHAR(100) default null
 );
 
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('Mona Lisa','2021','oleo','12cmx35cm',1, 1, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('VirgenCanciller','2021','oleo','12cmx35cm',2, 2, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('La Maja desnuda','2021','oleo','12cmx35cm',3, 3, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('Las espigadoras','2021','oleo','12cmx35cm',4, 4, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('las lecheras','2021','oleo','12cmx35cm',5, 5, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('Miranda La Carraca','2021','oleo','12cmx35cm',6, 6, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('La creacion de Adan','2021','oleo','12cmx35cm',7, 7, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('Almendro en flor','2021','oleo','12cmx35cm',8, 8, null);
-INSERT INTO "AA_Catalogo_Pintura"(nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES ('Ritmo de oto','2021','oleo','12cmx35cm',9, 9, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10002,'VirgenCanciller','2021','oleo','12cmx35cm',2, 2, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10003,'La Maja desnuda','2021','oleo','12cmx35cm',3, 3, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10004,'Las espigadoras','2021','oleo','12cmx35cm',4, 4, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10005,'las lecheras','2021','oleo','12cmx35cm',5, 5, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10006,'Miranda La Carraca','2021','oleo','12cmx35cm',6, 6, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10007,'La creacion de Adan','2021','oleo','12cmx35cm',7, 7, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10008,'Almendro en flor','2021','oleo','12cmx35cm',8, 8, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10009,'Ritmo de oto','2021','oleo','12cmx35cm',9, 9, null);
 
 CREATE TABLE "AA_Catalogo_Moneda" (
 	id serial PRIMARY KEY,
@@ -228,26 +227,25 @@ CREATE TABLE "AA_Subasta_Evento"(
 	fecha DATE NOT null,
 	duracion DECIMAL NOT NULL,
 	costo_inscrip DECIMAL,
-	Costo_inscrip_cliente DECIMAL NOT NULL,
+	costo_inscrip_cliente DECIMAL NOT NULL,
 	pais_lugar integer,
 	FOREIGN KEY (pais_lugar) REFERENCES "AA_Pais"(id),
 	tipo VARCHAR(15) not NULL CONSTRAINT subasta_type CHECK (
 		tipo = 'Cerrada'
 		OR tipo = 'Dinamica'
-	)
+	),
 	disponible Boolean not null
 );
 
-
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,4,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,5,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada',True);
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,4,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',2,100,50,1,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',3,100,50,2,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',4,100,50,3,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',5,100,50,4,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',5,100,50,5,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',2,100,50,1,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',3,100,50,2,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',4,100,50,3,'Cerrada',True);
+-- insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip,costo_inscrip_cliente,pais_lugar,tipo,disponible) values ('2021-07-17',2,100,50,4,'Cerrada',True);
 
 CREATE TABLE "AA_Tienda_Subasta"(
 	id serial PRIMARY KEY,
@@ -257,16 +255,15 @@ CREATE TABLE "AA_Tienda_Subasta"(
 	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id) ON DELETE CASCADE
 );
 
-
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (1,2);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (2,3);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (3,4);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (4,5);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (6,6);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (7,7);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (8,8);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (9,9);
-insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (1,1);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (1,2);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (2,3);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (3,4);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (4,5);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (6,6);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (7,7);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (8,8);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (9,9);
+-- insert into "AA_Tienda_Subasta" (tienda,subasta) VALUES (1,1);
 
 
 CREATE TABLE "AA_Costo_Envio"(
@@ -289,94 +286,93 @@ CREATE TABLE "AA_Participante" (
 	coleccionista integer not null,
 	FOREIGN KEY (coleccionista) REFERENCES "AA_Coleccionista"(id) ON DELETE CASCADE
 );
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (1,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (1,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (2,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (2,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (3,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (3,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (4,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (4,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (5,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (5,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (6,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (6,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (7,9);
-
-
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,5);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,4);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,6);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,7);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,8);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (8,9);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (7,9);
 
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (9,1);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (9,2);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (9,3);
-insert into "AA_Participante" (subasta,coleccionista) VALUES (9,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,4);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,6);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,7);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,8);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (8,9);
 
-insert into "AA_Participante" (subasta,coleccionista) VALUES (9,9);
+
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (9,1);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (9,2);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (9,3);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (9,5);
+-- insert into "AA_Participante" (subasta,coleccionista) VALUES (9,9);
 
 CREATE TABLE "AA_Factura"(
 	id serial PRIMARY KEY,
@@ -385,15 +381,6 @@ CREATE TABLE "AA_Factura"(
 	participante integer not null,
 	FOREIGN KEY (participante) REFERENCES "AA_Participante"(id) ON DELETE CASCADE
 );
-
-
-CREATE TABLE "AA_Reglon_Factura"(
-	id serial PRIMARY KEY,
-	precio DECIMAL,
-	factura integer not null,
-	FOREIGN KEY (factura) REFERENCES "AA_Factura"(id)
-);
-
 
 CREATE TABLE "AA_Articulo_Subasta"(
 	id SERIAL PRIMARY KEY,
@@ -404,8 +391,6 @@ CREATE TABLE "AA_Articulo_Subasta"(
 	FOREIGN KEY (subasta) REFERENCES "AA_Subasta_Evento"(id),
 	comprador integer,
 	FOREIGN KEY (comprador) REFERENCES "AA_Participante"(id),
-	reglon_factura integer,
-	FOREIGN KEY (reglon_factura) REFERENCES "AA_Reglon_Factura"(id),
 	moneda integer default null,
 	FOREIGN KEY(moneda) REFERENCES "AA_Catalogo_Moneda"(id) ON DELETE CASCADE,
 	pintura integer default null,
@@ -416,13 +401,21 @@ CREATE TABLE "AA_Articulo_Subasta"(
 	)
 );
 
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura)  VALUES (10,0,2,2,null,null,1);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (5,0,2,3,null,null,2);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,4,null,null,3);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,5,null,null,4);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,6,null,null,6);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,7,null,null,7);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,8,null,null,8);
-insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,reglon_factura,pintura) VALUES (23,0,3,9,null,null,9);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura)  VALUES (10,0,2,2,null,1);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (5,0,2,3,null,2);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,4,null,3);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,5,null,4);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,6,null,6);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,7,null,7);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,8,null,8);
+-- insert into "AA_Articulo_Subasta" (por_min_ganancia,precio_alcanzado,duracion,subasta,comprador,pintura) VALUES (23,0,3,9,null,9);
 
+CREATE TABLE "AA_Reglon_Factura"(
+	id serial PRIMARY KEY,
+	precio DECIMAL,
+	factura integer not null,
+	FOREIGN KEY (factura) REFERENCES "AA_Factura"(id),
+	articulo integer,
+	FOREIGN KEY (articulo) REFERENCES  "AA_Articulo_Subasta"(id)
+);
 

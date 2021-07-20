@@ -25,7 +25,7 @@
 						<Cerrada
 							:id="subasta.id"
 							:duracion="subasta.duracion"
-							:cerrada="subasta.tipo == 'Cerrada'"
+							:cerrada="subasta.tipo != 'Cerrada'"
 							:monedas="monedas"
 							:pinturas="pinturas"
 							:participantes="participantes"

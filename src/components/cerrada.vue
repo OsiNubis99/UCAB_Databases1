@@ -9,6 +9,7 @@
 					{{ cerrada ? "Cerrada" : "Dinamica" }}
 				</v-card-title>
 				<v-select
+					v-if="running"
 					:items="participantes"
 					label="Participante"
 					v-model="participante"
@@ -24,7 +25,7 @@
 				</v-select>
 				<h4 class="ml-12">{{ msg }}</h4>
 
-				<v-container pa-5 v-if="participante">
+				<v-container pa-5 v-if="participante && running">
 					<h2>Pinturas:</h2>
 					<v-layout
 						align-center
@@ -110,6 +111,29 @@
 						</v-flex>
 					</v-layout>
 				</v-container>
+				<v-container pa-5 v-if="!running && info">
+					<h4>Los articulos Vendidos fueron</h4>
+					<v-data-table
+						:headers="headers"
+						:items="info.vendidos"
+						:items-per-page="15"
+						class="elevation-1"
+					>
+					</v-data-table>
+					<v-list dense
+						><h4 class="ma-3">Los Articulos No Vendidos Fueron</h4>
+						<v-list-item-group disabled>
+							<v-list-item v-for="(art, index) in no_vendidos()" :key="index">
+								<v-list-item-icon>
+									<v-icon>mdi-close-circle</v-icon>
+								</v-list-item-icon>
+								<v-list-item-content>
+									<v-list-item-title v-text="art.nombre"></v-list-item-title>
+								</v-list-item-content>
+							</v-list-item>
+						</v-list-item-group>
+					</v-list>
+				</v-container>
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="red darken-1" text @click="finish()">
@@ -124,19 +148,46 @@
 <script>
 export default {
 	data: () => ({
+		headers: [
+			{
+				text: "Nombre del producto",
+				value: "articulo_nombre",
+				align: "center",
+			},
+			{ text: "Vendido A", value: "coleccionista_nombre", align: "center" },
+			{ text: "$", value: "bid", align: "center" },
+		],
 		rest_timer: "0h 0m 0s",
 		msg: "",
 		puja: {},
 		running: false,
 		interval: null,
 		dialog: false,
-		info: {},
+		info: null,
 		subasta: null,
 		participante: null,
 	}),
 	methods: {
+		no_vendidos() {
+			var articulos = [];
+			return articulos
+				.concat(
+					this.monedas.map((articulo) => {
+						return { id: articulo.id, nombre: articulo.nombre };
+					}),
+					this.pinturas.map((articulo) => {
+						return { id: articulo.id, nombre: articulo.nombre };
+					})
+				)
+				.filter((articulo) => {
+					var ok = false;
+					this.info.no_vendidos.forEach((id) => {
+						ok = articulo.id == id || ok;
+					});
+					return ok;
+				});
+		},
 		run() {
-			this.dialog = true;
 			var max_time = new Date().getTime() + this.duracion * (1000 * 60);
 			this.interval = setInterval(() => {
 				this.running = true;
@@ -151,14 +202,15 @@ export default {
 					this.finish();
 				}
 			}, 1000);
+			this.dialog = true;
 		},
 		pujar(articulo, id, index) {
 			var monto = Number.parseFloat(
 				this.puja[articulo + this.participante.id + id]
 			);
 			if (monto > 0) {
-				this.puja[articulo + this.participante.id + id] = null;
 				this.msg = "";
+				this.puja[articulo + this.participante.id + id] = null;
 				if (this.cerrada) {
 					this.participante[articulo + index] = monto;
 				}
@@ -176,6 +228,7 @@ export default {
 			}
 		},
 		finish() {
+			this.msg = "";
 			if (this.running) {
 				clearInterval(this.interval);
 				this.rest_timer = "Terminada";
@@ -187,8 +240,12 @@ export default {
 						vendidos.push({
 							id: articulo.id,
 							bid: articulo.bid,
+							moneda: true,
+							id_moneda: articulo.id_moneda,
 							id_coleccionista: articulo.bid_by.id,
 							id_participante: articulo.bid_by.id_participante,
+							coleccionista_nombre: articulo.bid_by.nombre,
+							articulo_nombre: articulo.nombre,
 						});
 					} else {
 						no_vendidos.push(articulo.id);
@@ -199,14 +256,18 @@ export default {
 						vendidos.push({
 							id: articulo.id,
 							bid: articulo.bid,
+							pintura: true,
+							id_pintura: articulo.id_pintura,
 							id_coleccionista: articulo.bid_by.id,
 							id_participante: articulo.bid_by.id_participante,
+							coleccionista_nombre: articulo.bid_by.nombre,
+							articulo_nombre: articulo.nombre,
 						});
 					} else {
 						no_vendidos.push(articulo.id);
 					}
 				});
-				this.info = { vendidos, no_vendidos };
+				this.info = { vendidos, no_vendidos, subasta_id: this.id };
 				this.axios
 					.post("http://localhost:4000/api/subasta/run", this.info, {
 						headers: {
@@ -214,30 +275,19 @@ export default {
 						},
 					})
 					.then((response) => {
-						console.log(response);
-						// if (response.status == 200) {
-						// 	this.msg = "Agregado. Fue enviado un Email a: ";
-						// 	this.cliente.forEach((value) => {
-						// 		this.msg += "<br> " + value[1] + " -> " + value[2];
-						// 	});
-						// 	this.duracion = 0.0;
-						// 	this.inscrip = 0.0;
-						// 	this.inscrip_cliente = 0.0;
-						// 	this.tipo = "";
-						// 	this.moneda = [];
-						// 	this.pintura = [];
-						// 	this.coleccionista = [];
-						// 	this.tienda = [];
-						// 	this.pais = [];
-						// } else {
-						// 	this.msg = response.data;
-						// }
+						if (response.status == 200) {
+							this.msg = "La subasta termino satisfactoriamente";
+						} else {
+							this.msg = response.data;
+							this.info = null;
+						}
 					})
 					.catch((error) => {
 						console.log(error);
 					});
 			} else {
 				this.dialog = false;
+				this.$router.push("/Subastas");
 			}
 		},
 	},

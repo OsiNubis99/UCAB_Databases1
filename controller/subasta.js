@@ -36,7 +36,7 @@ module.exports = {
 			pinturas,
 		} = request.body;
 		subasta = await pool.query(
-			'INSERT INTO "AA_Subasta_Evento" (fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+			'INSERT INTO "AA_Subasta_Evento" (fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo, disponible) VALUES ($1, $2, $3, $4, $5, $6, true) RETURNING id',
 			[fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo]
 		);
 		console.log(subasta.rows[0].id);
@@ -55,14 +55,14 @@ module.exports = {
 		for (var pintura of pinturas) {
 			var { id, ask } = pintura;
 			await pool.query(
-				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,reglon_factura,pintura) VALUES ($3,$1,$4,null,null,$2)',
+				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,pintura) VALUES ($3,$1,$4,null,$2)',
 				[ask, id, subasta.rows[0].id, duracion]
 			);
 		}
 		for (var moneda of monedas) {
 			var { id, ask } = moneda;
 			await pool.query(
-				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,reglon_factura,moneda) VALUES ($3,$1,0,null,null,$2)',
+				'INSERT INTO "AA_Articulo_Subasta" (subasta,por_min_ganancia,duracion,comprador,moneda) VALUES ($3,$1,0,null,$2)',
 				[ask, id, subasta.rows[0].id]
 			);
 		}
@@ -167,57 +167,69 @@ module.exports = {
 			response.status(500);
 		}
 	},
-
-
+	async createFactura(id) {
+		let result = await pool.query(
+			`INSERT INTO "AA_Factura" (total, fecha, participante)
+				VALUES (0,NOW(),$1) RETURNING id ;`,
+			[id]
+		);
+		return result.rows[0];
+	},
 	async run(request, response) {
-		const {vendidos} = request.body;
-		console.log(vendidos)
-		for (const venta of vendidos){
-			let total_factura=0;
-			for(const total of vendidos){
-				
-				if (venta.id_participante === total.id_participante){
-					total_factura= total_factura + total.bid
+		var { vendidos, no_vendidos, subasta_id } = request.body;
+		let factura_id = null;
+		coleccionistas = [];
+		vendidos.forEach(async (item) => {
+			if (!coleccionistas[item.id_participante])
+				coleccionistas[item.id_participante] = [];
+			coleccionistas[item.id_participante].push({
+				precio: item.bid,
+				id: item.id,
+				moneda: item.moneda,
+				pintura: item.pintura,
+				id_coleccionista: item.id_coleccionista,
+				id_moneda: item.id_moneda,
+				id_pintura: item.id_pintura,
+			});
+		});
+		await pool.query(
+			`UPDATE "AA_Subasta_Evento" set disponible = false where id = $1`,
+			[subasta_id]
+		);
+		coleccionistas.forEach(async (coleccionista, index) => {
+			var result = await pool.query(
+				`INSERT INTO "AA_Factura" (total, fecha, participante)
+					VALUES (0,NOW(),$1) RETURNING id ;`,
+				[index]
+			);
+			factura_id = result.rows[0].id;
+			await coleccionista.forEach(async (item) => {
+				await pool.query(
+					`INSERT INTO "AA_Reglon_Factura" (precio,factura,articulo)
+						VALUES ($1,$2,$3);`,
+					[item.precio, factura_id, item.id]
+				);
+				await pool.query(
+					`
+					UPDATE "AA_Factura" SET total = total + $1
+						where id = $2;
+					`,
+					[item.precio, factura_id]
+				);
+				if (item.moneda) {
+					await pool.query(
+						`UPDATE "AA_Catalogo_Moneda" set tienda = null, coleccionista = $1 where moneda = $2`,
+						[item.id_coleccionista, item.id_moneda]
+					);
 				}
-				console.log(total_factura)
-			}
-			console.log(total_factura)
-			console.log(venta.id)
-			/* const response = await pool.query(
-			` UPDATE "AA_Articulo_Subasta" comprador = ${venta.id_participante}, precio_alcanzado = ${venta.bid}, duracion= ${duracion} WHERE id = ${venta.id}`)
-			*/
-			const articulo = await pool.query( `SELECT  * FROM "AA_Articulo_Subasta" WHERE id = ${venta.id}  `)
-			const catalogo = articulo.rows[0];
-			console.log(articulo.rows)
-				
-			if (catalogo.moneda === null){
-				console.log(catalogo.pintura)
-				/* const response2 = await pool.query(
-					`UPDATE "AA_Catalogo_Pintura" SET coleccionista= ${venta.id_coleccionista} ,tienda= null WHERE id =  ${catalogo.pintura}`
-				) */
-			}else{
-				console.log(catalogo.moneda)
-				/* const response3 = await pool.query(
-					`UPDATE "AA_Catalogo_Moneda" SET coleccionista= ${venta.id_coleccionista} ,tienda= null WHERE id =  ${catalogo.moneda}`
-				) */
-			}
-
-
-
-			const response3 =await pool.query(`INSERT INTO "AA_Facutura" (total,fecha,participante) VALUES (0,CURRENT_DATE,${id_participante}) RETURNING id`)
-			const id_factura= response3.rows.id;
-			const response4 = await pool.query(`INSERT INTO "AA_Reglon_Factura" (precio,factura) VALUES (${venta.bid},${id_factura})  `)
-			const response5= await pool.query('')
-		
-		}
-
-
-			
-			
-			/*
-			const response2 = await pool.query(
-				`UPDATE "AA_Catalogo_Pintura" coleccionista= ${coleccionista} ,tienda= null WHERE id =  ${id_pintura}`
-			) 
-		);*/
+				if (item.pintura) {
+					await pool.query(
+						`UPDATE "AA_Catalogo_Pintura" set tienda = null, coleccionista = $1 where id = $2`,
+						[item.id_coleccionista, item.id_pintura]
+					);
+				}
+			});
+		});
+		response.status(200);
 	},
 };
