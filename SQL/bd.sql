@@ -235,18 +235,19 @@ CREATE TABLE "AA_Subasta_Evento"(
 		tipo = 'Cerrada'
 		OR tipo = 'Dinamica'
 	)
+	disponible Boolean not null
 );
 
 
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,4,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,5,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada');
-insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,4,'Cerrada');
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,4,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',5,100,50,5,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,1,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',3,100,50,2,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',4,100,50,3,'Cerrada',True);
+insert into "AA_Subasta_Evento" ( fecha,duracion,costo_inscrip, costo_inscrip_cliente,pais_lugar,tipo) values ('2021-07-17',2,100,50,4,'Cerrada',True);
 
 CREATE TABLE "AA_Tienda_Subasta"(
 	id serial PRIMARY KEY,

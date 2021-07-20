@@ -167,25 +167,57 @@ module.exports = {
 			response.status(500);
 		}
 	},
+
+
 	async run(request, response) {
-		console.log(request.body);
-		response.status(200).json("Good");
-	},
-
-	async putSimulacion(request, response) {
-		const {} = request.body;
-
-		await pool.query(
-			` UPDATE "AA_Articulo_Subasta" comprador = ${coleccionista}, precio_alcanzado = ${precio_alcanzado}, duracion= ${duracion} WHERE id = ${id_articulo}
-			AND UPDATE "AA_Catalogo_Pintura" coleccionista= ${coleccionista} ,tienda= null WHERE id = ${id_pintura},
-
-			`,
-			(error, results) => {
-				if (error) {
-					throw error;
+		const {vendidos} = request.body;
+		console.log(vendidos)
+		for (const venta of vendidos){
+			let total_factura=0;
+			for(const total of vendidos){
+				
+				if (venta.id_participante === total.id_participante){
+					total_factura= total_factura + total.bid
 				}
-				response.status(200).json(results.rows);
+				console.log(total_factura)
 			}
-		);
+			console.log(total_factura)
+			console.log(venta.id)
+			/* const response = await pool.query(
+			` UPDATE "AA_Articulo_Subasta" comprador = ${venta.id_participante}, precio_alcanzado = ${venta.bid}, duracion= ${duracion} WHERE id = ${venta.id}`)
+			*/
+			const articulo = await pool.query( `SELECT  * FROM "AA_Articulo_Subasta" WHERE id = ${venta.id}  `)
+			const catalogo = articulo.rows[0];
+			console.log(articulo.rows)
+				
+			if (catalogo.moneda === null){
+				console.log(catalogo.pintura)
+				/* const response2 = await pool.query(
+					`UPDATE "AA_Catalogo_Pintura" SET coleccionista= ${venta.id_coleccionista} ,tienda= null WHERE id =  ${catalogo.pintura}`
+				) */
+			}else{
+				console.log(catalogo.moneda)
+				/* const response3 = await pool.query(
+					`UPDATE "AA_Catalogo_Moneda" SET coleccionista= ${venta.id_coleccionista} ,tienda= null WHERE id =  ${catalogo.moneda}`
+				) */
+			}
+
+
+
+			const response3 =await pool.query(`INSERT INTO "AA_Facutura" (total,fecha,participante) VALUES (0,CURRENT_DATE,${id_participante}) RETURNING id`)
+			const id_factura= response3.rows.id;
+			const response4 = await pool.query(`INSERT INTO "AA_Reglon_Factura" (precio,factura) VALUES (${venta.bid},${id_factura})  `)
+			const response5= await pool.query('')
+		
+		}
+
+
+			
+			
+			/*
+			const response2 = await pool.query(
+				`UPDATE "AA_Catalogo_Pintura" coleccionista= ${coleccionista} ,tienda= null WHERE id =  ${id_pintura}`
+			) 
+		);*/
 	},
 };
