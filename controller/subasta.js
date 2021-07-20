@@ -121,6 +121,7 @@ module.exports = {
 				,p.fecha
 				,p.estilo
 				,p.size
+				,p.foto
 				,p.artista
 				,p.tienda
 				,p.coleccionista

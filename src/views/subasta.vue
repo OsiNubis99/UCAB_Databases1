@@ -63,7 +63,20 @@
 											pintura.foto ||
 												'https://vignette.wikia.nocookie.net/videojuego/images/9/9c/Imagen_no_disponible-0.png'
 										"
-									></v-img>
+									>
+										<template v-slot:placeholder>
+											<v-row
+												class="fill-height ma-0"
+												align="center"
+												justify="center"
+											>
+												<v-progress-circular
+													indeterminate
+													color="black lighten-5"
+												></v-progress-circular>
+											</v-row>
+										</template>
+									</v-img>
 								</v-flex>
 							</v-layout>
 						</v-expansion-panel-content>
@@ -97,7 +110,20 @@
 											moneda.foto ||
 												'https://vignette.wikia.nocookie.net/videojuego/images/9/9c/Imagen_no_disponible-0.png'
 										"
-									></v-img>
+									>
+										<template v-slot:placeholder>
+											<v-row
+												class="fill-height ma-0"
+												align="center"
+												justify="center"
+											>
+												<v-progress-circular
+													indeterminate
+													color="grey lighten-5"
+												></v-progress-circular>
+											</v-row>
+										</template>
+									</v-img>
 								</v-flex>
 							</v-layout>
 						</v-expansion-panel-content>

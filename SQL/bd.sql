@@ -190,8 +190,8 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 	foto VARCHAR default null
 );
 
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, null, 'https://es.wikipedia.org/wiki/La_Gioconda#/media/Archivo:Leonardo_da_Vinci_-_Mona_Lisa_(Louvre,_Paris).jpg');
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10002,'VirgenCanciller','2021','oleo','12cmx35cm',2, 2, null, 'https://es.wikipedia.org/wiki/Virgen_del_canciller_Rolin#/media/Archivo:Jan_van_Eyck_070.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, null, 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Leonardo_da_Vinci_-_Mona_Lisa_%28Louvre%2C_Paris%29.jpg/800px-Leonardo_da_Vinci_-_Mona_Lisa_%28Louvre%2C_Paris%29.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10002,'VirgenCanciller','2021','oleo','12cmx35cm',2, 2, null, 'https://upload.wikimedia.org/wikipedia/commons/1/14/Jan_van_Eyck_070.jpg');
 INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10003,'La Maja desnuda','2021','oleo','12cmx35cm',3, 3, null, 'https://es.wikipedia.org/wiki/La_maja_desnuda#/media/Archivo:Maja_desnuda_(museo_del_Prado).jpg');
 INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10004,'Las espigadoras','2021','oleo','12cmx35cm',4, 4, null, 'https://es.wikipedia.org/wiki/Las_espigadoras#/media/Archivo:Jean-Fran%C3%A7ois_Millet_-_Gleaners_-_Google_Art_Project_2.jpg');
 INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista,foto) VALUES (10005,'las lecheras','2021','oleo','12cmx35cm',5, 5, null, 'https://es.wikipedia.org/wiki/La_lechera#/media/Archivo:Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg');
