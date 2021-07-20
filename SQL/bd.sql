@@ -4,15 +4,17 @@ CREATE Table "AA_Pais"(
 	nacionalidad VARCHAR(50) Not null
 );
 
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('DE', 'Alemania');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('AQ', 'Antártida');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('AR', 'Argentina');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('AU', 'Australia');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('US', 'Estados Unidos');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('GB', 'Inglaterra');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('IT', 'Italia');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('RU', 'Rusia');
-INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('VE', 'Venezuela');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Aleman', 'Alemania');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Antartida', 'Antártida');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Argentino', 'Argentina');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Australiano', 'Australia');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Estado Unidense', 'Estados Unidos');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Ingles', 'Inglaterra');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Italiano', 'Italia');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Ruso', 'Rusia');
+INSERT INTO "AA_Pais" ( nacionalidad,nombre) VALUES('Venezolano', 'Venezuela');
+INSERT INTO "AA_Pais" ( id,nacionalidad,nombre) VALUES(0,'Online', 'ONLINE');
+
 
 CREATE Table "AA_Divisa" (
 	id serial Primary KEY,
@@ -188,15 +190,16 @@ CREATE TABLE "AA_Catalogo_Pintura"(
 	foto VARCHAR(100) default null
 );
 
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10002,'VirgenCanciller','2021','oleo','12cmx35cm',2, 2, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10003,'La Maja desnuda','2021','oleo','12cmx35cm',3, 3, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10004,'Las espigadoras','2021','oleo','12cmx35cm',4, 4, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10005,'las lecheras','2021','oleo','12cmx35cm',5, 5, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10006,'Miranda La Carraca','2021','oleo','12cmx35cm',6, 6, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10007,'La creacion de Adan','2021','oleo','12cmx35cm',7, 7, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10008,'Almendro en flor','2021','oleo','12cmx35cm',8, 8, null);
-INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10009,'Ritmo de oto','2021','oleo','12cmx35cm',9, 9, null);
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10000,'Mona Lisa','2021','oleo','12cmx35cm',1, 1, 'https://es.wikipedia.org/wiki/La_Gioconda#/media/Archivo:Leonardo_da_Vinci_-_Mona_Lisa_(Louvre,_Paris).jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10002,'VirgenCanciller','2021','oleo','12cmx35cm',2, 2, 'https://es.wikipedia.org/wiki/Virgen_del_canciller_Rolin#/media/Archivo:Jan_van_Eyck_070.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10003,'La Maja desnuda','2021','oleo','12cmx35cm',3, 3, 'https://es.wikipedia.org/wiki/La_maja_desnuda#/media/Archivo:Maja_desnuda_(museo_del_Prado).jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10004,'Las espigadoras','2021','oleo','12cmx35cm',4, 4, 'https://es.wikipedia.org/wiki/Las_espigadoras#/media/Archivo:Jean-Fran%C3%A7ois_Millet_-_Gleaners_-_Google_Art_Project_2.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10005,'las lecheras','2021','oleo','12cmx35cm',5, 5, 'https://es.wikipedia.org/wiki/La_lechera#/media/Archivo:Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10006,'Miranda La Carraca','2021','oleo','12cmx35cm',6, 6, 'https://en.wikipedia.org/wiki/Francisco_de_Miranda#/media/File:Miranda_en_la_Carraca_by_Arturo_Michelena.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10007,'La creacion de Adan','2021','oleo','12cmx35cm',7, 7, 'https://es.wikipedia.org/wiki/La_creaci%C3%B3n_de_Ad%C3%A1n#/media/Archivo:Michelangelo_-_Creation_of_Adam_(cropped).jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10008,'Almendro en flor','2021','oleo','12cmx35cm',8, 8, 'https://es.wikipedia.org/wiki/Almendro_en_flor#/media/Archivo:Vincent_van_Gogh_-_Almond_blossom_-_Google_Art_Project.jpg');
+INSERT INTO "AA_Catalogo_Pintura"(id, nombre, fecha, estilo, size, artista, tienda, coleccionista) VALUES (10009,'Ritmo de oto','2021','oleo','12cmx35cm',9, 9, 'https://historia-arte.com/_/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpbSI6WyJcL2FydHdvcmtcL2ltYWdlRmlsZVwvYXV0dW1uLXJoeXRobS1udW1iZXItMzAuanBnIiwicmVzaXplLDgwMCJdfQ.tBhyV_Kq5HQaHmP17bixnSuyV7SLRW3-qa7XUryV32c.jpg');
+
 
 CREATE TABLE "AA_Catalogo_Moneda" (
 	id serial PRIMARY KEY,
