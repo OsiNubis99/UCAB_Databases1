@@ -9,13 +9,8 @@
 					class="elevation-1"
 				>
 					<template v-slot:item.actions="{ item }">
-						<v-btn
-							v-if="item.disponible"
-							color="black"
-							text
-							:to="'/Subasta/' + item.id"
-						>
-							Run
+						<v-btn color="black" text :to="'/Subasta/' + item.id">
+							Ver mas
 						</v-btn>
 					</template>
 					<template v-slot:item.fecha="{ item }">

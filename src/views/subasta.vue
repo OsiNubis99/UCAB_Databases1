@@ -20,16 +20,21 @@
 						<br />
 						Lugar: {{ subasta.pais }}
 					</v-card-text>
-					<v-card-actions>
+					<v-card-actions v-if="subasta.disponible">
 						<v-spacer></v-spacer>
 						<Cerrada
 							:id="subasta.id"
 							:duracion="subasta.duracion"
-							:cerrada="subasta.tipo != 'Cerrada'"
+							:cerrada="subasta.tipo == 'Cerrada'"
 							:monedas="monedas"
 							:pinturas="pinturas"
 							:participantes="participantes"
 						/>
+						<v-spacer></v-spacer>
+					</v-card-actions>
+					<v-card-actions v-else>
+						<v-spacer></v-spacer>
+						<h3>Finalizada</h3>
 						<v-spacer></v-spacer>
 					</v-card-actions>
 				</v-card>
@@ -41,7 +46,7 @@
 						<v-expansion-panel-header v-text="pintura.nombre" />
 						<v-expansion-panel-content>
 							<v-layout row wrap>
-								<v-flex xs4 align-self-center>
+								<v-flex align-self-center>
 									NUR: {{ pintura.id_pintura }}
 									<br />
 									Por: {{ pintura.artista_nombre }}
@@ -52,11 +57,11 @@
 									<br />
 									Dimensiones: {{ pintura.size }}
 								</v-flex>
-								<v-flex xs8 pa-5>
+								<v-flex xs7 pa-5>
 									<v-img
 										:src="
-											pintura.img ||
-												'https://www.inviaggiodasoli.com/wp-content/uploads/2017/10/Lofoten18-1620x1080.jpg'
+											pintura.foto ||
+												'https://vignette.wikia.nocookie.net/videojuego/images/9/9c/Imagen_no_disponible-0.png'
 										"
 									></v-img>
 								</v-flex>
@@ -69,21 +74,32 @@
 					<v-expansion-panel v-for="(moneda, i) in monedas" :key="i">
 						<v-expansion-panel-header v-text="moneda.nombre" />
 						<v-expansion-panel-content>
-							NUR: {{ moneda.id_moneda }} <br />
-							Denominación: {{ moneda.denominacion }} <br />
-							Divisa: {{ moneda.divisa_nombre }}<br />
-							Material: {{ moneda.metal }} <br />
-							Diámetro: {{ moneda.tamano }} <br />
-							Canto: {{ moneda.canto }} <br />
-							Peso: {{ moneda.peso }} <br />
-							Año: {{ moneda.fecha }} <br />
-							Acuñación: {{ moneda.pais }} <br />
-							Motivo: {{ moneda.motivo }} <br />
-							Artista: {{ moneda.artista_nombre }}
-							{{ moneda.artista_apellido }} <br />
-							Foto: {{ moneda.img }}<br />
-							Anverso {{ moneda.anverso }} <br />
-							Reverso {{ moneda.reverso }}
+							<v-layout row wrap>
+								<v-flex align-self-center>
+									NUR: {{ moneda.id_moneda }} <br />
+									Denominación: {{ moneda.denominacion }} <br />
+									Divisa: {{ moneda.divisa_nombre }}<br />
+									Material: {{ moneda.metal }} <br />
+									Diámetro: {{ moneda.tamano }} <br />
+									Canto: {{ moneda.canto }} <br />
+									Peso: {{ moneda.peso }} <br />
+									Año: {{ moneda.fecha }} <br />
+									Acuñación: {{ moneda.pais }} <br />
+									Motivo: {{ moneda.motivo }} <br />
+									Artista: {{ moneda.artista_nombre }}
+									{{ moneda.artista_apellido }} <br />
+									Anverso {{ moneda.anverso }} <br />
+									Reverso {{ moneda.reverso }}
+								</v-flex>
+								<v-flex xs7 pa-5>
+									<v-img
+										:src="
+											moneda.foto ||
+												'https://vignette.wikia.nocookie.net/videojuego/images/9/9c/Imagen_no_disponible-0.png'
+										"
+									></v-img>
+								</v-flex>
+							</v-layout>
 						</v-expansion-panel-content>
 					</v-expansion-panel>
 				</v-expansion-panels>

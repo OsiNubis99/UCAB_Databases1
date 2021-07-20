@@ -22,6 +22,24 @@ module.exports = {
 			monedas: catalogoMoneda.rows,
 		});
 	},
+	async get_facturas(request, response) {
+		var facturas = await pool.query(`SELECT f.*,p.subasta,c.nombre,c.apellido,c.id as id_coleccionista from "AA_Factura" f 
+		INNER JOIN "AA_Participante" p ON p.id = f.participante
+		INNER JOIN "AA_Coleccionista" c ON c.id = p.coleccionista`);
+		var renglones_pinturas = await pool.query(`SELECT r.*, p.nombre 
+		 FROM "AA_Reglon_Factura" r 
+			inner join "AA_Articulo_Subasta" a on a.id = r.articulo
+			inner join "AA_Catalogo_Pintura" p on p.id = a.pintura`);
+		var renglones_monedas = await pool.query(`SELECT r.*, m.nombre 
+			FROM "AA_Reglon_Factura" r 
+			 inner join "AA_Articulo_Subasta" a on a.id = r.articulo
+			 inner join "AA_Catalogo_Moneda" c on c.id = a.moneda
+			 inner join "AA_Moneda" m on m.id_moneda = c.moneda`);
+		response.status(200).json({
+			facturas: facturas.rows,
+			renglones: [].concat(renglones_pinturas.rows, renglones_monedas.rows),
+		});
+	},
 	async put(request, response) {
 		var {
 			duracion,
@@ -39,7 +57,6 @@ module.exports = {
 			'INSERT INTO "AA_Subasta_Evento" (fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo, disponible) VALUES ($1, $2, $3, $4, $5, $6, true) RETURNING id',
 			[fecha, duracion, costo_inscrip, costo_inscrip_cliente, pais_lugar, tipo]
 		);
-		console.log(subasta.rows[0].id);
 		for (var id of tiendas) {
 			await pool.query(
 				'INSERT INTO "AA_Tienda_Subasta" (tienda,subasta) values ($1,$2)',
@@ -125,6 +142,8 @@ module.exports = {
 				,m.tamano
 				,m.metal
 				,m.forma
+				,m.canto
+				,m.foto
 				,m.motivo
 				,m.peso
 				,m.anverso
@@ -156,6 +175,7 @@ module.exports = {
 			where p.subasta = $1`,
 				[subasta.id]
 			);
+			console.log(request.body);
 			response.status(200).json({
 				subasta,
 				tiendas: tiendas.rows,
@@ -166,14 +186,6 @@ module.exports = {
 		} else {
 			response.status(500);
 		}
-	},
-	async createFactura(id) {
-		let result = await pool.query(
-			`INSERT INTO "AA_Factura" (total, fecha, participante)
-				VALUES (0,NOW(),$1) RETURNING id ;`,
-			[id]
-		);
-		return result.rows[0];
 	},
 	async run(request, response) {
 		var { vendidos, no_vendidos, subasta_id } = request.body;
@@ -230,6 +242,7 @@ module.exports = {
 				}
 			});
 		});
-		response.status(200);
+		console.log(request.body);
+		response.status(200).json("Good");
 	},
 };

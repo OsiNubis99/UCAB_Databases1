@@ -22,7 +22,7 @@
 				</v-data-table>
 			</v-flex>
 			<v-flex xs11 ma-3>
-				<h2 class="ma-3">paises:</h2>
+				<h2 class="ma-3">Paises:</h2>
 				<v-data-table
 					:headers="headers_paises"
 					:items="paises"
@@ -42,7 +42,7 @@
 				</v-data-table>
 			</v-flex>
 			<v-flex xs11 ma-3>
-				<h2 class="ma-3">pinturas:</h2>
+				<h2 class="ma-3">Pinturas:</h2>
 				<v-data-table
 					:headers="headers_pinturas"
 					:items="pinturas"
@@ -52,7 +52,7 @@
 				</v-data-table>
 			</v-flex>
 			<v-flex xs11 ma-3>
-				<h2 class="ma-3">monedas:</h2>
+				<h2 class="ma-3">Monedas:</h2>
 				<v-data-table
 					:headers="headers_monedas"
 					:items="monedas"
@@ -60,6 +60,25 @@
 					class="elevation-1"
 				>
 				</v-data-table>
+			</v-flex>
+			<v-flex xs11 ma-3 v-for="(factura, index) in facturas" :key="index">
+				<h2 class="ma-3">Factura {{ factura.id }}:</h2>
+				<p class="ma-4">
+					A nombre de {{ factura.nombre }} {{ factura.apellido }}
+				</p>
+				<v-data-table
+					:headers="headers_facturas"
+					:items="
+						renglones.filter((i) => {
+							return i.factura == factura.id;
+						})
+					"
+					:items-per-page="150"
+					hide-default-footer
+					class="elevation-1"
+				>
+				</v-data-table>
+				<p class="text-right ma-4">Total: {{ factura.total }}</p>
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -108,12 +127,19 @@ export default {
 			{ text: "Id Coleccionista", value: "coleccionista", align: "center" },
 			{ text: "Id Tienda", value: "tienda", align: "center" },
 		],
+		headers_facturas: [
+			{ text: "Id", value: "id" },
+			{ text: "Nombre", value: "nombre", align: "center" },
+			{ text: "$", value: "precio", align: "end" },
+		],
 		tiendas: [],
 		coleccionistas: [],
 		clientes: [],
 		paises: [],
 		pinturas: [],
 		monedas: [],
+		facturas: [],
+		renglones: [],
 	}),
 	created() {
 		this.axios
@@ -125,6 +151,15 @@ export default {
 				this.paises = response.data.pais || [];
 				this.pinturas = response.data.pinturas || [];
 				this.monedas = response.data.monedas || [];
+			})
+			.catch((error) => {
+				console.log("Error " + error);
+			});
+		this.axios
+			.get("http://localhost:4000/api/subasta/get_facturas")
+			.then((response) => {
+				this.facturas = response.data.facturas || [];
+				this.renglones = response.data.renglones || [];
 			})
 			.catch((error) => {
 				console.log("Error " + error);

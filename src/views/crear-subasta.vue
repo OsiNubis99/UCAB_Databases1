@@ -302,6 +302,7 @@ export default {
 					return tienda.indexOf(value.tienda) >= 0;
 				})
 				.map(function(item) {
+					console.log(item);
 					return [item.id, item.nombre, item.tienda, 0];
 				});
 		},
