@@ -40,7 +40,7 @@
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_persona"
+											v-model="editedItem.id_persona_vida"
 											:items="personas_names"
 											label="Secciona el Beneficiario"
 										>
@@ -243,7 +243,7 @@ export default {
 			console.log('test')
 			var qs = require("qs");
 			this.editedItem.id_vida = this.editedItem.id_vida[0];
-			this.editedItem.id_persona = this.editedItem.id_persona[0];
+			this.editedItem.id_persona_vida = this.editedItem.id_persona_vida[0];
 			this.editedItem.id_cliente = this.editedItem.id_cliente[0];
 			this.editedItem.id_agente = this.editedItem.id_agente[0];
 			this.cargando = true;

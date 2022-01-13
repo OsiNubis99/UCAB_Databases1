@@ -288,7 +288,7 @@ CREATE TABLE Contrata_Vida(
     CONSTRAINT FK_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
     id_agente  integer NOT NULL,
     CONSTRAINT FK_Agente FOREIGN KEY (id_agente) REFERENCES Agente(id_agente),
-    id_persona  integer NOT NULL,
+    id_persona_vida  integer NOT NULL,
     CONSTRAINT FK_Persona FOREIGN KEY (id_persona) REFERENCES Persona(id_persona),
     fecha_contrato DATE NOT NULL,
     monto_com_ag FLOAT NOT NULL CHECK (monto_com_ag > 0),
@@ -298,7 +298,7 @@ CREATE TABLE Contrata_Vida(
         OR estado_contrato = 'Vencido'
         OR estado_contrato = 'Suspendido'
     ),
-    PRIMARY KEY(id_vida, id_cliente, id_agente, id_persona, fecha_contrato, estado_contrato)
+    PRIMARY KEY(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato, estado_contrato)
 );
 
 CREATE TABLE Prestario(
