@@ -343,13 +343,13 @@ INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (3, 'terceros');
 INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (4, 'media');
 INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (5, 'porcentual');
 
-INSERT INTO Usuario (1, 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M');
-INSERT INTO Pago(1, 1, CURRENT_DATE, 1);
-INSERT INTO Prestamo(1, 2.0);
-INSERT INTO Multa (1, 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);
-INSERT INTO Pais  (id_pais, nb_pais) VALUES (1, 'Venezuela');
+INSERT INTO Usuario VALUES (1, 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M');
+INSERT INTO Pago VALUES (1, 1, CURRENT_DATE, 1);
+INSERT INTO Prestamo VALUES (1, 2.0);
+INSERT INTO Multa VALUES (1, 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);
+INSERT INTO Pais VALUES (id_pais, nb_pais) VALUES (1, 'Venezuela');
 
-INSERT INTO Estado(id_estado, id_pais, nb_estado) Values (1, 1, 'Miranda');
+INSERT INTO Estado (id_estado, id_pais, nb_estado) Values (1, 1, 'Miranda');
 INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (1, 1, 'Libertador');
 INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (1, 1, 'Caricuao');
 INSERT INTO Vida VALUES ( 1, 13333, 14000);
