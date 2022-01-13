@@ -43,8 +43,10 @@ CREATE TABLE Usuario(
     pass VARCHAR(50) NOT NULL,
     nombre VARCHAR(30) NOT NULL,
     apellido VARCHAR(30) NOT NULL,
-    edad INTEGER NOT NULL,
-    sexo CHAR NOT NULL,
+    sexo CHAR NOT NULL CHECK (
+      sexo = 'M'
+      OR sexo = 'H'
+      OR sexo = 'N/A'),
     id_ciudad INTEGER NOT NULL,
     CONSTRAINT FK_IdCiudad FOREIGN KEY (id_ciudad) REFERENCES Ciudad(id_ciudad)
 );
@@ -95,8 +97,8 @@ CREATE TABLE Agente (
 
 CREATE TABLE Banda_Salarial(
     id_banda SERIAL PRIMARY KEY,
-    banda_min INTEGER NOT NULL,
-    banda_max INTEGER NOT NULL
+    banda_min INTEGER NOT NULL CHECK (banda_min > 0),
+    banda_max INTEGER NOT NULL CHECK (banda_max > banda_min)
 );
 
 CREATE TABLE Cliente(
@@ -125,7 +127,7 @@ CREATE TABLE Poliza(
 CREATE TABLE Inmueble(
     id_inmueble SERIAL PRIMARY KEY,
     direc_inmueble VARCHAR(250) NOT NULL,
-    valor FLOAT NOT NULL,
+    valor FLOAT NOT NULL CHECK (valor > 0),
     contenido  VARCHAR(250) NOT NULL,
     riesgos_auxiliares VARCHAR(250) NOT NULL
 );
@@ -163,8 +165,8 @@ CREATE TABLE Multa(
     CONSTRAINT FK_Matricula FOREIGN KEY (matricula) REFERENCES Vehiculo(matricula),
     fecha DATE NOT NULL,
     lugar_multa VARCHAR(30) NOT NULL,
-    hora_multa DATE NOT NULL,
-    importe FLOAT NOT NULL,
+    hora_multa VARCHAR(5) NOT NULL,
+    importe FLOAT NOT NULL CHECK (importe > 0),
     puntaje INTEGER NOT NULL CHECK (puntaje > 0 AND puntaje < 11)
 );
 
@@ -185,7 +187,7 @@ CREATE TABLE Accidente(
 
 CREATE TABLE Prestamo(
     id_prestamo SERIAL PRIMARY KEY,
-    importe FLOAT NOT NULL
+    importe FLOAT NOT NULL CHECK (importe > 0)
 );
 
 CREATE TABLE Pago(
@@ -193,7 +195,7 @@ CREATE TABLE Pago(
     id_prestamo INTEGER NOT NULL,
     CONSTRAINT FK_Prestamo FOREIGN KEY (id_prestamo) REFERENCES Prestamo(id_prestamo),
     fecha DATE NOT NULL,
-    importe FLOAT NOT NULL,
+    importe FLOAT NOT NULL CHECK (importe > 0),
     PRIMARY KEY(nro_pago, id_prestamo)
 );
 
@@ -249,7 +251,7 @@ CREATE TABLE Contrata_Inmueble(
     id_agente integer NOT NULL,
     CONSTRAINT FK_Agente FOREIGN KEY (id_agente) REFERENCES Agente(id_agente),
     fecha_contrato DATE NOT NULL,
-    monto_com_ag FLOAT NOT NULL,
+    monto_com_ag FLOAT NOT NULL CHECK (monto_com_ag > 0),
     tipo VARCHAR(30) NOT NULL,
     estado_contrato VARCHAR(30) NOT NULL CONSTRAINT EstadoContrato CHECK (
         estado_contrato = 'Activo'
@@ -267,9 +269,9 @@ CREATE TABLE Contrata_Vehiculo(
     id_agente integer NOT NULL,
     CONSTRAINT FK_Agente FOREIGN KEY (id_agente) REFERENCES Agente(id_agente),
     fecha_contrato DATE NOT NULL,
-    monto_com_ag FLOAT NOT NULL,
-    recargo FLOAT NOT NULL,
-    descuento  FLOAT NOT NULL,
+    monto_com_ag FLOAT NOT NULL CHECK (monto_com_ag > 0),
+    recargo FLOAT NOT NULL CHECK (recargo > 0),
+    descuento  FLOAT NOT NULL CHECK (descuento > 0),
     tipo VARCHAR (30) NOT NULL,
     estado_contrato VARCHAR(30) NOT NULL CONSTRAINT EstadoContrato CHECK (
         estado_contrato = 'Activo'
@@ -289,7 +291,7 @@ CREATE TABLE Contrata_Vida(
     id_persona  integer NOT NULL,
     CONSTRAINT FK_Persona FOREIGN KEY (id_persona) REFERENCES Persona(id_persona),
     fecha_contrato DATE NOT NULL,
-    monto_com_ag FLOAT NOT NULL,
+    monto_com_ag FLOAT NOT NULL CHECK (monto_com_ag > 0),
     tipo VARCHAR (30) NOT NULL,
     estado_contrato VARCHAR(30) NOT NULL CONSTRAINT EstadoContrato CHECK (
         estado_contrato = 'Activo'
@@ -329,22 +331,27 @@ CREATE TABLE Registro_Siniestro(
     monto_solicitado FLOAT NOT NULL
 );
 
-INSERT INTO Categoria ("id_categoria","descrip_categoria") VALUES (1,'lujo');
-INSERT INTO Categoria ("id_categoria","descrip_categoria") VALUES (2,'gran Turismo');
-INSERT INTO Categoria (id_categoria,descrip_categoria) VALUES (3,'Gama media');
-INSERT INTO Categoria (id_categoria,descrip_categoria) VALUES (4,'Gama alta');
-INSERT INTO Categoria (id_categoria,descrip_categoria) VALUES (5,'utilitario');
+INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (1, 'lujo');
+INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (2, 'gran Turismo');
+INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (3, 'Gama media');
+INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (4, 'Gama alta');
+INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (5, 'utilitario');
 
-INSERT INTO Tipo_Cobertura (id_tipo,descrip_cobertura) VALUES (1,'todo riesgo');
-INSERT INTO Tipo_Cobertura (id_tipo,descrip_cobertura) VALUES (2,'franquicia');
-INSERT INTO Tipo_Cobertura (id_tipo,descrip_cobertura) VALUES (3,'terceros');
-INSERT INTO Tipo_Cobertura (id_tipo,descrip_cobertura) VALUES (4,'media');
-INSERT INTO Tipo_Cobertura(id_tipo,descrip_cobertura) VALUES (5,'porcentual');
+INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (1, 'todo riesgo');
+INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (2, 'franquicia');
+INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (3, 'terceros');
+INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (4, 'media');
+INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (5, 'porcentual');
 
-INSERT INTO Pais  (id_pais,nb_pais) VALUES (1,'Venezuela');
-INSERT INTO Estado(id_estado,id_pais,nb_estado) Values (1,1,'Miranda');
-INSERT INTO Municipio (id_municipio,id_estado,nb_municipio) VALUES (1,1,'Libertador');
-INSERT INTO Ciudad (id_ciudad,id_municipio,nb_ciudad) VALUES (1,1,'Caricuao');
+INSERT INTO Usuario (1, 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M');
+INSERT INTO Pago(1, 1, CURRENT_DATE, 1);
+INSERT INTO Prestamo(1, 2.0);
+INSERT INTO Multa (1, 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);
+INSERT INTO Pais  (id_pais, nb_pais) VALUES (1, 'Venezuela');
+
+INSERT INTO Estado(id_estado, id_pais, nb_estado) Values (1, 1, 'Miranda');
+INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (1, 1, 'Libertador');
+INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (1, 1, 'Caricuao');
 INSERT INTO Vida VALUES ( 1, 13333, 14000);
 INSERT INTO Vida VALUES ( 2, 12222, 13000);
 INSERT INTO Persona VALUES ( 1, 'Alexis', '02120222258', 'Empleado');

@@ -284,7 +284,6 @@ const createContVehiculo = async (request, response) => {
 		"INSERT INTO Contrata_Vehiculo (matricula, id_cliente, id_agente, monto_com_ag, recargo, descuento, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_DATE, 'Activo')",
 		[matricula, id_cliente, id_agente, monto_com_ag, recargo, descuento, tipo],
 		(e, results) => {
-        console.log(e)
 			if (e) {
 				response.status(500).json({error: e});
 			}else{
@@ -308,7 +307,6 @@ const createContVida = async (request, response) => {
 		"INSERT INTO Contrata_Vida (id_vida, id_persona, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE, 'Activo')",
 		[id_vida, id_persona, id_cliente, id_agente, monto_com_ag, tipo],
 		(e, results) => {
-        console.log(e)
 			if (e) {
 				response.status(500).json({error: e});
 			}else{
@@ -330,7 +328,6 @@ const createContInmueble = async (request, response) => {
 		"INSERT INTO Contrata_Inmueble (id_inmueble, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Activo')",
 		[id_inmueble, id_cliente, id_agente, monto_com_ag, tipo],
 		(e, results) => {
-        console.log(e)
 			if (e) {
 				response.status(500).json({error: e});
 			}else{
