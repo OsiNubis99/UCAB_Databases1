@@ -10,12 +10,25 @@
 				active-class="secondary--text"
 				color="white"
 				text
-				to="/Crear-subasta"
+				to="/Contrato/Inmueble"
 			>
-				Crear Subasta
+				Crear Contrato Inmueble
 			</v-btn>
-			<v-btn active-class="secondary--text" color="white" text to="/Subastas">
-				Subastas
+			<v-btn
+				active-class="secondary--text"
+				color="white"
+				text
+				to="/Contrato/Vehiculo"
+			>
+				Crear Contrato Vehiculo
+			</v-btn>
+			<v-btn
+				active-class="secondary--text"
+				color="white"
+				text
+				to="/Contrato/Vida"
+			>
+				Crear Contrato Vida
 			</v-btn>
 		</v-toolbar-items>
 	</v-app-bar>

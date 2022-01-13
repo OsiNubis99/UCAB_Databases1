@@ -15,20 +15,34 @@ export default new Router({
 			component: () => import("./views/home.vue"),
 		},
 		{
-			name: "Crear-subasta",
-			path: "/Crear-subasta",
-			component: () => import("./views/crear-subasta.vue"),
+			name: "Persona",
+			path: "/Persona",
+			component: () => import("./views/Persona.vue"),
 		},
 		{
-			name: "Subastas",
-			path: "/Subastas",
-			component: () => import("./views/subastas.vue"),
+			name: "Agente",
+			path: "/Agente",
+			component: () => import("./views/Agente.vue"),
 		},
 		{
-			name: "Subasta",
-			path: "/Subasta/:id",
-			props: true,
-			component: (id) => import("./views/subasta.vue"),
+			name: "Contrata_Inmueble",
+			path: "/Contrato/Inmueble",
+			component: () => import("./views/Cont_Inmueble.vue"),
 		},
+		{
+			name: "Contrata_Vehiculo",
+			path: "/Contrato/Vehiculo",
+			component: () => import("./views/Cont_Vehiculo.vue"),
+		},
+		{
+			name: "Contrata_Vida",
+			path: "/Contrato/Vida",
+			component: () => import("./views/Cont_Vida.vue"),
+		},
+		{
+			name: "Inmueble",
+			path: "/Inmueble",
+			component: () => import("./views/Inmueble.vue"),
+		}
 	],
 });

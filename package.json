@@ -1,40 +1,40 @@
 {
-	"name": "subastas",
-	"version": "1.9.1",
-	"private": true,
-	"scripts": {
-		"start": "nodemon index.js",
-		"serve": "vue-cli-service serve",
-		"build": "vue-cli-service build",
-		"test:unit": "vue-cli-service test:unit"
-	},
-	"dependencies": {
-		"axios": "^0.21.1",
-		"core-js": "^2.6.12",
-		"express": "^4.17.1",
-		"jquery": "^3.5.1",
-		"nodemon": "^2.0.12",
-		"pg": "^8.6.0",
-		"postcss-loader": "^3.0.0",
-		"qs": "^6.7.0",
-		"raw-loader": "^0.5.1",
-		"vue": "^2.6.14",
-		"vue-axios": "^2.1.4",
-		"vue-meta": "^2.4.0",
-		"vue-router": "^3.4.9",
-		"vuetify": "^2.3.19",
-		"vuex": "^3.6.0"
-	},
-	"devDependencies": {
-		"@mdi/font": "^3.9.95",
-		"@vue/cli-plugin-babel": "^3.10.0",
-		"@vue/cli-service": "^4.5.11",
-		"babel-core": "7.0.0-bridge.0",
-		"babel-jest": "^26.6.3",
-		"sass": "^1.30.0",
-		"sass-loader": "^7.1.0",
-		"vue-cli-plugin-vuetify": "^0.6.1",
-		"vue-template-compiler": "^2.6.12",
-		"vuetify-loader": "^1.6.0"
-	}
+  "name": "aseguradora",
+  "version": "1.9.1",
+  "private": true,
+  "scripts": {
+    "start": "nodemon index.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "core-js": "^2.6.12",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "nodemon": "^2.0.12",
+    "pg": "^8.6.0",
+    "postcss-loader": "^3.0.0",
+    "qs": "^6.7.0",
+    "raw-loader": "^0.5.1",
+    "vue": "^2.6.14",
+    "vue-axios": "^2.1.4",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.4.9",
+    "vuetify": "^2.3.19",
+    "vuex": "^3.6.0"
+  },
+  "devDependencies": {
+    "@mdi/font": "^3.9.95",
+    "@vue/cli-plugin-babel": "^3.10.0",
+    "@vue/cli-service": "^4.5.11",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^26.6.3",
+    "sass": "^1.30.0",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-vuetify": "^0.6.1",
+    "vue-template-compiler": "^2.6.12",
+    "vuetify-loader": "^1.6.0"
+  }
 }
