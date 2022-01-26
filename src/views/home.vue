@@ -1,85 +1,86 @@
 <template>
 	<v-container fluid ma-3>
 		<v-layout row wrap align-center justify-center>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Tiendas:</h2>
-				<v-data-table
-					:headers="headers_tiendas"
-					:items="tiendas"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Coleccionistas:</h2>
-				<v-data-table
-					:headers="headers_coleccionistas"
-					:items="coleccionistas"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Paises:</h2>
-				<v-data-table
-					:headers="headers_paises"
-					:items="paises"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Clientes:</h2>
-				<v-data-table
-					:headers="headers_clientes"
-					:items="clientes"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Pinturas:</h2>
-				<v-data-table
-					:headers="headers_pinturas"
-					:items="pinturas"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3>
-				<h2 class="ma-3">Monedas:</h2>
-				<v-data-table
-					:headers="headers_monedas"
-					:items="monedas"
-					:items-per-page="15"
-					class="elevation-1"
-				>
-				</v-data-table>
-			</v-flex>
-			<v-flex xs11 ma-3 v-for="(factura, index) in facturas" :key="index">
-				<h2 class="ma-3">Factura {{ factura.id }}:</h2>
-				<p class="ma-4">
-					A nombre de {{ factura.nombre }} {{ factura.apellido }}
-				</p>
-				<v-data-table
-					:headers="headers_facturas"
-					:items="
-						renglones.filter((i) => {
-							return i.factura == factura.id;
-						})
-					"
-					:items-per-page="150"
-					hide-default-footer
-					class="elevation-1"
-				>
-				</v-data-table>
-				<p class="text-right ma-4">Total: {{ factura.total }}</p>
-			</v-flex>
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Tiendas:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_tiendas" -->
+			<!-- 		:items="tiendas" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Coleccionistas:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_coleccionistas" -->
+			<!-- 		:items="coleccionistas" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Paises:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_paises" -->
+			<!-- 		:items="paises" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Clientes:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_clientes" -->
+			<!-- 		:items="clientes" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Pinturas:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_pinturas" -->
+			<!-- 		:items="pinturas" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3> -->
+			<!-- 	<h2 class="ma-3">Monedas:</h2> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_monedas" -->
+			<!-- 		:items="monedas" -->
+			<!-- 		:items-per-page="15" -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- </v-flex> -->
+			<!-- <v-flex xs11 ma-3 v-for="(factura, index) in facturas" :key="index"> -->
+			<!-- 	<h2 class="ma-3">Factura {{ factura.id }}:</h2> -->
+			<!-- 	<p class="ma-4"> -->
+			<!-- 		A nombre de {{ factura.nombre }} {{ factura.apellido }} -->
+			<!-- 	</p> -->
+			<!-- 	<v-data-table -->
+			<!-- 		:headers="headers_facturas" -->
+			<!-- 		:items=" -->
+			<!-- 			renglones.filter((i) => { -->
+			<!-- 				return i.factura == factura.id; -->
+			<!-- 			}) -->
+			<!-- 		" -->
+			<!-- 		:items-per-page="150" -->
+			<!-- 		hide-default-footer -->
+			<!-- 		class="elevation-1" -->
+			<!-- 	> -->
+			<!-- 	</v-data-table> -->
+			<!-- 	<p class="text-right ma-4">Total: {{ factura.total }}</p> -->
+			<!-- </v-flex> -->
+			Tablas destacadas //TODO
 		</v-layout>
 	</v-container>
 </template>

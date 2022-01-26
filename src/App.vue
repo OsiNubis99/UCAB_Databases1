@@ -1,6 +1,6 @@
 <template>
 	<v-app id="app">
-		<NavBar />
+		<NavDrawer />
 		<v-main>
 			<Alerta />
 			<router-view />
@@ -10,14 +10,14 @@
 
 <script>
 import Alerta from "./components/Alerta";
-import NavBar from "./components/NavBar";
+import NavDrawer from "./components/NavDrawer";
 export default {
 	data() {
 		return {};
 	},
 	components: {
 		Alerta,
-		NavBar,
+		NavDrawer,
 	},
 };
 </script>

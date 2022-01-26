@@ -108,9 +108,9 @@ CREATE TABLE Cliente(
     calle VARCHAR(30) NOT NULL,
     ciudad Varchar(50) NOT NULL,
     genero VARCHAR(3) NOT NULL CHECK (
-      genero = 'M'
-      OR genero = 'H'
-      OR genero = 'N/A'),
+        genero = 'M'
+        OR genero = 'H'
+        OR genero = 'N/A'),
     fecha_nac DATE NOT NULL,
     profesion VARCHAR(30) NOT NULL,
     id_sucursal INTEGER NOT NULL,
@@ -121,6 +121,11 @@ CREATE TABLE Cliente(
 CREATE TABLE Poliza(
     id_poliza SERIAL PRIMARY KEY,
     descripcion_poliza VARCHAR(50) NOT NULL,
+
+    tipo VARCHAR(30) NOT NULL CHECK (
+        tipo = 'Vehiculo'
+        OR tipo = 'Vida'
+        OR tipo = 'Hogar'),
     prima INTEGER NOT NULL
 );
 
@@ -172,8 +177,8 @@ CREATE TABLE Multa(
 
 CREATE TABLE Categoria_Accidente(
     id_categoria_accidente SERIAL PRIMARY KEY,
-    descrip_subcategoria VARCHAR(30) NOT NULL,
-    descrip_categoria VARCHAR(30) NOT NULL
+    descrip_subcategoria VARCHAR(200) NOT NULL,
+    descrip_categoria VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Accidente(
