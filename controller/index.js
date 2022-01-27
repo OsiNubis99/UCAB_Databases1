@@ -294,6 +294,7 @@ const createContVehiculo = async (request, response) => {
 
 const createContVida = async (request, response) => {
   const {
+    id_vida,
     id_persona_vida,
     id_cliente,
     id_agente,
@@ -301,11 +302,12 @@ const createContVida = async (request, response) => {
     tipo
   } = request.body;
   await pool.query(
-    "INSERT INTO Contrata_Vida (id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Activo')",
-    [id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo],
+    "INSERT INTO Contrata_Vida (id_vida, id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE, 'Activo')",
+    [id_vida, id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo],
     (e, results) => {
       if (e) {
         response.status(500).json({ error: e });
+        console.log(e);
       } else {
         response.status(200).json(results.rows);
       }

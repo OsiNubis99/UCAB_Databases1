@@ -127,7 +127,7 @@ export default {
 			},
 			{
 				text: "ID Vehiculo",
-				value: "id_vehiculo",
+				value: "matricula",
 			},
 			{
 				text: "ID Cliente",

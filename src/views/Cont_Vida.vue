@@ -9,7 +9,7 @@
   >
 	  <template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Contratos de Personas</v-toolbar-title>
+				<v-toolbar-title>Contratos Vida</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -131,11 +131,11 @@ export default {
 				value: "id_vida",
 			},
 			{
-				text: "ID Persona",
-				value: "id_persona",
+				text: "Beneficiario",
+				value: "id_persona_vida",
 			},
 			{
-				text: "ID Cliente",
+				text: "Cliente",
 				value: "id_cliente",
 			},
 			{
@@ -190,7 +190,7 @@ export default {
 			});
 		},
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear un Persona" : "Editar Persona";
+			return this.editedIndex === -1 ? "Crear un Contrato" : "Editar Contrato";
 		},
 	},
 	watch: {
