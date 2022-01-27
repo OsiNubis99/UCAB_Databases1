@@ -28,8 +28,8 @@
 									<v-flex xs12 lg6>
 										<v-select
 											v-model="editedItem.id_agente"
-											:items="personas_names"
-											label="Secciona la Persona"
+											:items="agentes_names"
+											label="Secciona el Agente"
 										>
 											<template v-slot:selection="{ item }">
 												<v-chip>
@@ -40,15 +40,23 @@
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.direc_agente"
-											label="Direccion"
+											v-model="editedItem.nombre_agente"
+											label="Nomnre"
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.tipo_agente"
-											label="Tipo de Agente"
+											v-model="editedItem.num_telagente"
+											label="Numero de Telefono"
 										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-select
+											:items="tipos"
+											label="Tipo"
+											v-model="editedItem.tipo_agente"
+											dense
+										></v-select>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -173,7 +181,7 @@ export default {
 			}, 300);
 		},
 		async save() {
-			this.editedItem.id_agente = this.editedItem.id_agente[0];
+			console.log('test')
 			var qs = require("qs");
 			this.cargando = true;
 			if (this.editedIndex > -1) {
@@ -248,7 +256,6 @@ export default {
 						}
 					})
 					.catch((error) => {
-							console.log(error);
 						this.cargando = false;
 						this.$store.state.alerta = {
 							estado: true,

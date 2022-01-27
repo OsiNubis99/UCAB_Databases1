@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-		:items="Agentes"
+		:items="Polizas"
 		:loading="cargando"
 		loading-text="Cargando lo datos..."
-		sort-by="id_agente"
+		sort-by="id_poliza"
 		class="elevation-1 ma-3"
 	>
 		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Agentes</v-toolbar-title>
+				<v-toolbar-title>Polizas</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -26,29 +26,24 @@
 							<v-container grid-list-md>
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.descripcion_poliza"
+											label="Descripcion"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.prima"
+											label="prima"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_agente"
-											:items="personas_names"
-											label="Secciona la Persona"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.direc_agente"
-											label="Direccion"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.tipo_agente"
-											label="Tipo de Agente"
-										></v-text-field>
+											:items="tipos"
+											label="Tipo"
+											v-model="editedItem.tipo"
+											dense
+										></v-select>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -82,18 +77,20 @@ export default {
 		dialog: false,
 		dialogo: false,
 		cargando: false,
+		tipos: [
+		"Vehiculo", "Vida", "Hogar"],
 		headers: [
 			{
 				text: "Id",
-				value: "id_agente",
+				value: "id_poliza",
 			},
 			{
 				text: "Tipo",
-				value: "tipo_agente",
+				value: "tipo",
 			},
 			{
-				text: "Direccion",
-				value: "direc_agente",
+				text: "Prima",
+				value: "prima",
 			},
 			{
 				text: "Actions",
@@ -101,14 +98,14 @@ export default {
 				sortable: false,
 			},
 		],
-		Agentes: [],
+		Polizas: [],
 		Personas: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear una Agente" : "Editar Agente";
+			return this.editedIndex === -1 ? "Crear una Poliza" : "Editar Poliza";
 		},
 		personas_names() {
 			return this.Personas.map(function(item) {
@@ -128,7 +125,7 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Agentes.indexOf(item);
+			this.editedIndex = this.Polizas.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
@@ -149,9 +146,9 @@ export default {
 					};
 				});
 			this.axios
-				.get("http://localhost:4000/agentes")
+				.get("http://localhost:4000/polizas")
 				.then((response) => {
-					this.Agentes = response.data;
+					this.Polizas = response.data;
 					this.cargando = false;
 				})
 				.catch((error) => {
@@ -173,7 +170,6 @@ export default {
 			}, 300);
 		},
 		async save() {
-			this.editedItem.id_agente = this.editedItem.id_agente[0];
 			var qs = require("qs");
 			this.cargando = true;
 			if (this.editedIndex > -1) {
@@ -219,7 +215,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/agente",
+						"http://localhost:4000/poliza",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -242,13 +238,12 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Agente Creado",
-								info: "La agente se ha creado correctamente",
+								titulo: "Poliza Creado",
+								info: "La poliza se ha creado correctamente",
 							};
 						}
 					})
 					.catch((error) => {
-							console.log(error);
 						this.cargando = false;
 						this.$store.state.alerta = {
 							estado: true,

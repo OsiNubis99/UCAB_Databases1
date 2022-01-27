@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-		:items="Agentes"
+		:items="Empleados"
 		:loading="cargando"
 		loading-text="Cargando lo datos..."
-		sort-by="id_agente"
+		sort-by="id_empleado"
 		class="elevation-1 ma-3"
 	>
 		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Agentes</v-toolbar-title>
+				<v-toolbar-title>Empleados</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -27,7 +27,7 @@
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_agente"
+											v-model="editedItem.id_empleado"
 											:items="personas_names"
 											label="Secciona la Persona"
 										>
@@ -39,16 +39,47 @@
 										</v-select>
 									</v-flex>
 									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.direc_agente"
-											label="Direccion"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.tipo_agente"
-											label="Tipo de Agente"
-										></v-text-field>
+										<v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="date"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="editedItem.fecha_inicio_empresa"
+            label="Fecha de inicio"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="editedItem.fecha_inicio_empresa"
+          no-title
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="primary"
+            @click="menu = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            text
+            color="primary"
+            @click="$refs.menu.save(editedItem.fecha_inicio_empresa)"
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -85,15 +116,11 @@ export default {
 		headers: [
 			{
 				text: "Id",
-				value: "id_agente",
+				value: "id_empleado",
 			},
 			{
-				text: "Tipo",
-				value: "tipo_agente",
-			},
-			{
-				text: "Direccion",
-				value: "direc_agente",
+				text: "Fecha Inicio",
+				value: "fecha_inicio_empresa",
 			},
 			{
 				text: "Actions",
@@ -101,14 +128,14 @@ export default {
 				sortable: false,
 			},
 		],
-		Agentes: [],
+		Empleados: [],
 		Personas: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear una Agente" : "Editar Agente";
+			return this.editedIndex === -1 ? "Crear una Empleado" : "Editar Empleado";
 		},
 		personas_names() {
 			return this.Personas.map(function(item) {
@@ -128,7 +155,7 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Agentes.indexOf(item);
+			this.editedIndex = this.Empleados.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
@@ -149,9 +176,9 @@ export default {
 					};
 				});
 			this.axios
-				.get("http://localhost:4000/agentes")
+				.get("http://localhost:4000/empleados")
 				.then((response) => {
-					this.Agentes = response.data;
+					this.Empleados = response.data;
 					this.cargando = false;
 				})
 				.catch((error) => {
@@ -173,7 +200,7 @@ export default {
 			}, 300);
 		},
 		async save() {
-			this.editedItem.id_agente = this.editedItem.id_agente[0];
+			this.editedItem.id_empleado = this.editedItem.id_empleado[0];
 			var qs = require("qs");
 			this.cargando = true;
 			if (this.editedIndex > -1) {
@@ -219,7 +246,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/agente",
+						"http://localhost:4000/empleado",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -242,8 +269,8 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Agente Creado",
-								info: "La agente se ha creado correctamente",
+								titulo: "Empleado Creado",
+								info: "La empleado se ha creado correctamente",
 							};
 						}
 					})

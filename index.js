@@ -19,11 +19,7 @@ app.use(function(req, res, next) {
 //routes
 app.use(require("./routes"));
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Behold The MEVN Stack!"
-  });
-});
+app.use("/", express.static("public/files"));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {

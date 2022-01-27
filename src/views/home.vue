@@ -80,7 +80,7 @@
 			<!-- 	</v-data-table> -->
 			<!-- 	<p class="text-right ma-4">Total: {{ factura.total }}</p> -->
 			<!-- </v-flex> -->
-			Tablas destacadas //TODO
+			Pagina de Administracion de la Base de Datos
 		</v-layout>
 	</v-container>
 </template>
