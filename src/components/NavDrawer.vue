@@ -32,11 +32,12 @@ export default {
   data() {
     return {
       items: [
+        { title: "Cliente", icon: "mdi-account-check", url: "/Cliente" },
         { title: "Persona", icon: "mdi-account-circle", url: "/Persona" },
         { title: "Empleado", icon: "mdi-home", url: "/Empleado" },
-        { title: "Agente", icon: "mdi-account", url: "/Agente" },
+        { title: "Agente", icon: "mdi-account-key", url: "/Agente" },
         { title: "Inmueble", icon: "mdi-home", url: "/Inmueble" },
-        { title: "Vehiculo", icon: "mdi-home", url: "/Vehiculo" },
+        { title: "Vehiculo", icon: "mdi-car", url: "/Vehiculo" },
         { title: "Contrato Inmueble", icon: "mdi-file", url: "/Contrato/Inmueble" },
         { title: "Contrato Vehiculo", icon: "mdi-file", url: "/Contrato/Vehiculo" },
         { title: "Contrato Vida", icon: "mdi-file", url: "/Contrato/Vida" },

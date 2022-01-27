@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-		:items="Agentes"
+		:items="Clientes"
 		:loading="cargando"
 		loading-text="Cargando lo datos..."
-		sort-by="id_agente"
+		sort-by="id_cliente"
 		class="elevation-1 ma-3"
 	>
 		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Agentes</v-toolbar-title>
+				<v-toolbar-title>Clientes</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -27,9 +27,22 @@
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_agente"
-											:items="agentes_names"
-											label="Secciona el Agente"
+											v-model="editedItem.id_cliente"
+											:items="personas_names"
+											label="Secciona la Persona"
+										>
+											<template v-slot:selection="{ item }">
+												<v-chip>
+													<span>{{ item[1] }}</span>
+												</v-chip>
+											</template>
+										</v-select>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-select
+											v-model="editedItem.id_sucursal"
+											:items="sucursales_names"
+											label="Secciona la Sucursal"
 										>
 											<template v-slot:selection="{ item }">
 												<v-chip>
@@ -40,23 +53,83 @@
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.nombre_agente"
-											label="Nomnre"
+											v-model="editedItem.apellido_cliente"
+											label="Apellido"
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.num_telagente"
-											label="Numero de Telefono"
+											v-model="editedItem.direc_cliente"
+											label="Direccion"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.calle"
+											label="Calle"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.ciudad"
+											label="Ciudad"
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-select
-											:items="tipos"
-											label="Tipo"
-											v-model="editedItem.tipo_agente"
+											:items="generos"
+											label="Genero"
+											v-model="editedItem.genero"
 											dense
 										></v-select>
+									</v-flex>
+                  										<v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="date"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="editedItem.fecha_nac"
+            label="Fecha de nacimiento"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="editedItem.fecha_nac"
+          no-title
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="primary"
+            @click="menu = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            text
+            color="primary"
+            @click="$refs.menu.save(editedItem.fecha_nac)"
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.profesion"
+											label="Profesion"
+										></v-text-field>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -90,18 +163,19 @@ export default {
 		dialog: false,
 		dialogo: false,
 		cargando: false,
+generos:["M","H","N/A"],
 		headers: [
 			{
 				text: "Id",
-				value: "id_agente",
+				value: "id_cliente",
 			},
 			{
-				text: "Tipo",
-				value: "tipo_agente",
+				text: "Nnombre",
+				value: "nombre_persona",
 			},
 			{
-				text: "Direccion",
-				value: "direc_agente",
+				text: "Apellido",
+				value: "apellido_cliente",
 			},
 			{
 				text: "Actions",
@@ -109,18 +183,24 @@ export default {
 				sortable: false,
 			},
 		],
-		Agentes: [],
+		Clientes: [],
 		Personas: [],
+		Sucursales: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear una Agente" : "Editar Agente";
+			return this.editedIndex === -1 ? "Crear una Cliente" : "Editar Cliente";
 		},
 		personas_names() {
 			return this.Personas.map(function(item) {
 				return [item.id_persona, item.nombre_persona];
+			});
+		},
+		sucursales_names() {
+			return this.Sucursales.map(function(item) {
+				return [item.id_sucursal, item.nb_sucursal];
 			});
 		},
 	},
@@ -136,7 +216,7 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Agentes.indexOf(item);
+			this.editedIndex = this.Clientes.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
@@ -157,9 +237,23 @@ export default {
 					};
 				});
 			this.axios
-				.get("http://localhost:4000/agentes")
+				.get("http://localhost:4000/sucursales")
 				.then((response) => {
-					this.Agentes = response.data;
+					this.Sucursales = response.data;
+				})
+				.catch((error) => {
+					this.cargando = false;
+					this.$store.state.alerta = {
+						estado: true,
+						tipo: "error",
+						titulo: "Error de Conexion",
+						info: "Verifique su Conexion a Internet",
+					};
+				});
+			this.axios
+				.get("http://localhost:4000/clientes")
+				.then((response) => {
+					this.Clientes = response.data;
 					this.cargando = false;
 				})
 				.catch((error) => {
@@ -181,7 +275,8 @@ export default {
 			}, 300);
 		},
 		async save() {
-			console.log('test')
+			this.editedItem.id_cliente = this.editedItem.id_cliente[0];
+			this.editedItem.id_sucursal = this.editedItem.id_sucursal[0];
 			var qs = require("qs");
 			this.cargando = true;
 			if (this.editedIndex > -1) {
@@ -227,7 +322,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/agente",
+						"http://localhost:4000/cliente",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -250,12 +345,13 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Agente Creado",
-								info: "La agente se ha creado correctamente",
+								titulo: "Cliente Creado",
+								info: "La cliente se ha creado correctamente",
 							};
 						}
 					})
 					.catch((error) => {
+							console.log(error);
 						this.cargando = false;
 						this.$store.state.alerta = {
 							estado: true,

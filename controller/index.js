@@ -19,12 +19,15 @@ const getAgente = async (request, response) => {
 };
 
 const getCliente = async (request, response) => {
-  await pool.query("SELECT * FROM Cliente", (error, results) => {
-    if (error) {
-      throw error;
+  await pool.query(
+    "SELECT c.*,p.* FROM Cliente c INNER JOIN Persona p on p.id_persona = c.id_cliente",
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const getSucursal = async (request, response) => {
@@ -344,7 +347,6 @@ const createEmpleado = async (request, response) => {
     (e, results) => {
       if (e) {
         response.status(500).json({ error: e });
-        console.log(e);
       } else {
         response.status(200).json(results.rows);
       }
@@ -354,6 +356,7 @@ const createEmpleado = async (request, response) => {
 
 const createCliente = async (request, response) => {
   const {
+    id_cliente,
     apellido_cliente,
     direc_cliente,
     calle,
@@ -364,8 +367,9 @@ const createCliente = async (request, response) => {
     id_sucursal
   } = request.body;
   await pool.query(
-    "INSERT INTO Cliente VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+    "INSERT INTO Cliente VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
     [
+      id_cliente,
       apellido_cliente,
       direc_cliente,
       calle,
@@ -378,6 +382,7 @@ const createCliente = async (request, response) => {
     (e, results) => {
       if (e) {
         response.status(500).json({ error: e });
+        console.log(e);
       } else {
         response.status(200).json(results.rows);
       }

@@ -34,11 +34,11 @@ export default new Router({
       path: "/Agente",
       component: () => import("./views/Agente.vue")
     },
-    // {
-    //   name: "Cliente",
-    //   path: "/Cliente",
-    //   component: () => import("./views/Cliente.vue")
-    // },
+    {
+      name: "Cliente",
+      path: "/Cliente",
+      component: () => import("./views/Cliente.vue")
+    },
     {
       name: "Poliza",
       path: "/Poliza",
