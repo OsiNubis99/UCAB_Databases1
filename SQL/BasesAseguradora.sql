@@ -1,3 +1,8 @@
+DROP SCHEMA IF EXISTS public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+
 CREATE TABLE Perfil(
     id_perfil SERIAL PRIMARY KEY,
     nombre_perfil VARCHAR(30) NOT NULL
@@ -121,7 +126,6 @@ CREATE TABLE Cliente(
 CREATE TABLE Poliza(
     id_poliza SERIAL PRIMARY KEY,
     descripcion_poliza VARCHAR(50) NOT NULL,
-
     tipo VARCHAR(30) NOT NULL CHECK (
         tipo = 'Vehiculo'
         OR tipo = 'Vida'
@@ -249,6 +253,8 @@ CREATE TABLE Posee(
 );
 
 CREATE TABLE Contrata_Inmueble(
+    id_poliza integer NOT NULL,
+    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     id_inmueble integer NOT NULL,
     CONSTRAINT FK_Inmueble FOREIGN KEY (id_inmueble) REFERENCES Inmueble(id_inmueble),
     id_cliente INTEGER NOT NULL,
@@ -267,6 +273,8 @@ CREATE TABLE Contrata_Inmueble(
 );
 
 CREATE TABLE Contrata_Vehiculo(
+    id_poliza integer NOT NULL,
+    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     matricula VARCHAR(30) NOT NULL,
     CONSTRAINT FK_Matricula FOREIGN KEY (matricula) REFERENCES Vehiculo(matricula),
     id_cliente INTEGER NOT NULL,
@@ -287,6 +295,8 @@ CREATE TABLE Contrata_Vehiculo(
 );
 
 CREATE TABLE Contrata_Vida(
+    id_poliza integer NOT NULL,
+    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     id_vida integer NOT NULL,
     CONSTRAINT FK_Vida FOREIGN KEY (id_vida) REFERENCES Vida(id_vida),
     id_cliente INTEGER NOT NULL,
@@ -319,14 +329,10 @@ CREATE TABLE Prestario(
 
 CREATE TABLE Siniestro(
     nro_siniestro integer PRIMARY KEY,
-    descripcion VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Registro_Siniestro(
-    nro_siniestro integer PRIMARY KEY,
     CONSTRAINT FK_Siniestro FOREIGN KEY (nro_siniestro) REFERENCES Siniestro(nro_siniestro),
     id_poliza INTEGER NOT NULL,
     CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
+    descripcion VARCHAR(100) NOT NULL,
     fecha_sinietro DATE not null,
     fecha_respesta DATE NOT NULL,
     id_rechazo VARCHAR(2) NOT NULL CONSTRAINT Rechazo_Registro CHECK (
@@ -336,77 +342,97 @@ CREATE TABLE Registro_Siniestro(
     monto_solicitado FLOAT NOT NULL
 );
 
-
-
 /*A. municipios ciudades*/
-
-INSERT INTO Pais  (id_pais, nb_pais) VALUES (1, 'Venezuela');
+INSERT INTO Pais  ( nb_pais) VALUES ( 'Venezuela');--1
 /*estados*/
-INSERT INTO Estado (id_estado, id_pais, nb_estado) Values (1, 1, 'Miranda');
-INSERT INTO Estado (id_estado, id_pais, nb_estado) Values (2, 1, 'Aragua');
-INSERT INTO Estado (id_estado, id_pais, nb_estado) Values (3, 1, 'Carabobo');
-INSERT INTO Estado (id_estado, id_pais, nb_estado) Values (4, 1, 'Lara');
-
-
+INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Miranda');--1
+INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Aragua');--2
+INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Carabobo');--3
+INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Lara');--4
 /*municipios*/
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (1, 1, 'Libertador');/*miranda*/
+/*miranda*/
+INSERT INTO Municipio ( id_estado, nb_municipio) VALUES ( 1, 'Libertador');--1
 /*Aragua*/
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (2, 2, 'Bolivar');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (3, 2, 'Jose Felix Rivas');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (4, 2, 'tovar');
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES ( 2, 'Bolivar');--2
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES ( 2, 'Jose Felix Rivas');--3
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES ( 2, 'tovar');--4
 /*Carabobo*/
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (5, 3, 'valencia');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (6, 3, 'Puerto Cabello ');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (7, 3, 'San diego ');
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (3, 'valencia');--5
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (3, 'Puerto Cabello ');--6
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (3, 'San diego ');--7
 /*Lara*/
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (8, 4, 'Iribarren ');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (9, 4, 'Autonomo Torres ');
-INSERT INTO Municipio (id_municipio, id_estado, nb_municipio) VALUES (10, 4, 'Jimenez ');
-
-
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Iribarren ');--8
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Autonomo Torres ');--9
+INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Jimenez ');--10
 /*ciudades*/
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (1, 1, 'Caricuao');/*miranda*/
+/*miranda*/
+INSERT INTO Ciudad (id_municipio, nb_ciudad) VALUES ( 1, 'Caricuao');--1
 /*Aragua*/
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (2, 2, 'Maracay');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (3, 3, 'La victoria');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (4, 4, 'Colonia Tovar');
+INSERT INTO Ciudad (id_municipio, nb_ciudad) VALUES ( 2, 'Maracay');--2
+INSERT INTO Ciudad (id_municipio, nb_ciudad) VALUES ( 3, 'La victoria');--3
+INSERT INTO Ciudad (id_municipio, nb_ciudad) VALUES ( 4, 'Colonia Tovar');--4
 /*Carabobo*/
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (5, 5, 'Valencia');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (6, 6, 'Puerto Cabello ');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (7, 7, 'San diego ');
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 5, 'Valencia');--5
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 6, 'Puerto Cabello ');--6
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 7, 'San diego ');--7
 /*Lara*/
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (8, 8, 'Barquisimeto ');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (9, 9 ,'Carora ');
-INSERT INTO Ciudad (id_ciudad, id_municipio, nb_ciudad) VALUES (10, 10, 'Quibor ');
-
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES (8, 'Barquisimeto ');--8
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES (9 ,'Carora ');--9
+INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 10, 'Quibor ');--10
 /*Parroquias*/
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (1, 1, 'San Agustin');/*miranda*/
+/*miranda*/
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 1, 'San Agustin');--1
 /*Aragua*/
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (2, 2, 'Parroquia Camatagua');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (3, 3, 'Castor Nieves Ríos');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (4, 4, ' la colonia tovar');
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 2, 'Parroquia Camatagua');--2
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 3, 'Castor Nieves Ríos');--3
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 4, ' la colonia tovar');--4
 /*Carabobo*/
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (5, 5, ' El Socorro ');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (6, 6, ' Fraternidad ');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (7, 7, ' San Diego de Alcalá ');
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 5, ' El Socorro ');--5
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 6, ' Fraternidad ');--6
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 7, ' San Diego de Alcalá ');--7
 /*Lara*/
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (8, 8, ' Catedral');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (9, 9, 'Heriberto Arroyo');
-INSERT INTO Parroquia (id_parroquia, id_municipio, nb_parroquia) VALUES (10, 10, 'Juan Bautista Rodríguez');
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (8, ' Catedral');--8
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (9, 'Heriberto Arroyo');--9
+INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (10, 'Juan Bautista Rodríguez');--10
 
-
-
-
-/*PASO 2*/
-INSERT INTO Persona VALUES ( 1, 'Alexis', '02120222258', 'Empleado');
-INSERT INTO Persona VALUES ( 3, 'Pepito', '02120222258', 'Cliente');
-INSERT INTO Persona VALUES ( 4, 'Pablito', '02120222258', 'Cliente');
-INSERT INTO Persona VALUES ( 9, 'Jose', '04165228947', 'Empleado');
-INSERT INTO Persona VALUES ( 10, 'Jesus', '0212857632', 'Empleado');
-INSERT INTO Persona VALUES ( 11, 'Douglas', '04165228946', 'Empleado');
-INSERT INTO Persona VALUES ( 12, 'Gabriel', '0416522776', 'Empleado');
-INSERT INTO Persona VALUES ( 13, 'Manuel ', '04165228927', 'Empleado');
-INSERT INTO Persona VALUES ( 14, 'Angelo', '04145228947', 'Empleado');
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Alexis', '02120222258', 'Empleado');--1
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Andres', '02120222258', 'Agente');--2
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Pepito', '02120222258', 'Cliente');--3
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Pablito', '02120222258', 'Cliente');--4
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Diego', '02122835173', 'Agente');--5
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Juan', '02122835175', 'Agente');--6
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Maria', '02122834532', 'Beneficiario');--7
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Daniel', '02122835178', 'Beneficiario');--8
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Jose', '04165228947', 'Empleado');--9
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Jesus', '0212857632', 'Empleado');--10
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Douglas', '04165228946', 'Empleado');--11
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Gabriel', '0416522776', 'Empleado');--12
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Manuel ', '04165228927', 'Empleado');--13
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Angelo', '04145228947', 'Empleado');--14
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Juan ', '0212245643', 'Cliente');--15
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Angelo ', '04145896214', 'Cliente');--16
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Maria ', '021234543', 'Cliente');--17
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Diego ', '021266643', 'Cliente');--18
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Pedro nouel', '021222643', 'Cliente');--19
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Pablo de lucia', '04145643', 'Cliente');--20
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Gabriel perez', '041611243', 'Cliente');--21
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Daniel', '021228358', 'Beneficiario');--22
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Juan', '0212244348', 'Beneficiario');--23
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Alexis', '022221478', 'Beneficiario');--24
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Manuel', '02125435178', 'Beneficiario');--25
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Adrian', '0422835178', 'Beneficiario');--26
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Alejandro', '0322835178', 'Beneficiario');--27
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'gabriel', '021542835178', 'Beneficiario');--28
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Juan', '02123835176', 'Beneficiario');--29
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Maria', '02152835179', 'Beneficiario');--30
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Rosimily', '02122835160', 'Beneficiario');--31
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Emily', '02125435178', 'Beneficiario');--32
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Shadai', '0422855178', 'Beneficiario');--33
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Alejandro', '032255178', 'Beneficiario');--34
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'gabriel', '021542832378', 'Beneficiario');--35
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Juan', '0212383526', 'Beneficiario');--36
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Maria', '02152835179', 'Beneficiario');--37
+INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Rosimily', '0212255160', 'Beneficiario');--38
 
 INSERT INTO Empleado(id_empleado,fecha_inicio_empresa) VALUES (1, CURRENT_DATE);
 INSERT INTO Empleado(id_empleado,fecha_inicio_empresa) VALUES (9, '1/12/2021');
@@ -420,71 +446,50 @@ INSERT INTO Empleado(id_empleado,fecha_inicio_empresa) VALUES (14, '11/09/2018')
 
 /*Sucursales insertadas*/
 
-INSERT INTO Sucursal(id_sucursal,  nb_sucursal,id_director,id_ciudad,activos) VALUES  (1, 'Sub_caricuao', 1, 1, 'muchos');
-INSERT INTO Sucursal(id_sucursal,  nb_sucursal,id_director,id_ciudad,activos) VALUES  (2, 'Sub_Aragua_Maracay', 9, 2, 'muchos');
-INSERT INTO Sucursal(id_sucursal,  nb_sucursal,id_director,id_ciudad,activos) VALUES  (3, 'Sub_Valencia', 10, 5, 'muchos');
-INSERT INTO Sucursal(id_sucursal,  nb_sucursal,id_director,id_ciudad,activos) VALUES  (4, 'Sub_Barquisimeto', 11, 8, 'muchos');
-INSERT INTO Sucursal(id_sucursal,  nb_sucursal,id_director,id_ciudad,activos) VALUES  (5, 'Sub_Barquisimeto2', 12, 8, 'muchos');
+INSERT INTO Sucursal(  nb_sucursal,id_director,id_ciudad,activos) VALUES  ( 'Sub_caricuao', 1, 1, 'muchos');--1
+INSERT INTO Sucursal(  nb_sucursal,id_director,id_ciudad,activos) VALUES  ( 'Sub_Aragua_Maracay', 9, 2, 'muchos');--2
+INSERT INTO Sucursal(  nb_sucursal,id_director,id_ciudad,activos) VALUES  ( 'Sub_Valencia', 10, 5, 'muchos');--3
+INSERT INTO Sucursal(  nb_sucursal,id_director,id_ciudad,activos) VALUES  ( 'Sub_Barquisimeto', 11, 8, 'muchos');--4
+INSERT INTO Sucursal(  nb_sucursal,id_director,id_ciudad,activos) VALUES  ( 'Sub_Barquisimeto2', 12, 8, 'muchos');--5
 
 
-INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (1, 'lujo');
-INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (2, 'gran Turismo');
-INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (3, 'Gama media');
-INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (4, 'Gama alta');
-INSERT INTO Categoria (id_categoria, descrip_categoria) VALUES (5, 'utilitario');
+INSERT INTO Categoria ( descrip_categoria) VALUES ( 'lujo');--1
+INSERT INTO Categoria ( descrip_categoria) VALUES ( 'gran Turismo');--2
+INSERT INTO Categoria ( descrip_categoria) VALUES ( 'Gama media');--3
+INSERT INTO Categoria ( descrip_categoria) VALUES ( 'Gama alta');--4
+INSERT INTO Categoria ( descrip_categoria) VALUES ( 'utilitario');--5
 
 
 
 
 /*PASO 5*/
-INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (1, 'todo riesgo');
-INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (2, 'franquicia');
-INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (3, 'terceros');
-INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (4, 'media');
-INSERT INTO Tipo_Cobertura (id_tipo, descrip_cobertura) VALUES (5, 'porcentual');
+INSERT INTO Tipo_Cobertura ( descrip_cobertura) VALUES ( 'todo riesgo');--1
+INSERT INTO Tipo_Cobertura ( descrip_cobertura) VALUES ( 'franquicia');--2
+INSERT INTO Tipo_Cobertura ( descrip_cobertura) VALUES ( 'terceros');--3
+INSERT INTO Tipo_Cobertura ( descrip_cobertura) VALUES ( 'media');--4
+INSERT INTO Tipo_Cobertura ( descrip_cobertura) VALUES ( 'porcentual');--5
 /*FIN PASO 5*/
 
 
 /*E. Se tiene informacion de al menos 3 agentes*/
 
-INSERT INTO Persona VALUES ( 2, 'Andres', '02120222258', 'Agente');
-INSERT INTO Persona VALUES ( 5, 'Diego', '02122835173', 'Agente');
-INSERT INTO Persona VALUES ( 6, 'Juan', '02122835175', 'Agente');
+
+
 INSERT INTO Agente VALUES (2, 'corredurías tradicionales', 'bello campo');
 INSERT INTO Agente VALUES (5, ', agentes de seguros', 'El hatillo');
 INSERT INTO Agente VALUES (6, 'operadores de banca', 'Valencia san diego');
 
 
-/*F. Al menos dos beneficiaron por asegurado registrado*/
-INSERT INTO Persona VALUES ( 7, 'Maria', '02122834532', 'Beneficiario');
-INSERT INTO Persona VALUES ( 8, 'Daniel', '02122835178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 22, 'Daniel', '021228358', 'Beneficiario');
-INSERT INTO Persona VALUES ( 23, 'Juan', '0212244348', 'Beneficiario');
-INSERT INTO Persona VALUES ( 24, 'Alexis', '022221478', 'Beneficiario');
-INSERT INTO Persona VALUES ( 25, 'Manuel', '02125435178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 26, 'Adrian', '0422835178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 27, 'Alejandro', '0322835178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 28, 'gabriel', '021542835178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 29, 'Juan', '02123835176', 'Beneficiario');
-INSERT INTO Persona VALUES ( 30, 'Maria', '02152835179', 'Beneficiario');
-INSERT INTO Persona VALUES ( 31, 'Rosimily', '02122835160', 'Beneficiario');
-INSERT INTO Persona VALUES ( 32, 'Emily', '02125435178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 33, 'Shadai', '0422855178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 34, 'Alejandro', '032255178', 'Beneficiario');
-INSERT INTO Persona VALUES ( 35, 'gabriel', '021542832378', 'Beneficiario');
-INSERT INTO Persona VALUES ( 36, 'Juan', '0212383526', 'Beneficiario');
-INSERT INTO Persona VALUES ( 37, 'Maria', '02152835179', 'Beneficiario');
-INSERT INTO Persona VALUES ( 38, 'Rosimily', '0212255160', 'Beneficiario');
 
 
 
 /*B. poliza:vida,hogar,vehiculo*/
 
-INSERT INTO Vida (id_vida, prima,cobertura ) VALUES ( 1, 13333, 14000);
-INSERT INTO Vida (id_vida, prima,cobertura ) VALUES ( 2, 12222, 13000);
-INSERT INTO Vida (id_vida, prima,cobertura ) VALUES ( 3, 23453,50000);
-INSERT INTO Inmueble(id_inmueble, direc_inmueble, valor,contenido,riesgos_auxiliares) VALUES (1, 'Altamira 1', 12732.40, 'Muebles,Cuadros,Electrodomesticos', 'Dano estructural,incendio');
-INSERT INTO Inmueble(id_inmueble, direc_inmueble, valor,contenido,riesgos_auxiliares) VALUES (2, 'Santa eduvigis', 23547.60, 'Muebles,Cuadros,Electrodomesticos', 'Robo,terremoto,Dano estructural,incendio');
+INSERT INTO Vida ( prima,cobertura ) VALUES (  13333, 14000);--1
+INSERT INTO Vida ( prima,cobertura ) VALUES (  12222, 13000);--2
+INSERT INTO Vida ( prima,cobertura ) VALUES (  23453,50000);--3
+INSERT INTO Inmueble( direc_inmueble, valor,contenido,riesgos_auxiliares) VALUES ( 'Altamira 1', 12732.40, 'Muebles,Cuadros,Electrodomesticos', 'Dano estructural,incendio');--1
+INSERT INTO Inmueble( direc_inmueble, valor,contenido,riesgos_auxiliares) VALUES ( 'Santa eduvigis', 23547.60, 'Muebles,Cuadros,Electrodomesticos', 'Robo,terremoto,Dano estructural,incendio');--2
 INSERT INTO Vehiculo VALUES ('a3f44da', 'Mustang', 'Z', '2015', 1, 1);
 INSERT INTO Vehiculo VALUES ('a5gs4g5', 'BMW', 'x3', '2018', 1, 1);
 
@@ -492,10 +497,10 @@ INSERT INTO Vehiculo VALUES ('a5gs4g5', 'BMW', 'x3', '2018', 1, 1);
 
 /*PASO 8*/
 INSERT INTO Cliente VALUES (3, 'Gonzales', 'Direccion', 'Calle', 'Ciudad', 'H', CURRENT_DATE, 'Profecion', 1);
-INSERT INTO Usuario VALUES (1, 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M', 1);
-INSERT INTO Prestamo VALUES (1, 2.0);
+INSERT INTO Usuario (nombre_usuario,email,pass,nombre,apellido,sexo,id_ciudad ) VALUES ( 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M', 1);--1
+INSERT INTO Prestamo(importe) VALUES ( 2.0);--1
 INSERT INTO Pago VALUES (1, 1, CURRENT_DATE, 1);
-INSERT INTO Multa VALUES (1, 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);
+INSERT INTO Multa (matricula,fecha,lugar_multa,hora_multa, importe,puntaje) VALUES ( 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);--1
 /*FIN PASO 8*/
 
 
@@ -503,17 +508,17 @@ INSERT INTO Multa VALUES (1, 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 
 
 /*C.Categorias de accidente y sub categorias*/
 
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (1,'hogar', 'Intoxicaciones, quemaduras, torceduras, herida, etc.');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (2,'trabajo','Quemaduras, congelamiento, inmersión, electrocución, etc.');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (3,'calle','Choques, atropellamientos, volcaduras, bala perdida etc.');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (4,'campo','Caídas, ataque por animales, incendios, etc.');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (5,'infancia','Los más frecuentes son las caídas, los producidos durante el
-transporte, las intoxicaciones y las quemaduras.2');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (6,'escuela','Caídas, heridas');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (7,'hospitales','Caídas, intoxicación');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (8,'animales','Picaduras, heridas, lesiones, intoxicaciones');
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (9,'desastres naturales','Derrumbes, deslizamientos, muertes, pérdida de
-hogares, entre otros.');
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('hogar', 'Intoxicaciones, quemaduras, torceduras, herida, etc.');--1
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('trabajo','Quemaduras, congelamiento, inmersión, electrocución, etc.');--2
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('calle','Choques, atropellamientos, volcaduras, bala perdida etc.');--3
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('campo','Caídas, ataque por animales, incendios, etc.');--4
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('infancia','Los más frecuentes son las caídas, los producidos durante el
+transporte, las intoxicaciones y las quemaduras.2');--5
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('escuela','Caídas, heridas');--6
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('hospitales','Caídas, intoxicación');--7
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('animales','Picaduras, heridas, lesiones, intoxicaciones');--8
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('desastres naturales','Derrumbes, deslizamientos, muertes, pérdida de
+hogares, entre otros.');--9
 
 /*D. Almacenar 3 contratos o poliza*/
 INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,3,2,1,'2/02/2022',100,'Todo riesgo','Activo');
@@ -522,13 +527,6 @@ INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,
 
 
 /*insert reporte 10*/
-INSERT INTO Persona VALUES ( 15, 'Juan ', '0212245643', 'Cliente');
-INSERT INTO Persona VALUES ( 16, 'Angelo ', '04145896214', 'Cliente');
-INSERT INTO Persona VALUES ( 17, 'Maria ', '021234543', 'Cliente');
-INSERT INTO Persona VALUES ( 18, 'Diego ', '021266643', 'Cliente');
-INSERT INTO Persona VALUES ( 19, 'Pedro nouel', '021222643', 'Cliente');
-INSERT INTO Persona VALUES ( 20, 'Pablo de lucia', '04145643', 'Cliente');
-INSERT INTO Persona VALUES ( 21, 'Gabriel perez', '041611243', 'Cliente');
 
 INSERT INTO Cliente VALUES (4, 'De lucia', 'Los palos grandes', 'Calle santa ana', 'Caracas', 'M', '03/04/2018', 'ingeniero', 1);
 INSERT INTO Cliente VALUES (15, 'hernandez', 'Bolivar', 'Calle francia', 'maracay', 'M', '03/04/1956', 'Comunicador', 2);
@@ -553,7 +551,7 @@ INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,
 INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('6jg3eA',15,5,'02/11/2016',10,1,9,'todo riesgo ','Activo');
 
 /*reporte 4*/
-INSERT INTO Vida (id_vida, prima,cobertura ) VALUES ( 4, 100003,70000);
+INSERT INTO Vida ( prima,cobertura ) VALUES (  100003,70000);
 
 INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,3,2,1,'4/01/2022',100,'Todo riesgo','Activo');
 INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,3,2,1,'12/06/2018',60,'Todo riesgo','Activo');
@@ -577,14 +575,14 @@ INSERT INTO Vehiculo VALUES ('736nde', 'mercedes benz', 'cc', '2012', 4, 1);
 INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('4dsf4A',16,5,'06/10/2018',30,4,8,'todo riesgo ','Activo');
 INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('736nde',17,2,'02/12/2016',10,1,9,'todo riesgo ','Activo');
 
-INSERT INTO Accidente(nro_referencia,fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES (1,'02/01/2021','Francisco Fajardo','3:30',3);
+INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('02/01/2021','Francisco Fajardo','3:30',3);--1
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (1,'a5g45hy',3);
 
-INSERT INTO Accidente(nro_referencia,fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES (2,'07/10/2021','Calle bolivar','6:30',3);
+INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('07/10/2021','Calle bolivar','6:30',3);--2
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (2,'2jg45A',15);
 
-INSERT INTO Accidente(nro_referencia,fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES (3,'09/03/2022','maracay','2:30',3);
+INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('09/03/2022','maracay','2:30',3);--3
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (3,'4dsf4A',16);
 
-INSERT INTO Accidente(nro_referencia,fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES (4,'02/06/2023','valencia','2:00',3);
+INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('02/06/2023','valencia','2:00',3);--4
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (4,'736nde',17);
