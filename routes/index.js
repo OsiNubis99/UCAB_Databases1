@@ -9,6 +9,10 @@ const {
   getPoliza,
   getVehiculo,
   getVida,
+  getSiniestro,
+  getAccidente,
+  getCategoria_acc,
+  getMulta,
   getCategoria,
   getTipo,
   getSucursal,
@@ -27,6 +31,9 @@ const {
   createVida,
   createCategoria,
   createTipo,
+  createSiniestro,
+  createMulta,
+  createAccidente,
   createSucursal,
   createContVida,
   createContInmueble,
@@ -43,6 +50,10 @@ router.get("/inmuebles", getInmueble);
 router.get("/sucursales", getSucursal);
 router.get("/vehiculos", getVehiculo);
 router.get("/vidas", getVida);
+router.get("/siniestros", getSiniestro);
+router.get("/accidentes", getAccidente);
+router.get("/categoria_accs", getCategoria_acc);
+router.get("/multas", getMulta);
 router.get("/categorias", getCategoria);
 router.get("/tipo_cobertura", getTipo);
 router.get("/sucursales", getSucursal);
@@ -59,9 +70,9 @@ router.post("/poliza", createPoliza);
 router.post("/inmueble", createInmueble);
 router.post("/vehiculo", createVehiculo);
 router.post("/vida", createVida);
-// router.post("/categoria", createCategoria);
-// router.post("/tipo_cobertura", createTipo);
-// router.post("/sucursal", createSucursal);
+router.post("/siniestro", createSiniestro);
+router.post("/accidente", createAccidente);
+router.post("/multa", createMulta);
 router.post("/contrata_Vehiculo", createContVehiculo);
 router.post("/contrata_Vida", createContVida);
 router.post("/contrata_Inmueble", createContInmueble);

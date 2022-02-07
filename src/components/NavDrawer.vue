@@ -41,6 +41,9 @@ export default {
         { title: "Contrato Inmueble", icon: "mdi-file", url: "/Contrato/Inmueble" },
         { title: "Contrato Vehiculo", icon: "mdi-file", url: "/Contrato/Vehiculo" },
         { title: "Contrato Vida", icon: "mdi-file", url: "/Contrato/Vida" },
+        { title: "Siniestro", icon: "mdi-car", url: "/Siniestro" },
+        { title: "Accidente", icon: "mdi-car", url: "/Accidente" },
+        { title: "Multa", icon: "mdi-car", url: "/Multa" },
       ]
     };
   }

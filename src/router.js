@@ -14,11 +14,6 @@ export default new Router({
       path: "/",
       component: () => import("./views/home.vue")
     },
-    // {
-    //   name: "Usuario",
-    //   path: "/Usuario",
-    //   component: () => import("./views/Usuario.vue")
-    // },
     {
       name: "Persona",
       path: "/Persona",
@@ -40,9 +35,19 @@ export default new Router({
       component: () => import("./views/Cliente.vue")
     },
     {
-      name: "Poliza",
-      path: "/Poliza",
-      component: () => import("./views/Poliza.vue")
+      name: "Siniestro",
+      path: "/Siniestro",
+      component: () => import("./views/Siniestro.vue")
+    },
+    {
+      name: "Accidente",
+      path: "/Accidente",
+      component: () => import("./views/Accidente.vue")
+    },
+    {
+      name: "Multa",
+      path: "/Multa",
+      component: () => import("./views/Multa.vue")
     },
     {
       name: "Inmueble",
@@ -54,11 +59,6 @@ export default new Router({
       path: "/vehiculo",
       component: () => import("./views/Vehiculo.vue")
     },
-    // {
-    //   name: "Vida",
-    //   path: "/Vida",
-    //   component: () => import("./views/Vida.vue")
-    // },
     {
       name: "Contrata_Inmueble",
       path: "/Contrato/Inmueble",

@@ -10,12 +10,15 @@ const getPersona = async (request, response) => {
 };
 
 const getAgente = async (request, response) => {
-  await pool.query("SELECT * FROM Agente", (error, results) => {
-    if (error) {
-      throw error;
+  await pool.query(
+    "SELECT a.*,p.* FROM Agente a INNER JOIN Persona p on a.id_agente=p.id_persona",
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const getCliente = async (request, response) => {
@@ -42,7 +45,7 @@ const getSucursal = async (request, response) => {
 const getContVehiculo = async (request, response) => {
   var resp = {};
   await pool.query(
-    "SELECT * FROM Contrata_Vehiculo",
+    "SELECT t.*,c.nombre_persona as cliente_nombre,a.nombre_persona as agente_nombre FROM Contrata_Vehiculo t INNER JOIN Persona c on c.id_persona=t.id_cliente INNER JOIN Persona a on a.id_persona=t.id_agente",
     async (error, results) => {
       if (error) {
         throw error;
@@ -88,43 +91,49 @@ const getVehiculo = async (request, response) => {
 
 const getContVida = async (request, response) => {
   var resp = {};
-  await pool.query("SELECT * FROM Contrata_Vida", async (error, results) => {
-    if (error) {
-      throw error;
-    }
-    resp.Contratos = results.rows;
-    await pool.query("SELECT * FROM Persona", async (error, results) => {
+  await pool.query(
+    "SELECT t.*,c.nombre_persona as cliente_nombre,a.nombre_persona as agente_nombre FROM Contrata_Vida t INNER JOIN Persona c on c.id_persona=t.id_cliente INNER JOIN Persona a on a.id_persona=t.id_agente",
+    async (error, results) => {
       if (error) {
         throw error;
       }
-      resp.Personas = results.rows;
-      await pool.query(
-        "SELECT c.*,p.* FROM Cliente c INNER JOIN Persona p on p.id_persona = c.id_cliente",
-        async (error, results) => {
-          if (error) {
-            throw error;
-          }
-          resp.Clientes = results.rows;
-          await pool.query(
-            "SELECT a.*,p.* FROM Agente a INNER JOIN Persona p on p.id_persona = a.id_agente",
-            async (error, results) => {
-              if (error) {
-                throw error;
-              }
-              resp.Agentes = results.rows;
-              await pool.query("SELECT * FROM Vida", async (error, results) => {
+      resp.Contratos = results.rows;
+      await pool.query("SELECT * FROM Persona", async (error, results) => {
+        if (error) {
+          throw error;
+        }
+        resp.Personas = results.rows;
+        await pool.query(
+          "SELECT c.*,p.* FROM Cliente c INNER JOIN Persona p on p.id_persona = c.id_cliente",
+          async (error, results) => {
+            if (error) {
+              throw error;
+            }
+            resp.Clientes = results.rows;
+            await pool.query(
+              "SELECT a.*,p.* FROM Agente a INNER JOIN Persona p on p.id_persona = a.id_agente",
+              async (error, results) => {
                 if (error) {
                   throw error;
                 }
-                resp.Vida = results.rows;
-                response.status(200).json(resp);
-              });
-            }
-          );
-        }
-      );
-    });
-  });
+                resp.Agentes = results.rows;
+                await pool.query(
+                  "SELECT * FROM Vida",
+                  async (error, results) => {
+                    if (error) {
+                      throw error;
+                    }
+                    resp.Vida = results.rows;
+                    response.status(200).json(resp);
+                  }
+                );
+              }
+            );
+          }
+        );
+      });
+    }
+  );
 };
 
 const getVida = async (request, response) => {
@@ -172,6 +181,42 @@ const getContInmueble = async (request, response) => {
       });
     }
   );
+};
+
+const getSiniestro = async (request, response) => {
+  await pool.query("SELECT * FROM Siniestro", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+const getAccidente = async (request, response) => {
+  await pool.query("SELECT * FROM Accidente", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+const getCategoria_acc = async (request, response) => {
+  await pool.query("SELECT * FROM Categoria_Accidente", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
+const getMulta = async (request, response) => {
+  await pool.query("SELECT * FROM Multa", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
 };
 
 const getEmpleado = async (request, response) => {
@@ -274,6 +319,8 @@ const createAgente = async (request, response) => {
 
 const createContVehiculo = async (request, response) => {
   const {
+    descripcion_poliza,
+    prima,
     matricula,
     id_cliente,
     id_agente,
@@ -283,13 +330,35 @@ const createContVehiculo = async (request, response) => {
     tipo
   } = request.body;
   await pool.query(
-    "INSERT INTO Contrata_Vehiculo (matricula, id_cliente, id_agente, monto_com_ag, recargo, descuento, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_DATE, 'Activo')",
-    [matricula, id_cliente, id_agente, monto_com_ag, recargo, descuento, tipo],
-    (e, results) => {
+    "insert into Poliza (descripcion_poliza,tipo,prima) values ($1,'Vehiculo',$2) returning id_poliza",
+    [descripcion_poliza, prima],
+    async (e, results) => {
       if (e) {
+        console.log(e);
         response.status(500).json({ error: e });
       } else {
-        response.status(200).json(results.rows);
+        id_poliza = results.rows[0].id_poliza;
+        await pool.query(
+          "INSERT INTO Contrata_Vehiculo (id_poliza, matricula, id_cliente, id_agente, monto_com_ag, recargo, descuento, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_DATE, 'Activo')",
+          [
+            id_poliza,
+            matricula,
+            id_cliente,
+            id_agente,
+            monto_com_ag,
+            recargo,
+            descuento,
+            tipo
+          ],
+          (e, results) => {
+            if (e) {
+              response.status(500).json({ error: e });
+              console.log(e);
+            } else {
+              response.status(200).json(results.rows);
+            }
+          }
+        );
       }
     }
   );
@@ -302,17 +371,38 @@ const createContVida = async (request, response) => {
     id_cliente,
     id_agente,
     monto_com_ag,
-    tipo
+    tipo,
+    descripcion_poliza,
+    prima
   } = request.body;
   await pool.query(
-    "INSERT INTO Contrata_Vida (id_vida, id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE, 'Activo')",
-    [id_vida, id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo],
-    (e, results) => {
+    "insert into Poliza (descripcion_poliza,tipo,prima) values ($1,'Vida',$2) returning id_poliza",
+    [descripcion_poliza, prima],
+    async (e, results) => {
       if (e) {
         response.status(500).json({ error: e });
-        console.log(e);
       } else {
-        response.status(200).json(results.rows);
+        id_poliza = results.rows[0].id_poliza;
+        await pool.query(
+          "INSERT INTO Contrata_Vida (id_poliza, id_vida, id_persona_vida, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_DATE, 'Activo')",
+          [
+            id_poliza,
+            id_vida,
+            id_persona_vida,
+            id_cliente,
+            id_agente,
+            monto_com_ag,
+            tipo
+          ],
+          (e, results) => {
+            if (e) {
+              response.status(500).json({ error: e });
+              console.log(e);
+            } else {
+              response.status(200).json(results.rows);
+            }
+          }
+        );
       }
     }
   );
@@ -324,16 +414,32 @@ const createContInmueble = async (request, response) => {
     id_cliente,
     id_agente,
     monto_com_ag,
-    tipo
+    tipo,
+    descripcion_poliza,
+    prima
   } = request.body;
   await pool.query(
-    "INSERT INTO Contrata_Inmueble (id_inmueble, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Activo')",
-    [id_inmueble, id_cliente, id_agente, monto_com_ag, tipo],
-    (e, results) => {
+    "insert into Poliza (descripcion_poliza,tipo,prima) values ($1,'Hogar',$2) returning id_poliza",
+    [descripcion_poliza, prima],
+    async (e, results) => {
       if (e) {
         response.status(500).json({ error: e });
+        console.log(e);
       } else {
-        response.status(200).json(results.rows);
+        id_poliza = results.rows[0].id_poliza;
+        console.log(id_poliza);
+        await pool.query(
+          "INSERT INTO Contrata_Inmueble (id_poliza, id_inmueble, id_cliente, id_agente, monto_com_ag, tipo, fecha_contrato, estado_contrato) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_DATE, 'Activo')",
+          [id_poliza, id_inmueble, id_cliente, id_agente, monto_com_ag, tipo],
+          (e, results) => {
+            if (e) {
+              response.status(500).json({ error: e });
+              console.log(e);
+            } else {
+              response.status(200).json(results.rows);
+            }
+          }
+        );
       }
     }
   );
@@ -482,6 +588,73 @@ const createInmueble = async (request, response) => {
   );
 };
 
+const createSiniestro = async (request, response) => {
+  const {
+    nro_siniestro,
+    id_poliza,
+    descripcion,
+    fecha_siniestro,
+    fecha_respuesta,
+    id_rechazo,
+    monto_reconocido,
+    monto_solicitado
+  } = request.body;
+  console.log(request.body);
+  await pool.query(
+    "INSERT INTO Siniestro VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+    [
+      nro_siniestro,
+      id_poliza,
+      descripcion,
+      fecha_siniestro,
+      fecha_respuesta,
+      id_rechazo,
+      monto_reconocido,
+      monto_solicitado
+    ],
+    (e, results) => {
+      if (e) {
+        response.status(500).json({ error: e });
+        console.log(e);
+      } else {
+        response.status(200).json(results.rows);
+      }
+    }
+  );
+};
+
+const createAccidente = async (request, response) => {
+  const { fecha, lugar_acc, hora_acc, id_categoria_acc } = request.body;
+  await pool.query(
+    "INSERT INTO Accidente (fecha, lugar_acc, hora_acc, id_categoria_acc) VALUES ($1, $2, $3, $4)",
+    [fecha, lugar_acc, hora_acc, id_categoria_acc],
+    (e, results) => {
+      if (e) {
+        response.status(500).json({ error: e });
+        console.log(e);
+      } else {
+        response.status(200).json(results.rows);
+      }
+    }
+  );
+};
+
+const createMulta = async (request, response) => {
+  const { matricula, fecha, lugar, hora, importe, puntaje } = request.body;
+  await pool.query(
+    "INSERT INTO Multa ( matricula, fecha, lugar_multa, hora_multa, importe, puntaje ) VALUES ($1, $2, $3, $4, $5, $6)",
+    [matricula, fecha, lugar, hora, importe, puntaje],
+    (e, results) => {
+      if (e) {
+        response.status(500).json({ error: e });
+        console.log(e);
+      } else {
+        response.status(200).json(results.rows);
+      }
+    }
+  );
+};
+
 module.exports = {
   getUsuario,
   getPersona,
@@ -491,6 +664,10 @@ module.exports = {
   getPoliza,
   getVehiculo,
   getVida,
+  getSiniestro,
+  getAccidente,
+  getCategoria_acc,
+  getMulta,
   getCategoria,
   getTipo,
   getSucursal,
@@ -507,9 +684,9 @@ module.exports = {
   createInmueble,
   createVehiculo,
   createVida,
-  // createCategoria,
-  // createTipo,
-  // createSucursal,
+  createSiniestro,
+  createAccidente,
+  createMulta,
   createContVida,
   createContInmueble,
   createContVehiculo

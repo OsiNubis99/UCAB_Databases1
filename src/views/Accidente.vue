@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-		:items="Polizas"
+		:items="Accidentes"
 		:loading="cargando"
 		loading-text="Cargando lo datos..."
-		sort-by="id_poliza"
+		sort-by="nro_referencia"
 		class="elevation-1 ma-3"
 	>
 		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Polizas</v-toolbar-title>
+				<v-toolbar-title>Accidentes</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -26,24 +26,72 @@
 							<v-container grid-list-md>
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.descripcion_poliza"
-											label="Descripcion"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.prima"
-											label="prima"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
 										<v-select
-											:items="tipos"
-											label="Tipo"
-											v-model="editedItem.tipo"
-											dense
-										></v-select>
+											v-model="editedItem.id_categoria_acc"
+											:items="categoria_accs_names"
+											label="Secciona la Categoria_Acc"
+										>
+											<template v-slot:selection="{ item }">
+												<v-chip>
+													<span>{{ item[1] }}</span>
+												</v-chip>
+											</template>
+										</v-select>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-menu
+											ref="menu1"
+											v-model="menu1"
+											:close-on-content-click="false"
+											:return-value.sync="date"
+											transition="scale-transition"
+											offset-y
+											min-width="auto"
+											>
+											<template v-slot:activator="{ on, attrs }">
+												<v-text-field
+													v-model="editedItem.fecha"
+													label="Fecha del accidente"
+													prepend-icon="mdi-calendar"
+													readonly
+													v-bind="attrs"
+													v-on="on"
+													></v-text-field>
+											</template>
+											<v-date-picker
+												v-model="editedItem.fecha"
+												no-title
+												scrollable
+												>
+												<v-spacer></v-spacer>
+												<v-btn
+													text
+													color="primary"
+													@click="menu1 = false"
+													>
+													Cancel
+												</v-btn>
+												<v-btn
+													text
+													color="primary"
+													@click="$refs.menu1.save(editedItem.fecha)"
+													>
+													OK
+												</v-btn>
+											</v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.lugar_acc"
+											label="Lugar accidente"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.hora_acc"
+											label="Hora accidente"
+										></v-text-field>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -77,20 +125,18 @@ export default {
 		dialog: false,
 		dialogo: false,
 		cargando: false,
-		tipos: [
-		"Vehiculo", "Vida", "Hogar"],
 		headers: [
 			{
 				text: "Id",
-				value: "id_poliza",
+				value: "nro_referencia",
 			},
 			{
-				text: "Tipo",
-				value: "tipo",
+				text: "Fecha",
+				value: "fecha",
 			},
 			{
-				text: "Prima",
-				value: "prima",
+				text: "Lugar",
+				value: "lugar_acc",
 			},
 			{
 				text: "Actions",
@@ -98,18 +144,18 @@ export default {
 				sortable: false,
 			},
 		],
-		Polizas: [],
-		Personas: [],
+		Accidentes: [],
+		Categoria_Accs: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear una Poliza" : "Editar Poliza";
+			return this.editedIndex === -1 ? "Crear una Accidente" : "Editar Accidente";
 		},
-		personas_names() {
-			return this.Personas.map(function(item) {
-				return [item.id_persona, item.nombre_persona];
+		categoria_accs_names() {
+			return this.Categoria_Accs.map(function(item) {
+				return [item.id_categoria_accidente, item.descrip_subcategoria];
 			});
 		},
 	},
@@ -125,16 +171,16 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Polizas.indexOf(item);
+			this.editedIndex = this.Accidentes.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
 		iniciar() {
 			this.cargando = true;
 			this.axios
-				.get("http://localhost:4000/personas")
+				.get("http://localhost:4000/categoria_accs")
 				.then((response) => {
-					this.Personas = response.data;
+					this.Categoria_Accs = response.data;
 				})
 				.catch((error) => {
 					this.cargando = false;
@@ -146,9 +192,9 @@ export default {
 					};
 				});
 			this.axios
-				.get("http://localhost:4000/polizas")
+				.get("http://localhost:4000/accidentes")
 				.then((response) => {
-					this.Polizas = response.data;
+					this.Accidentes = response.data;
 					this.cargando = false;
 				})
 				.catch((error) => {
@@ -170,6 +216,8 @@ export default {
 			}, 300);
 		},
 		async save() {
+			this.editedItem.id_categoria_acc = this.editedItem.id_categoria_acc[0];
+			console.log(this.editedItem.id_categoria_acc)
 			var qs = require("qs");
 			this.cargando = true;
 			if (this.editedIndex > -1) {
@@ -215,7 +263,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/poliza",
+						"http://localhost:4000/accidente",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -238,8 +286,8 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Poliza Creado",
-								info: "La poliza se ha creado correctamente",
+								titulo: "Accidente Creado",
+								info: "La accidente se ha creado correctamente",
 							};
 						}
 					})

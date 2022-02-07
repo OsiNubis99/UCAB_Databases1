@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-    :items="Contratos"
-	  :loading="cargando"
-	  loading-text="Cargando lo datos..."
-	  sort-by="fecha_contrato"
-	  class="elevation-1 ma-3"
-  >
-	  <template v-slot:top>
+		:items="Siniestros"
+		:loading="cargando"
+		loading-text="Cargando lo datos..."
+		sort-by="nro_siniestro"
+		class="elevation-1 ma-3"
+	>
+		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Contratos Vida</v-toolbar-title>
+				<v-toolbar-title>Siniestros</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -27,9 +27,9 @@
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_vida"
-											:items="vida_names"
-											label="Secciona el Plan"
+											v-model="editedItem.id_poliza"
+											:items="polizas_names"
+											label="Secciona la Poliza"
 										>
 											<template v-slot:selection="{ item }">
 												<v-chip>
@@ -37,69 +37,124 @@
 												</v-chip>
 											</template>
 										</v-select>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-menu
+											ref="menu1"
+											v-model="menu1"
+											:close-on-content-click="false"
+											:return-value.sync="date"
+											transition="scale-transition"
+											offset-y
+											min-width="auto"
+											>
+											<template v-slot:activator="{ on, attrs }">
+												<v-text-field
+													v-model="editedItem.fecha_siniestro"
+													label="Fecha del siniestro"
+													prepend-icon="mdi-calendar"
+													readonly
+													v-bind="attrs"
+													v-on="on"
+													></v-text-field>
+											</template>
+											<v-date-picker
+												v-model="editedItem.fecha_siniestro"
+												no-title
+												scrollable
+												>
+												<v-spacer></v-spacer>
+												<v-btn
+													text
+													color="primary"
+													@click="menu1 = false"
+													>
+													Cancel
+												</v-btn>
+												<v-btn
+													text
+													color="primary"
+													@click="$refs.menu1.save(editedItem.fecha_siniestro)"
+													>
+													OK
+												</v-btn>
+											</v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-menu
+											ref="menu2"
+											v-model="menu2"
+											:close-on-content-click="false"
+											:return-value.sync="date"
+											transition="scale-transition"
+											offset-y
+											min-width="auto"
+											>
+											<template v-slot:activator="{ on, attrs }">
+												<v-text-field
+													v-model="editedItem.fecha_respuesta"
+													label="Fecha de la respuesta"
+													prepend-icon="mdi-calendar"
+													readonly
+													v-bind="attrs"
+													v-on="on"
+													></v-text-field>
+											</template>
+											<v-date-picker
+												v-model="editedItem.fecha_respuesta"
+												no-title
+												scrollable
+												>
+												<v-spacer></v-spacer>
+												<v-btn
+													text
+													color="primary"
+													@click="menu2 = false"
+													>
+													Cancel
+												</v-btn>
+												<v-btn
+													text
+													color="primary"
+													@click="$refs.menu2.save(editedItem.fecha_respuesta)"
+													>
+													OK
+												</v-btn>
+											</v-date-picker>
+										</v-menu>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.nro_siniestro"
+											label="Numero siniestro"
+											></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.descripcion"
+											label="Descripcion del siniestro"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.monto_reconocido"
+											label="Monto Reconocido"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.monto_solicitado"
+											label="Monto Solicitado"
+										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_persona_vida"
-											:items="personas_names"
-											label="Secciona el Beneficiario"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-select
-											v-model="editedItem.id_cliente"
-											:items="clientes_names"
-											label="Secciona el Cliente"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-select
-											v-model="editedItem.id_agente"
-											:items="agentes_names"
-											label="Secciona el Agente"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.monto_com_ag"
-											label="Monto Com"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.descripcion_poliza"
-											label="Descripcion"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.prima"
-											label="Monto Prima"
-										></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.tipo"
-											label="Tipo"
-										></v-text-field>
+											:items="tipos"
+											label="Fue rechazado?"
+											v-model="editedItem.id_rechazo"
+											dense
+										></v-select>
 									</v-flex>
 								</v-layout>
 							</v-container>
@@ -133,38 +188,21 @@ export default {
 		dialog: false,
 		dialogo: false,
 		cargando: false,
+		tipos:[
+			"SI","NO"
+		],
 		headers: [
 			{
-				text: "Fecha Creado",
-				value: "fecha_contrato",
+				text: "Id",
+				value: "nro_siniestro",
 			},
 			{
-				text: "ID Vida",
-				value: "id_vida",
+				text: "Fecha",
+				value: "fecha_siniestro",
 			},
 			{
-				text: "Beneficiario",
-				value: "id_persona_vida",
-			},
-			{
-				text: "Cliente",
-				value: "id_cliente",
-			},
-			{
-				text: "ID Agente",
-				value: "id_agente",
-			},
-			{
-				text: "Comision",
-				value: "monto_com_ag",
-			},
-			{
-				text: "Tipo",
-				value: "tipo",
-			},
-			{
-				text: "Estado",
-				value: "estado_contrato",
+				text: "Descripcion",
+				value: "descripcion",
 			},
 			{
 				text: "Actions",
@@ -172,37 +210,19 @@ export default {
 				sortable: false,
 			},
 		],
-		Contratos: [],
-		Vida: [],
-		Personas: [],
-		Clientes: [],
-		Agentes: [],
+		Siniestros: [],
+		Polizas: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
-		vida_names() {
-			return this.Vida.map(function(item) {
-				return [item.id_vida, item.prima];
-			});
-		},
-		personas_names() {
-			return this.Personas.map(function(item) {
-				return [item.id_persona, item.nombre_persona];
-			});
-		},
-		clientes_names() {
-			return this.Clientes.map(function(item) {
-				return [item.id_persona, item.nombre_persona + " " + item.apellido_cliente];
-			});
-		},
-		agentes_names() {
-			return this.Agentes.map(function(item) {
-				return [item.id_persona, item.nombre_persona];
-			});
-		},
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear un Contrato" : "Editar Contrato";
+			return this.editedIndex === -1 ? "Crear una Siniestro" : "Editar Siniestro";
+		},
+		polizas_names() {
+			return this.Polizas.map(function(item) {
+				return [item.id_poliza, item.descripcion_poliza];
+			});
 		},
 	},
 	watch: {
@@ -217,21 +237,31 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Personas.indexOf(item);
+			this.editedIndex = this.Siniestros.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
 		iniciar() {
 			this.cargando = true;
 			this.axios
-				.get("http://localhost:4000/contratos_Vida")
+				.get("http://localhost:4000/polizas")
 				.then((response) => {
+					this.Polizas = response.data;
+				})
+				.catch((error) => {
 					this.cargando = false;
-					this.Contratos = response.data.Contratos;
-					this.Vida = response.data.Vida;
-					this.Personas = response.data.Personas;
-					this.Clientes = response.data.Clientes;
-					this.Agentes = response.data.Agentes;
+					this.$store.state.alerta = {
+						estado: true,
+						tipo: "error",
+						titulo: "Error de Conexion",
+						info: "Verifique su Conexion a Internet",
+					};
+				});
+			this.axios
+				.get("http://localhost:4000/siniestros")
+				.then((response) => {
+					this.Siniestros = response.data;
+					this.cargando = false;
 				})
 				.catch((error) => {
 					this.cargando = false;
@@ -252,12 +282,9 @@ export default {
 			}, 300);
 		},
 		async save() {
-			console.log('test')
+			this.editedItem.id_poliza = this.editedItem.id_poliza[0];
+			console.log(this.editedItem.id_poliza)
 			var qs = require("qs");
-			this.editedItem.id_vida = this.editedItem.id_vida[0];
-			this.editedItem.id_persona_vida = this.editedItem.id_persona_vida[0];
-			this.editedItem.id_cliente = this.editedItem.id_cliente[0];
-			this.editedItem.id_agente = this.editedItem.id_agente[0];
 			this.cargando = true;
 			if (this.editedIndex > -1) {
 				await this.axios
@@ -302,7 +329,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/contrata_vida",
+						"http://localhost:4000/siniestro",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -325,8 +352,8 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Persona Creado",
-								info: "El persona se ha creado correctamente",
+								titulo: "Siniestro Creado",
+								info: "La siniestro se ha creado correctamente",
 							};
 						}
 					})

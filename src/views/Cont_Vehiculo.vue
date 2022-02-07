@@ -84,6 +84,18 @@
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
+											v-model="editedItem.descripcion_poliza"
+											label="Descripcion"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.prima"
+											label="Monto Prima"
+										></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
 											v-model="editedItem.descuento"
 											label="Descuento"
 										></v-text-field>

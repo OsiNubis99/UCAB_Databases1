@@ -1,15 +1,15 @@
 <template>
   <v-data-table
 	  :headers="headers"
-    :items="Contratos"
-	  :loading="cargando"
-	  loading-text="Cargando lo datos..."
-	  sort-by="fecha_contrato"
-	  class="elevation-1 ma-3"
-  >
-	  <template v-slot:top>
+		:items="Multas"
+		:loading="cargando"
+		loading-text="Cargando lo datos..."
+		sort-by="nro_multa"
+		class="elevation-1 ma-3"
+	>
+		<template v-slot:top>
 			<v-toolbar flat color="white">
-				<v-toolbar-title>Contratos Vida</v-toolbar-title>
+				<v-toolbar-title>Multas</v-toolbar-title>
 				<v-divider class="mx-4" inset vertical></v-divider>
 				<v-spacer></v-spacer>
 				<v-dialog v-model="dialog">
@@ -27,9 +27,9 @@
 								<v-layout wrap v-if="editedIndex != -2" justify-center>
 									<v-flex xs12 lg6>
 										<v-select
-											v-model="editedItem.id_vida"
-											:items="vida_names"
-											label="Secciona el Plan"
+											v-model="editedItem.matricula"
+											:items="vehiculos_names"
+											label="Secciona la Vehiculo"
 										>
 											<template v-slot:selection="{ item }">
 												<v-chip>
@@ -39,68 +39,78 @@
 										</v-select>
 									</v-flex>
 									<v-flex xs12 lg6>
-										<v-select
-											v-model="editedItem.id_persona_vida"
-											:items="personas_names"
-											label="Secciona el Beneficiario"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
+										<v-menu
+											ref="menu1"
+											v-model="menu1"
+											:close-on-content-click="false"
+											:return-value.sync="date"
+											transition="scale-transition"
+											offset-y
+											min-width="auto"
+											>
+											<template v-slot:activator="{ on, attrs }">
+												<v-text-field
+													v-model="editedItem.fecha"
+													label="Fecha de la multa"
+													prepend-icon="mdi-calendar"
+													readonly
+													v-bind="attrs"
+													v-on="on"
+													></v-text-field>
 											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-select
-											v-model="editedItem.id_cliente"
-											:items="clientes_names"
-											label="Secciona el Cliente"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
-									</v-flex>
-									<v-flex xs12 lg6>
-										<v-select
-											v-model="editedItem.id_agente"
-											:items="agentes_names"
-											label="Secciona el Agente"
-										>
-											<template v-slot:selection="{ item }">
-												<v-chip>
-													<span>{{ item[1] }}</span>
-												</v-chip>
-											</template>
-										</v-select>
+											<v-date-picker
+												v-model="editedItem.fecha"
+												no-title
+												scrollable
+												>
+												<v-spacer></v-spacer>
+												<v-btn
+													text
+													color="primary"
+													@click="menu1 = false"
+													>
+													Cancel
+												</v-btn>
+												<v-btn
+													text
+													color="primary"
+													@click="$refs.menu1.save(editedItem.fecha)"
+													>
+													OK
+												</v-btn>
+											</v-date-picker>
+										</v-menu>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.monto_com_ag"
-											label="Monto Com"
+											v-model="editedItem.lugar"
+											label="Lugar de la multa"
+											></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg6>
+										<v-text-field
+											v-model="editedItem.hora"
+											label="Hora de la Multa"
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-text-field
-											v-model="editedItem.descripcion_poliza"
-											label="Descripcion"
+											v-model="editedItem.importe"
+											label="Importe de la multa"
 										></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.prima"
-											label="Monto Prima"
-										></v-text-field>
+										<v-slider
+											thumb-label
+											step="1"
+											ticks
+											min="1"
+											max="10"
+											v-model="editedItem.puntaje"
+											label="Puntaje Multa"
+										></v-slider>
 									</v-flex>
-									<v-flex xs12 lg6>
-										<v-text-field
-											v-model="editedItem.tipo"
-											label="Tipo"
-										></v-text-field>
-									</v-flex>
+									{{editedItem.puntaje}}
 								</v-layout>
 							</v-container>
 						</v-card-text>
@@ -133,38 +143,21 @@ export default {
 		dialog: false,
 		dialogo: false,
 		cargando: false,
+		tipos:[
+			"SI","NO"
+		],
 		headers: [
 			{
-				text: "Fecha Creado",
-				value: "fecha_contrato",
+				text: "Id",
+				value: "nro_referencia",
 			},
 			{
-				text: "ID Vida",
-				value: "id_vida",
+				text: "Fecha",
+				value: "fecha",
 			},
 			{
-				text: "Beneficiario",
-				value: "id_persona_vida",
-			},
-			{
-				text: "Cliente",
-				value: "id_cliente",
-			},
-			{
-				text: "ID Agente",
-				value: "id_agente",
-			},
-			{
-				text: "Comision",
-				value: "monto_com_ag",
-			},
-			{
-				text: "Tipo",
-				value: "tipo",
-			},
-			{
-				text: "Estado",
-				value: "estado_contrato",
+				text: "Lugar",
+				value: "lugar_multa",
 			},
 			{
 				text: "Actions",
@@ -172,37 +165,19 @@ export default {
 				sortable: false,
 			},
 		],
-		Contratos: [],
-		Vida: [],
-		Personas: [],
-		Clientes: [],
-		Agentes: [],
+		Multas: [],
+		Vehiculos: [],
 		editedIndex: -1,
 		editedItem: {},
 	}),
 	computed: {
-		vida_names() {
-			return this.Vida.map(function(item) {
-				return [item.id_vida, item.prima];
-			});
-		},
-		personas_names() {
-			return this.Personas.map(function(item) {
-				return [item.id_persona, item.nombre_persona];
-			});
-		},
-		clientes_names() {
-			return this.Clientes.map(function(item) {
-				return [item.id_persona, item.nombre_persona + " " + item.apellido_cliente];
-			});
-		},
-		agentes_names() {
-			return this.Agentes.map(function(item) {
-				return [item.id_persona, item.nombre_persona];
-			});
-		},
 		formTitle() {
-			return this.editedIndex === -1 ? "Crear un Contrato" : "Editar Contrato";
+			return this.editedIndex === -1 ? "Crear una Multa" : "Editar Multa";
+		},
+		vehiculos_names() {
+			return this.Vehiculos.map(function(item) {
+				return [item.matricula, item.marca+" "+item.modelo+" "+item.annio];
+			});
 		},
 	},
 	watch: {
@@ -217,21 +192,31 @@ export default {
 			this.dialog = true;
 		},
 		editItem(item) {
-			this.editedIndex = this.Personas.indexOf(item);
+			this.editedIndex = this.Multas.indexOf(item);
 			this.editedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
 		iniciar() {
 			this.cargando = true;
 			this.axios
-				.get("http://localhost:4000/contratos_Vida")
+				.get("http://localhost:4000/vehiculos")
 				.then((response) => {
+					this.Vehiculos = response.data;
+				})
+				.catch((error) => {
 					this.cargando = false;
-					this.Contratos = response.data.Contratos;
-					this.Vida = response.data.Vida;
-					this.Personas = response.data.Personas;
-					this.Clientes = response.data.Clientes;
-					this.Agentes = response.data.Agentes;
+					this.$store.state.alerta = {
+						estado: true,
+						tipo: "error",
+						titulo: "Error de Conexion",
+						info: "Verifique su Conexion a Internet",
+					};
+				});
+			this.axios
+				.get("http://localhost:4000/multas")
+				.then((response) => {
+					this.Multas = response.data;
+					this.cargando = false;
 				})
 				.catch((error) => {
 					this.cargando = false;
@@ -252,12 +237,9 @@ export default {
 			}, 300);
 		},
 		async save() {
-			console.log('test')
+			this.editedItem.matricula = this.editedItem.matricula[0];
+			console.log(this.editedItem.matricula)
 			var qs = require("qs");
-			this.editedItem.id_vida = this.editedItem.id_vida[0];
-			this.editedItem.id_persona_vida = this.editedItem.id_persona_vida[0];
-			this.editedItem.id_cliente = this.editedItem.id_cliente[0];
-			this.editedItem.id_agente = this.editedItem.id_agente[0];
 			this.cargando = true;
 			if (this.editedIndex > -1) {
 				await this.axios
@@ -302,7 +284,7 @@ export default {
 			} else {
 				await this.axios
 					.post(
-						"http://localhost:4000/contrata_vida",
+						"http://localhost:4000/multa",
 						qs.stringify(this.editedItem),
 						{
 							headers: {
@@ -325,8 +307,8 @@ export default {
 							this.$store.state.alerta = {
 								estado: true,
 								tipo: "bien",
-								titulo: "Persona Creado",
-								info: "El persona se ha creado correctamente",
+								titulo: "Multa Creado",
+								info: "La multa se ha creado correctamente",
 							};
 						}
 					})

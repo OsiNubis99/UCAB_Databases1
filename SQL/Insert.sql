@@ -1,8 +1,3 @@
-DROP SCHEMA IF EXISTS public CASCADE;
-CREATE SCHEMA public;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO public;
-
 CREATE TABLE Perfil(
     id_perfil SERIAL PRIMARY KEY,
     nombre_perfil VARCHAR(30) NOT NULL
@@ -126,6 +121,7 @@ CREATE TABLE Cliente(
 CREATE TABLE Poliza(
     id_poliza SERIAL PRIMARY KEY,
     descripcion_poliza VARCHAR(50) NOT NULL,
+
     tipo VARCHAR(30) NOT NULL CHECK (
         tipo = 'Vehiculo'
         OR tipo = 'Vida'
@@ -253,8 +249,6 @@ CREATE TABLE Posee(
 );
 
 CREATE TABLE Contrata_Inmueble(
-    id_poliza integer NOT NULL,
-    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     id_inmueble integer NOT NULL,
     CONSTRAINT FK_Inmueble FOREIGN KEY (id_inmueble) REFERENCES Inmueble(id_inmueble),
     id_cliente INTEGER NOT NULL,
@@ -273,8 +267,6 @@ CREATE TABLE Contrata_Inmueble(
 );
 
 CREATE TABLE Contrata_Vehiculo(
-    id_poliza integer NOT NULL,
-    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     matricula VARCHAR(30) NOT NULL,
     CONSTRAINT FK_Matricula FOREIGN KEY (matricula) REFERENCES Vehiculo(matricula),
     id_cliente INTEGER NOT NULL,
@@ -295,8 +287,6 @@ CREATE TABLE Contrata_Vehiculo(
 );
 
 CREATE TABLE Contrata_Vida(
-    id_poliza integer NOT NULL,
-    CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
     id_vida integer NOT NULL,
     CONSTRAINT FK_Vida FOREIGN KEY (id_vida) REFERENCES Vida(id_vida),
     id_cliente INTEGER NOT NULL,
@@ -329,11 +319,15 @@ CREATE TABLE Prestario(
 
 CREATE TABLE Siniestro(
     nro_siniestro integer PRIMARY KEY,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Registro_Siniestro(
+    nro_siniestro integer PRIMARY KEY,
     CONSTRAINT FK_Siniestro FOREIGN KEY (nro_siniestro) REFERENCES Siniestro(nro_siniestro),
     id_poliza INTEGER NOT NULL,
     CONSTRAINT FK_Poliza FOREIGN KEY (id_poliza) REFERENCES Poliza(id_poliza),
-    descripcion VARCHAR(100) NOT NULL,
-    fecha_siniestro DATE not null,
+    fecha_sinietro DATE not null,
     fecha_respesta DATE NOT NULL,
     id_rechazo VARCHAR(2) NOT NULL CONSTRAINT Rechazo_Registro CHECK (
         id_rechazo = 'SI' OR id_rechazo = 'NO'
@@ -342,13 +336,18 @@ CREATE TABLE Siniestro(
     monto_solicitado FLOAT NOT NULL
 );
 
+
+
 /*A. municipios ciudades*/
+
 INSERT INTO Pais  ( nb_pais) VALUES ( 'Venezuela');--1
 /*estados*/
 INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Miranda');--1
 INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Aragua');--2
 INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Carabobo');--3
 INSERT INTO Estado ( id_pais, nb_estado) Values ( 1, 'Lara');--4
+
+
 /*municipios*/
 /*miranda*/
 INSERT INTO Municipio ( id_estado, nb_municipio) VALUES ( 1, 'Libertador');--1
@@ -364,6 +363,8 @@ INSERT INTO Municipio (id_estado, nb_municipio) VALUES (3, 'San diego ');--7
 INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Iribarren ');--8
 INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Autonomo Torres ');--9
 INSERT INTO Municipio (id_estado, nb_municipio) VALUES (4, 'Jimenez ');--10
+
+
 /*ciudades*/
 /*miranda*/
 INSERT INTO Ciudad (id_municipio, nb_ciudad) VALUES ( 1, 'Caricuao');--1
@@ -379,6 +380,7 @@ INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 7, 'San diego ');--7
 INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES (8, 'Barquisimeto ');--8
 INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES (9 ,'Carora ');--9
 INSERT INTO Ciudad ( id_municipio, nb_ciudad) VALUES ( 10, 'Quibor ');--10
+
 /*Parroquias*/
 /*miranda*/
 INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 1, 'San Agustin');--1
@@ -394,6 +396,8 @@ INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES ( 7, ' San Diego de A
 INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (8, ' Catedral');--8
 INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (9, 'Heriberto Arroyo');--9
 INSERT INTO Parroquia ( id_municipio, nb_parroquia) VALUES (10, 'Juan Bautista Rodríguez');--10
+
+
 
 INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Alexis', '02120222258', 'Empleado');--1
 INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES ( 'Andres', '02120222258', 'Agente');--2
@@ -433,7 +437,8 @@ INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'gabr
 INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Juan', '0212383526', 'Beneficiario');--36
 INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Maria', '02152835179', 'Beneficiario');--37
 INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Rosimily', '0212255160', 'Beneficiario');--38
-INSERT INTO Persona (nombre_persona,num_telPersona,tipo_persona) VALUES (  'Jose ', '021263643', 'Cliente');--39
+
+
 
 INSERT INTO Empleado(id_empleado,fecha_inicio_empresa) VALUES (1, CURRENT_DATE);
 INSERT INTO Empleado(id_empleado,fecha_inicio_empresa) VALUES (9, '1/12/2021');
@@ -499,7 +504,7 @@ INSERT INTO Vehiculo VALUES ('a5gs4g5', 'BMW', 'x3', '2018', 1, 1);
 /*PASO 8*/
 INSERT INTO Cliente VALUES (3, 'Gonzales', 'Direccion', 'Calle', 'Ciudad', 'H', CURRENT_DATE, 'Profecion', 1);
 INSERT INTO Usuario (nombre_usuario,email,pass,nombre,apellido,sexo,id_ciudad ) VALUES ( 'ASTRO', 'Astro21234', '12345', 'alexis', 'Quiros', 'M', 1);--1
-INSERT INTO Prestamo(id_prestamo,importe) VALUES (1, 2.0);--1
+INSERT INTO Prestamo(importe) VALUES ( 2.0);--1
 INSERT INTO Pago VALUES (1, 1, CURRENT_DATE, 1);
 INSERT INTO Multa (matricula,fecha,lugar_multa,hora_multa, importe,puntaje) VALUES ( 'a3f44da', CURRENT_DATE,'En mi casa', '12:20', 12, 9);--1
 /*FIN PASO 8*/
@@ -509,29 +514,22 @@ INSERT INTO Multa (matricula,fecha,lugar_multa,hora_multa, importe,puntaje) VALU
 
 /*C.Categorias de accidente y sub categorias*/
 
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (1,'hogar', 'Intoxicaciones, quemaduras, torceduras, herida, etc.');--1
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (2,'trabajo','Quemaduras, congelamiento, inmersión, electrocución, etc.');--2
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (3,'calle','Choques, atropellamientos, volcaduras, bala perdida etc.');--3
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (4,'campo','Caídas, ataque por animales, incendios, etc.');--4
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (5,'infancia','Los más frecuentes son las caídas, los producidos durante el
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('hogar', 'Intoxicaciones, quemaduras, torceduras, herida, etc.');--1
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('trabajo','Quemaduras, congelamiento, inmersión, electrocución, etc.');--2
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('calle','Choques, atropellamientos, volcaduras, bala perdida etc.');--3
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('campo','Caídas, ataque por animales, incendios, etc.');--4
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('infancia','Los más frecuentes son las caídas, los producidos durante el
 transporte, las intoxicaciones y las quemaduras.2');--5
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (6,'escuela','Caídas, heridas');--6
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (7,'hospitales','Caídas, intoxicación');--7
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (8,'animales','Picaduras, heridas, lesiones, intoxicaciones');--8
-INSERT INTO Categoria_Accidente(id_categoria_accidente,descrip_subcategoria,descrip_categoria) VALUES (9,'desastres naturales','Derrumbes, deslizamientos, muertes, pérdida de
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('escuela','Caídas, heridas');--6
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('hospitales','Caídas, intoxicación');--7
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('animales','Picaduras, heridas, lesiones, intoxicaciones');--8
+INSERT INTO Categoria_Accidente(descrip_subcategoria,descrip_categoria) VALUES ('desastres naturales','Derrumbes, deslizamientos, muertes, pérdida de
 hogares, entre otros.');--9
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en vehiculo ','Vehiculo',300);--1
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en vida ','Vida',1000);--2
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en vehiculo ','Vehiculo',500);--3
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en Hogar ','Hogar',15000);--4
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en vehiculo ','Vehiculo',200);--5
-INSERT INTO Poliza(descripcion_poliza,tipo,prima ) VALUES ( 'Cubre cualquier tipo de siniestro en vida','Vida',2000);--6
-
 
 /*D. Almacenar 3 contratos o poliza*/
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,1,3,2,1,'2/02/2022',100,'Todo riesgo','Activo');
-INSERT INTO Contrata_Inmueble(id_poliza,id_inmueble, id_cliente, id_agente,  fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (4,1,3,2,'10/01/2022',100,'Todo riesgo ','Activo');
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (5,'a5gs4g5',3,2,'4/01/2022',100,30,5,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,3,2,1,'2/02/2022',100,'Todo riesgo','Activo');
+INSERT INTO Contrata_Inmueble(id_inmueble, id_cliente, id_agente,  fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,3,2,'10/01/2022',100,'Todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('a5gs4g5',3,2,'4/01/2022',100,30,5,'todo riesgo ','Activo');
 
 
 /*insert reporte 10*/
@@ -551,40 +549,37 @@ INSERT INTO Vehiculo VALUES ('2jg45A', 'toyota', 'corola', '2013', 2, 1);
 INSERT INTO Vehiculo VALUES ('1jg65A', 'toyota', 'corola', '2010', 2, 1);
 INSERT INTO Vehiculo VALUES ('6jg3eA', 'subaru', 'impreza', '2010', 4, 1);
 
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (1,'a5gs4g5',3,2,'12/01/2019',60,6,5,'todo riesgo ','Activo');
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (3,'a5g45hy',3,2,'04/09/2016',80,11,10,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('a5gs4g5',3,2,'12/01/2019',60,6,5,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('a5g45hy',3,2,'04/09/2016',80,11,10,'todo riesgo ','Activo');
 
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (5,'2jg45A',15,5,'01/10/2017',10,2,6,'todo riesgo ','Activo');
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (3,'1jg65A',15,5,'06/09/2018',30,4,8,'todo riesgo ','Activo');
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (1,'6jg3eA',15,5,'02/11/2016',10,1,9,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('2jg45A',15,5,'01/10/2017',10,2,6,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('1jg65A',15,5,'06/09/2018',30,4,8,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('6jg3eA',15,5,'02/11/2016',10,1,9,'todo riesgo ','Activo');
 
 /*reporte 4*/
 INSERT INTO Vida ( prima,cobertura ) VALUES (  100003,70000);
 
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,3,2,1,'4/01/2022',100,'Todo riesgo','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,3,2,1,'12/06/2018',60,'Todo riesgo','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (3,3,2,1,'11/01/2020',80,'Incapacidad','Activo');
 
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,15,5,1,'04/08/2015',1000,'Todo riesgo','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,15,5,1,'12/06/2021',600,'Incapacida','Activo');
 
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (3,16,6,1,'11/08/2020',80,'Incapacidad','Activo');
 
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,1,3,2,1,'4/01/2022',100,'Todo riesgo','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,2,3,2,1,'12/06/2018',60,'Todo riesgo','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,3,3,2,1,'11/01/2020',80,'Incapacidad','Activo');
-
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,1,15,5,1,'04/08/2015',1000,'Todo riesgo','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,2,15,5,1,'12/06/2021',600,'Incapacida','Activo');
-
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,3,16,6,1,'11/08/2020',80,'Incapacidad','Activo');
-
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,1,17,2,1,'10/09/2019',70,'Todo riesgo','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,2,17,2,1,'05/10/2018',65,'Incapacidad','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,3,17,2,1,'09/11/2021',700,'Todo riesgo','Activo');
-INSERT INTO Contrata_Vida(id_poliza,id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (6,4,17,2,1,'6/12/2017',80,'Incapacidad','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (1,17,2,1,'10/09/2019',70,'Todo riesgo','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (2,17,2,1,'05/10/2018',65,'Incapacidad','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (3,17,2,1,'09/11/2021',700,'Todo riesgo','Activo');
+INSERT INTO Contrata_Vida(id_vida, id_cliente, id_agente, id_persona_vida, fecha_contrato,monto_com_ag,  tipo, estado_contrato) VALUES (4,17,2,1,'6/12/2017',80,'Incapacidad','Activo');
 
 
 /*reporte 9*/
 
 INSERT INTO Vehiculo VALUES ('4dsf4A', 'toyota', 'canrry', '2011', 2, 1);
 INSERT INTO Vehiculo VALUES ('736nde', 'mercedes benz', 'cc', '2012', 4, 1);
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (3,'4dsf4A',16,5,'06/10/2018',30,4,8,'todo riesgo ','Activo');
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (5,'736nde',17,2,'02/12/2016',10,1,9,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('4dsf4A',16,5,'06/10/2018',30,4,8,'todo riesgo ','Activo');
+INSERT INTO Contrata_Vehiculo(matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES ('736nde',17,2,'02/12/2016',10,1,9,'todo riesgo ','Activo');
 
 INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('02/01/2021','Francisco Fajardo','3:30',3);--1
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (1,'a5g45hy',3);
@@ -599,28 +594,4 @@ INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('02/06/
 INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (4,'736nde',17);
 
 
-/*reporte 7*/
 
-INSERT INTO Vehiculo VALUES ('4DS2NI', 'mercedes benz', 'cc', '2011', 4, 1);
-INSERT INTO Cliente VALUES (39, 'Arraiz','bolivar', 'Calle bolivar', 'Barquisimeto', 'M', '09/09/1992', 'Administrador de empresas', 5);
-INSERT INTO Contrata_Vehiculo(id_poliza,matricula, id_cliente, id_agente,  fecha_contrato,monto_com_ag,recargo,descuento,  tipo, estado_contrato) VALUES (3,'4DS2NI',39,5,'06/10/2017',16,3,9,'todo riesgo ','Activo');
-
-INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('02/07/2021','Francisco Fajardo','6:30',3);--1
-INSERT INTO Accidente(fecha,lugar_acc,hora_acc,id_categoria_acc) VALUES ('03/01/2022','Calle bolivar','1:30',3);--2
-/*nota introduce hasta accidente luego introduce los unvolucra si te lanza error es que creo un nro_referencia distinto
-haz un select * from accidente y los dos ultimos registrados los colocaras en en el primer campo
- que sigue es de cir donde dice 6,7*/
-INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (7,'4DS2NI',39);
-INSERT INTO Involucra(nro_referencia,matricula,id_persona) VALUES (8,'4DS2NI',39);
-
-/*reporte 11*/
-
-
-
-
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 1,1,'Choque de vehiculos en la calle , cliente fracturado','01/01/2022','03/01/2022','SI',300,700);
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 2,2,'Se tropezo caminando y se fracturo el brazo ','31/12/2021','02/01/2022','NO',200,200);
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 3,3,'Infarto a media noche ','06/11/2021','09/11/2021','SI',600,1000);
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 4,4,'Temblo, se derrumbo la casa','17/04/2021','25/04/2021','SI',280,400);
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 5,5,'Choco y tumbo un poste','23/06/2021','28/06/2021','NO',9000,9500);
-INSERT INTO  Siniestro(nro_siniestro,id_poliza,descripcion,fecha_sinietro,fecha_respesta,id_rechazo,monto_reconocido,monto_solicitado) VALUES ( 6,6,'Accidente en moto se raspo la cara','02/01/2022','06/01/2022','SI',790,850);
